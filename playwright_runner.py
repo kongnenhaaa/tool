@@ -183,11 +183,19 @@ class PlaywrightRunner:
 		self._page.wait_for_timeout(2000)
 		self._fill_confirmation_info(record, log)
 
-		# Face verification flow – wait for AI to scan and click next
-		self._wait_and_finish_face_verification(log)
+		result_text = ""
+		try:
+			notification = self._page.locator(".ant-notification-notice").first
+			notification.wait_for(state="visible", timeout=15000)
+			result_text = notification.inner_text()
+			if log:
+				# Format log into a single line to avoid messy logs
+				log_text = result_text.replace('\n', ' - ')
+				log(f"Đọc thông báo từ hệ thống: {log_text}")
+		except Exception:
+			result_text = self._page.inner_text("body")
 
-		body_text = self._page.inner_text("body")
-		status, message = self._classify_result(body_text)
+		status, message = self._classify_result(result_text)
 		return status, message
 
 	# ------------------------------------------------------------------ #
@@ -390,19 +398,6 @@ class PlaywrightRunner:
 		}})();
 		"""
 
-	def _wait_and_finish_face_verification(self, log: Callable[[str], None] | None) -> None:
-		try:
-			finish_btn = self._page.locator("button:has-text('TIẾP THEO'), div:has-text('TIẾP THEO')").filter(visible=True)
-			finish_btn.first.wait_for(state="visible", timeout=45000)
-			if finish_btn.count() > 0:
-				self._page.wait_for_timeout(2000)
-				finish_btn.first.click()
-				if log:
-					log("Đã hoàn tất quét khuôn mặt (bấm Tiếp theo)")
-			self._page.wait_for_load_state("networkidle", timeout=10000)
-		except Exception as exc:
-			pass
-
 	def _fill_confirmation_info(self, record: dict, log: Callable[[str], None] | None) -> None:
 		try:
 			# Đợi trang Xác nhận thông tin load (input Nơi cấp xuất hiện)
@@ -438,15 +433,11 @@ class PlaywrightRunner:
 			).filter(visible=True)
 			
 			if confirm_btn.count() > 0:
-				# Delay 2s before clicking XÁC NHẬN
-				self._page.wait_for_timeout(2000)
+				# Thực hiện ngay tức thì (bỏ wait 2s)
 				confirm_btn.last.click()
 				if log: log("Đã bấm XÁC NHẬN thông tin")
-				self._page.wait_for_timeout(3000)
-				self._page.wait_for_load_state("networkidle", timeout=10000)
-		except Exception as exc:
-			if log:
-				log(f"Lỗi khi điền Xác nhận thông tin (hoặc bước này không hiển thị): {exc}")
+		except Exception:
+			pass
 
 	# ------------------------------------------------------------------ #
 	#  Window / viewport helpers                                           #
@@ -516,12 +507,16 @@ class PlaywrightRunner:
 	def _classify_result(self, body_text: str) -> tuple[str, str]:
 		text = body_text.lower()
 		message = self._extract_message(body_text)
+		
+		# 1. Check for Duplicate first because the error message often says "cập nhật thành công trước đó"
+		if "cập nhật trước đó" in text or "đã được cập nhật" in text or "vượt quá số lần" in text:
+			return "DUPLICATE", message
+			
+		# 2. Check for Success
 		if "thanh cong" in text or "thành công" in text:
 			return "SUCCESS", message
-		if "da duoc cap nhat" in text or "đã được cập nhật" in text:
-			return "DUPLICATE", message
-		if "dung ten 3 thue bao" in text or "đứng tên 3 thuê bao" in text:
-			return "FAILED", message
+			
+		# 3. Everything else is FAILED
 		return "FAILED", message
 
 	def _extract_message(self, body_text: str) -> str:
@@ -529,13 +524,14 @@ class PlaywrightRunner:
 		if not lines:
 			return "Unknown response"
 
-		keywords = ["thành công", "thanh cong", "đã được cập nhật", "da duoc cap nhat", "đứng tên 3 thuê bao", "dung ten 3 thue bao"]
+		keywords = ["thành công", "thanh cong", "đã được cập nhật", "cập nhật trước đó", "vượt quá số lần", "đứng tên 3 thuê bao", "dung ten 3 thue bao"]
 		for line in lines:
 			lowered = line.lower()
 			if any(keyword in lowered for keyword in keywords):
 				return line
 
-		return lines[0]
+		# Nếu message từ popup thường rất ngắn gọn và không có ký tự xuống dòng nào, ta lấy luôn dòng đầu.
+		return " - ".join(lines)
 
 	# ------------------------------------------------------------------ #
 	#  Result persistence & screenshots                                    #
