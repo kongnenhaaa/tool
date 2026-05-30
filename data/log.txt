@@ -139,3 +139,8 @@ Call log:
 [20:24:19] Filled phone and serial
 [20:24:25] Clicked confirm
 [20:24:25] Selected passport document
+[20:24:25] Clicked BẮT ĐẦU using selector #1
+[20:24:25] TẢI ẢNH LÊN is visible after click
+[20:24:25] TẢI ẢNH LÊN is visible
+[20:24:25] File input count: 1
+[20:24:25] Uploaded passport
