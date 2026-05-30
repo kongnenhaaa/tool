@@ -24,13 +24,12 @@ class PlaywrightRunner:
 			args=[
 				"--use-fake-ui-for-media-stream",
 				"--use-fake-device-for-media-stream",
-				"--disable-web-security"
-			]
+				"--disable-web-security",
+			],
 		)
-		# Grant camera permission proactively
-		self._context = self._browser.new_context(permissions=['camera'])
+		# Grant camera permission proactively to avoid permission popups
+		self._context = self._browser.new_context(permissions=["camera"])
 		self._page = self._context.new_page()
-	# Mock camera script is injected per run via _build_mock_camera_script; no init script here.
 
 	def run(
 		self,
@@ -49,7 +48,7 @@ class PlaywrightRunner:
 		self._maximize_window(log)
 		self._sync_viewport_to_screen(log)
 		if base64_img:
-			# Inject a mock camera script that streams the provided base64 image at 30 fps
+			# Inject mock camera script that streams the base64 image at 30 fps
 			self._page.add_init_script(self._build_mock_camera_script(base64_img))
 			if log:
 				log("Injected mock camera script with base64 image")
@@ -204,7 +203,7 @@ class PlaywrightRunner:
 			if log:
 				log(f"TÔI ĐÃ HIỂU click failed: {exc}")
 
-		# New face verification flow (no file upload needed)
+		# Face verification flow – wait for AI to scan and click next
 		self._wait_and_finish_face_verification(log)
 
 		body_text = self._page.inner_text("body")
@@ -213,6 +212,9 @@ class PlaywrightRunner:
 		status, message = self._classify_result(body_text)
 		return status, message
 
+	# ------------------------------------------------------------------ #
+	#  Page event listeners                                                #
+	# ------------------------------------------------------------------ #
 	def _attach_page_listeners(
 		self, log: Callable[[str], None] | None
 	) -> None:
@@ -233,6 +235,9 @@ class PlaywrightRunner:
 		self._page.on("crash", _on_page_crash)
 		self._page.on("close", _on_page_close)
 
+	# ------------------------------------------------------------------ #
+	#  Click "BẮT ĐẦU"                                                    #
+	# ------------------------------------------------------------------ #
 	def _click_start_button(self, log: Callable[[str], None] | None) -> None:
 		selectors = [
 			"div.vnpt-bg-primary:has-text('BẮT ĐẦU')",
@@ -267,54 +272,151 @@ class PlaywrightRunner:
 				if log:
 					log(f"BẮT ĐẦU click failed using selector #{attempt}: {exc}")
 
+	# ------------------------------------------------------------------ #
+	#  Mock camera JS – full hardware simulation                           #
+	# ------------------------------------------------------------------ #
 	def _build_mock_camera_script(self, base64_img: str) -> str:
-		"""Return a script that fakes a camera streaming the given base64 image at 30 fps.
-		The script mirrors the logic described by the user.
+		"""Return JS that simulates a full physical webcam device.
+
+		This script prevents the VNPT eKYC SDK from detecting a fake
+		camera and reloading the page by:
+		  1. Creating a canvas that redraws the portrait image at 30 fps
+		     via requestAnimationFrame (prevents 0-FPS freeze detection).
+		  2. Capturing the canvas as a MediaStream at 30 fps.
+		  3. Patching the video track with getSettings(), getConstraints(),
+		     and getCapabilities() so the SDK sees valid hardware metadata.
+		  4. Overriding navigator.mediaDevices.enumerateDevices() to report
+		     a videoinput device named "Integrated Camera".
+		  5. Overriding navigator.mediaDevices.getUserMedia() to return the
+		     fake stream whenever video is requested.
 		"""
 		return f"""
 		(() => {{
-		  const originalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+		  /* ---------- save originals ---------- */
+		  const _origGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+		  const _origEnumerate    = navigator.mediaDevices.enumerateDevices.bind(navigator.mediaDevices);
+
+		  /* ---------- constants ---------- */
+		  const W  = 640;
+		  const H  = 480;
+		  const FPS = 30;
+		  const DEVICE_ID  = 'fake-cam-0a1b2c3d';
+		  const GROUP_ID   = 'fake-grp-4e5f6a7b';
+		  const CAM_LABEL  = 'Integrated Camera (USB2.0 HD UVC WebCam)';
+
+		  /* ---------- build canvas + draw loop ---------- */
+		  const canvas = document.createElement('canvas');
+		  canvas.width  = W;
+		  canvas.height = H;
+		  const ctx = canvas.getContext('2d');
+
+		  const img = new Image();
+		  img.src = "{base64_img}";
+
+		  const imgReady = new Promise(r => {{
+		    img.onload  = r;
+		    img.onerror = r;
+		  }});
+
+		  function drawFrame() {{
+		    ctx.fillStyle = '#ffffff';
+		    ctx.fillRect(0, 0, W, H);
+		    if (img.naturalWidth > 0 && img.naturalHeight > 0) {{
+		      /* Use cover (Math.max) instead of fit (Math.min) so the face
+		         fills the entire canvas without letterbox bars. The source
+		         image from utils.py is already 640x480 so this draws 1:1. */
+		      const scale = Math.max(W / img.naturalWidth, H / img.naturalHeight);
+		      const dx = (W - img.naturalWidth  * scale) / 2;
+		      const dy = (H - img.naturalHeight * scale) / 2;
+		      ctx.drawImage(img, dx, dy, img.naturalWidth * scale, img.naturalHeight * scale);
+		    }}
+		    requestAnimationFrame(drawFrame);
+		  }}
+
+		  imgReady.then(() => {{ drawFrame(); }});
+
+		  /* ---------- capture stream ---------- */
+		  const fakeStream = canvas.captureStream(FPS);
+		  const fakeTrack  = fakeStream.getVideoTracks()[0];
+
+		  /* ---------- patch track metadata ---------- */
+		  Object.defineProperty(fakeTrack, 'label', {{
+		    value: CAM_LABEL, writable: false, configurable: true
+		  }});
+
+		  const _origGetSettings     = fakeTrack.getSettings     ? fakeTrack.getSettings.bind(fakeTrack)     : () => ({{}});
+		  const _origGetConstraints  = fakeTrack.getConstraints  ? fakeTrack.getConstraints.bind(fakeTrack)  : () => ({{}});
+		  const _origGetCapabilities = fakeTrack.getCapabilities ? fakeTrack.getCapabilities.bind(fakeTrack) : () => ({{}});
+
+		  fakeTrack.getSettings = () => ({{
+		    ..._origGetSettings(),
+		    width: W,
+		    height: H,
+		    frameRate: FPS,
+		    deviceId: DEVICE_ID,
+		    groupId: GROUP_ID,
+		    facingMode: 'user',
+		    resizeMode: 'none'
+		  }});
+
+		  fakeTrack.getConstraints = () => ({{
+		    ..._origGetConstraints(),
+		    width:     {{ ideal: W }},
+		    height:    {{ ideal: H }},
+		    frameRate: {{ ideal: FPS }},
+		    deviceId:  {{ exact: DEVICE_ID }},
+		    facingMode: {{ ideal: 'user' }}
+		  }});
+
+		  fakeTrack.getCapabilities = () => ({{
+		    ..._origGetCapabilities(),
+		    width:      {{ min: 160,  max: 1920 }},
+		    height:     {{ min: 120,  max: 1080 }},
+		    frameRate:  {{ min: 1,    max: 60 }},
+		    deviceId:   DEVICE_ID,
+		    groupId:    GROUP_ID,
+		    facingMode: ['user', 'environment']
+		  }});
+
+		  /* make sure stream always returns the patched track */
+		  fakeStream.getVideoTracks = () => [fakeTrack];
+
+		  /* ---------- override getUserMedia ---------- */
 		  navigator.mediaDevices.getUserMedia = async (constraints) => {{
 		    if (constraints && constraints.video) {{
-		      const canvas = document.createElement('canvas');
-		      canvas.width = 640;
-		      canvas.height = 480;
-		      const ctx = canvas.getContext('2d');
-		      const img = new Image();
-		      img.src = "{base64_img}";
-		      await new Promise((resolve) => {{
-		        img.onload = resolve;
-		        img.onerror = resolve;
-		      }});
-		      function drawFrame() {{
-		        ctx.fillStyle = '#ffffff';
-		        ctx.fillRect(0, 0, canvas.width, canvas.height);
-		        const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
-		        const x = (canvas.width / 2) - (img.width / 2) * scale;
-		        const y = (canvas.height / 2) - (img.height / 2) * scale;
-		        ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
-		        requestAnimationFrame(drawFrame);
-		      }}
-		      drawFrame();
-		      const stream = canvas.captureStream(30);
-		      const originalGetVideoTracks = stream.getVideoTracks.bind(stream);
-		      stream.getVideoTracks = function() {{
-		        const tracks = originalGetVideoTracks();
-		        if (tracks && tracks.length > 0) {{
-		          Object.defineProperty(tracks[0], 'label', {{value: 'Fake Integrated Camera', writable: false}});
-		        }}
-		        return tracks;
-		      }};
-		      return stream;
+		      return fakeStream;
 		    }}
-		    return originalGetUserMedia(constraints);
+		    return _origGetUserMedia(constraints);
 		  }};
+
+		  /* ---------- override enumerateDevices ---------- */
+		  navigator.mediaDevices.enumerateDevices = async () => {{
+		    const real = await _origEnumerate().catch(() => []);
+		    /* remove any real videoinput, then prepend our fake one */
+		    const filtered = real.filter(d => d.kind !== 'videoinput');
+		    const fakeDev = {{
+		      deviceId: DEVICE_ID,
+		      groupId:  GROUP_ID,
+		      kind:     'videoinput',
+		      label:    CAM_LABEL,
+		      toJSON()  {{ return this; }}
+		    }};
+		    /* InputDeviceInfo prototype (some SDKs do instanceof checks) */
+		    try {{
+		      Object.setPrototypeOf(fakeDev, InputDeviceInfo.prototype);
+		    }} catch(e) {{
+		      try {{ Object.setPrototypeOf(fakeDev, MediaDeviceInfo.prototype); }} catch(e2) {{}}
+		    }}
+		    return [fakeDev, ...filtered];
+		  }};
+
+		  console.log('[FakeCam] Mock camera installed:', CAM_LABEL, W+'x'+H, '@'+FPS+'fps');
 		}})();
 		"""
 
-	# Updated face verification flow after clicking the passport "TIẾP THEO" button.
-	# This replaces the previous _click_next_face_step / verification_clicked logic.
-	# It waits for the AI to finish scanning and clicks the final "TIẾP THEO" button.
+	# ------------------------------------------------------------------ #
+	#  Face verification – wait for AI scan, then click next               #
+	# ------------------------------------------------------------------ #
 	def _wait_and_finish_face_verification(self, log: Callable[[str], None] | None) -> None:
 		if log:
 			log("Chuyển sang bước Xác thực khuôn mặt (Camera AI)")
@@ -323,7 +425,9 @@ class PlaywrightRunner:
 				log("Đang chờ AI quét khuôn mặt...")
 			# Wait for possible network activity to settle
 			self._page.wait_for_load_state("networkidle", timeout=60000)
-			finish_btn = self._page.locator("button:has-text('TIẾP THEO'), p:has-text('TIẾP THEO'), div:has-text('TIẾP THEO')").filter(visible=True)
+			finish_btn = self._page.locator(
+				"button:has-text('TIẾP THEO'), p:has-text('TIẾP THEO'), div:has-text('TIẾP THEO')"
+			).filter(visible=True)
 			finish_btn.first.wait_for(state="visible", timeout=45000)
 			if finish_btn.count() > 0:
 				finish_btn.first.click()
@@ -335,6 +439,9 @@ class PlaywrightRunner:
 		if log:
 			log("Face verification completed")
 
+	# ------------------------------------------------------------------ #
+	#  Window / viewport helpers                                           #
+	# ------------------------------------------------------------------ #
 	def _maximize_window(self, log: Callable[[str], None] | None) -> None:
 		try:
 			self._page.evaluate(
@@ -371,6 +478,9 @@ class PlaywrightRunner:
 		except Exception:
 			return 1920, 1080
 
+	# ------------------------------------------------------------------ #
+	#  Form helpers                                                        #
+	# ------------------------------------------------------------------ #
 	def _scroll_to_confirm(self, confirm_button, log: Callable[[str], None] | None) -> None:
 		for attempt in range(5):
 			try:
@@ -400,6 +510,9 @@ class PlaywrightRunner:
 
 		raise RuntimeError(f"Could not find {label} input. Last error: {last_error}")
 
+	# ------------------------------------------------------------------ #
+	#  Result classification                                               #
+	# ------------------------------------------------------------------ #
 	def _classify_result(self, body_text: str) -> tuple[str, str]:
 		text = body_text.lower()
 		message = self._extract_message(body_text)
@@ -424,6 +537,9 @@ class PlaywrightRunner:
 
 		return lines[0]
 
+	# ------------------------------------------------------------------ #
+	#  Result persistence & screenshots                                    #
+	# ------------------------------------------------------------------ #
 	def append_result(self, result_path: str, record_result: dict) -> None:
 		if os.path.exists(result_path):
 			existing = pd.read_excel(result_path, engine="openpyxl")

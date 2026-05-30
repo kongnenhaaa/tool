@@ -89,3 +89,53 @@ Call log:
 [20:06:59] Clicked TÔI ĐÃ HIỂU
 [20:06:59] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
 [20:06:59] Page navigated: https://digishop.vnpt.vn/tourist/
+[20:11:40] Processing ID=1 phone=814560106 serial=1163972931
+[20:11:40] Maximized browser window
+[20:11:40] Synced viewport to screen size
+[20:11:40] Injected mock camera script with base64 image
+[20:11:40] Page navigated: https://digishop.vnpt.vn/tourist/
+[20:11:47] Opened website
+[20:11:47] Page navigated: https://digishop.vnpt.vn/tourist/
+[20:11:47] Filled phone and serial
+[20:11:52] Clicked confirm
+[20:11:53] Selected passport document
+[20:11:53] Clicked BẮT ĐẦU using selector #1
+[20:11:53] TẢI ẢNH LÊN is visible after click
+[20:11:53] TẢI ẢNH LÊN is visible
+[20:11:53] File input count: 1
+[20:11:53] Uploaded passport
+[20:11:57] Clicked TIẾP THEO (passport preview)
+[20:12:14] Clicked TÔI ĐÃ HIỂU
+[20:12:14] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
+[20:12:14] Page navigated: https://digishop.vnpt.vn/tourist/
+[20:12:21] Page closed
+[20:12:21] Chuyển sang bước Xác thực khuôn mặt (Camera AI)
+[20:12:21] Đang chờ AI quét khuôn mặt...
+[20:21:10] Processing ID=1 phone=814560106 serial=1163972931
+[20:21:10] Maximized browser window
+[20:21:10] Synced viewport to screen size
+[20:21:10] Injected mock camera script with base64 image
+[20:21:10] Page navigated: https://digishop.vnpt.vn/tourist/
+[20:21:18] Opened website
+[20:21:18] Page navigated: https://digishop.vnpt.vn/tourist/
+[20:21:18] Filled phone and serial
+[20:21:23] Clicked confirm
+[20:21:25] Selected passport document
+[20:21:25] Clicked BẮT ĐẦU using selector #1
+[20:21:25] TẢI ẢNH LÊN is visible after click
+[20:21:25] TẢI ẢNH LÊN is visible
+[20:21:25] File input count: 1
+[20:21:25] Uploaded passport
+[20:21:29] Clicked TIẾP THEO (passport preview)
+[20:21:46] Clicked TÔI ĐÃ HIỂU
+[20:21:46] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
+[20:24:14] Processing ID=1 phone=814560106 serial=1163972931
+[20:24:15] Maximized browser window
+[20:24:15] Synced viewport to screen size
+[20:24:15] Injected mock camera script with base64 image
+[20:24:15] Page navigated: https://digishop.vnpt.vn/tourist/
+[20:24:19] Opened website
+[20:24:19] Page navigated: https://digishop.vnpt.vn/tourist/
+[20:24:19] Filled phone and serial
+[20:24:25] Clicked confirm
+[20:24:25] Selected passport document
