@@ -25,10 +25,14 @@ class PlaywrightRunner:
 				"--use-fake-ui-for-media-stream",
 				"--use-fake-device-for-media-stream",
 				"--disable-web-security",
+				"--start-maximized",
 			],
 		)
 		# Grant camera permission proactively to avoid permission popups
-		self._context = self._browser.new_context(permissions=["camera"])
+		self._context = self._browser.new_context(
+			permissions=["camera"],
+			no_viewport=True
+		)
 		self._page = self._context.new_page()
 
 	def run(
@@ -51,35 +55,21 @@ class PlaywrightRunner:
 			# Inject mock camera script that streams the base64 image at 30 fps
 			self._page.add_init_script(self._build_mock_camera_script(base64_img))
 			if log:
-				log("Injected mock camera script with base64 image")
+				log("Đã khởi tạo Camera ảo giả lập ảnh chân dung")
 		else:
 			if log:
-				log("Warning: Không thể tạo Base64 cho ảnh chân dung")
+				log("CẢNH BÁO: Không thể tạo ảnh chân dung để quét khuôn mặt")
 
 		self._page.goto("https://digishop.vnpt.vn/tourist/", timeout=45000, wait_until="domcontentloaded")
 		if log:
-			log("Opened website")
+			log("Đã mở trang web")
 
 		if self._debug:
-			self._page.screenshot(path="debug.png", full_page=True)
-			if log:
-				log("Saved debug screenshot: debug.png")
-
-			inputs = self._page.locator("input")
 			try:
-				count = inputs.count()
+				inputs = self._page.locator("input, textarea")
+				inputs.first.wait_for(state="attached", timeout=2000)
 			except Exception:
-				count = 0
-			if log:
-				log(f"Input count: {count}")
-
-			if log and count > 0:
-				for idx in range(count):
-					try:
-						html = inputs.nth(idx).evaluate("el => el.outerHTML")
-						log(f"Input[{idx}]: {html}")
-					except Exception as exc:
-						log(f"Input[{idx}] read failed: {exc}")
+				pass
 
 		phone_selectors = [
 			"#msisdn_validate",
@@ -98,40 +88,34 @@ class PlaywrightRunner:
 			"input[placeholder*='serial']",
 		]
 
+		# Delay 2s before starting to fill
+		self._page.wait_for_timeout(2000)
+
 		self._fill_first_available(phone_selectors, record["phone"], "phone")
 		self._fill_first_available(serial_selectors, record["serial"], "serial")
 		if log:
-			log("Filled phone and serial")
+			log("Đã điền Số điện thoại & Serial")
 
 		confirm_button = self._page.locator("#serial_validate_button")
 		self._scroll_to_confirm(confirm_button, log)
-		try:
-			self._page.wait_for_function(
-				"btn => btn && !btn.disabled",
-				arg=confirm_button,
-				timeout=5000,
-			)
-		except Exception:
-			pass
 
+		# Thực hiện ngay tức thì (bỏ wait 5s + 2s)
 		confirm_button.click()
 		if log:
-			log("Clicked confirm")
+			log("Đã bấm xác nhận (Tiếp tục)")
 
 		try:
 			self._page.wait_for_selector("text=Hộ chiếu", timeout=5000)
 			self._page.click("text=Hộ chiếu")
 			if log:
-				log("Selected passport document")
+				log("Đã chọn loại giấy tờ: Hộ chiếu")
 			self._click_start_button(log)
 		except Exception as exc:
 			if log:
-				log(f"Modal click failed: {exc}")
+				log(f"Lỗi khi chọn loại giấy tờ: {exc}")
 
 		try:
 			self._page.wait_for_selector("text='TẢI ẢNH LÊN'", timeout=15000)
-			if log:
-				log("TẢI ẢNH LÊN is visible")
 		except Exception:
 			pass
 
@@ -141,8 +125,6 @@ class PlaywrightRunner:
 			pass
 
 		file_inputs = self._page.query_selector_all("input[type='file']")
-		if log:
-			log(f"File input count: {len(file_inputs)}")
 
 		if len(file_inputs) < 1:
 			try:
@@ -154,9 +136,11 @@ class PlaywrightRunner:
 				pass
 			raise RuntimeError("No file input found")
 
+		# Delay 2s before upload
+		self._page.wait_for_timeout(2000)
 		file_inputs[0].set_input_files(passport_path)
 		if log:
-			log("Uploaded passport")
+			log("Đã tải lên ảnh Hộ chiếu thành công")
 		self._page.wait_for_timeout(2000)
 
 		try:
@@ -167,17 +151,18 @@ class PlaywrightRunner:
 			).first
 			next_btn.wait_for(state="visible", timeout=15000)
 			next_btn.scroll_into_view_if_needed()
+			
+			# Delay 2s before clicking TIẾP THEO
+			self._page.wait_for_timeout(2000)
 			next_btn.click(force=True)
 			if log:
-				log("Clicked TIẾP THEO (passport preview)")
-			self._page.wait_for_timeout(1500)
-			try:
-				self._page.wait_for_selector("text='CHỤP MẶT TRƯỚC'", timeout=15000)
-			except Exception:
-				pass
+				log("Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)")
+			
+			# Chờ đúng 5s theo yêu cầu
+			self._page.wait_for_timeout(5000)
 		except Exception as exc:
 			if log:
-				log(f"Passport preview next click failed: {exc}")
+				log(f"Lỗi khi bấm TIẾP THEO: {exc}")
 
 		try:
 			understood_btn = self._page.locator(
@@ -185,33 +170,23 @@ class PlaywrightRunner:
 			).first
 			understood_btn.wait_for(state="visible", timeout=15000)
 			understood_btn.scroll_into_view_if_needed()
+			
 			understood_btn.click(force=True)
 			if log:
-				log("Clicked TÔI ĐÃ HIỂU")
-			try:
-				self._page.wait_for_load_state("domcontentloaded", timeout=5000)
-				if log:
-					log(f"After TÔI ĐÃ HIỂU URL: {self._page.url}")
-			except Exception:
-				pass
-			self._page.wait_for_timeout(1500)
-			try:
-				self._page.wait_for_selector("text='CHỤP MẶT TRƯỚC'", timeout=15000)
-			except Exception:
-				pass
+				log("Đã bấm TÔI ĐÃ HIỂU")
 		except Exception as exc:
 			if log:
-				log(f"TÔI ĐÃ HIỂU click failed: {exc}")
+				log(f"Lỗi khi bấm TÔI ĐÃ HIỂU: {exc}")
 
 		# Wait for the confirmation page and fill the missing data
+		# Delay 2s before filling confirmation info is handled inside the method itself (or here)
+		self._page.wait_for_timeout(2000)
 		self._fill_confirmation_info(record, log)
 
 		# Face verification flow – wait for AI to scan and click next
 		self._wait_and_finish_face_verification(log)
 
 		body_text = self._page.inner_text("body")
-		if log:
-			log("Read result from page")
 		status, message = self._classify_result(body_text)
 		return status, message
 
@@ -224,17 +199,12 @@ class PlaywrightRunner:
 		if not log:
 			return
 
-		def _on_frame_navigated(frame) -> None:
-			if frame == self._page.main_frame:
-				log(f"Page navigated: {frame.url}")
-
 		def _on_page_crash() -> None:
-			log("Page crashed")
+			log("Lỗi: Trang web bị đứng (Crash)")
 
 		def _on_page_close() -> None:
-			log("Page closed")
+			pass
 
-		self._page.on("framenavigated", _on_frame_navigated)
 		self._page.on("crash", _on_page_crash)
 		self._page.on("close", _on_page_close)
 
@@ -255,25 +225,20 @@ class PlaywrightRunner:
 				start_btn.scroll_into_view_if_needed()
 				start_btn.click(force=True)
 				if log:
-					log(f"Clicked BẮT ĐẦU using selector #{attempt}")
+					log("Đã bấm BẮT ĐẦU")
 				try:
 					self._page.wait_for_selector(
 						"text='TẢI ẢNH LÊN'", timeout=8000
 					)
-					if log:
-						log("TẢI ẢNH LÊN is visible after click")
 					return
 				except Exception:
 					try:
 						self._page.wait_for_selector("input[type='file']", timeout=8000)
-						if log:
-							log("File input visible after click")
 						return
 					except Exception:
 						pass
 			except Exception as exc:
-				if log:
-					log(f"BẮT ĐẦU click failed using selector #{attempt}: {exc}")
+				pass
 
 	# ------------------------------------------------------------------ #
 	#  Mock camera JS – full hardware simulation                           #
@@ -425,30 +390,18 @@ class PlaywrightRunner:
 		}})();
 		"""
 
-	# ------------------------------------------------------------------ #
-	#  Face verification – wait for AI scan, then click next               #
-	# ------------------------------------------------------------------ #
 	def _wait_and_finish_face_verification(self, log: Callable[[str], None] | None) -> None:
-		if log:
-			log("Chuyển sang bước Xác thực khuôn mặt (Camera AI)")
 		try:
-			if log:
-				log("Đang chờ AI quét khuôn mặt...")
-			# Wait for possible network activity to settle
-			self._page.wait_for_load_state("networkidle", timeout=60000)
-			finish_btn = self._page.locator(
-				"button:has-text('TIẾP THEO'), p:has-text('TIẾP THEO'), div:has-text('TIẾP THEO')"
-			).filter(visible=True)
+			finish_btn = self._page.locator("button:has-text('TIẾP THEO'), div:has-text('TIẾP THEO')").filter(visible=True)
 			finish_btn.first.wait_for(state="visible", timeout=45000)
 			if finish_btn.count() > 0:
+				self._page.wait_for_timeout(2000)
 				finish_btn.first.click()
 				if log:
-					log("Bấm Tiếp theo sau khi quét mặt thành công")
+					log("Đã hoàn tất quét khuôn mặt (bấm Tiếp theo)")
+			self._page.wait_for_load_state("networkidle", timeout=10000)
 		except Exception as exc:
-			if log:
-				log(f"Quá trình đợi quét khuôn mặt có thể bị timeout hoặc lỗi: {exc}")
-		if log:
-			log("Face verification completed")
+			pass
 
 	def _fill_confirmation_info(self, record: dict, log: Callable[[str], None] | None) -> None:
 		try:
@@ -485,6 +438,8 @@ class PlaywrightRunner:
 			).filter(visible=True)
 			
 			if confirm_btn.count() > 0:
+				# Delay 2s before clicking XÁC NHẬN
+				self._page.wait_for_timeout(2000)
 				confirm_btn.last.click()
 				if log: log("Đã bấm XÁC NHẬN thông tin")
 				self._page.wait_for_timeout(3000)
@@ -501,11 +456,8 @@ class PlaywrightRunner:
 			self._page.evaluate(
 				"window.moveTo(0, 0); window.resizeTo(screen.availWidth, screen.availHeight);"
 			)
-			if log:
-				log("Maximized browser window")
-		except Exception as exc:
-			if log:
-				log(f"Failed to maximize window: {exc}")
+		except Exception:
+			pass
 
 	def _sync_viewport_to_screen(self, log: Callable[[str], None] | None) -> None:
 		try:
@@ -513,11 +465,8 @@ class PlaywrightRunner:
 				"({ width: window.screen.availWidth, height: window.screen.availHeight })"
 			)
 			self._page.set_viewport_size({"width": int(size["width"]), "height": int(size["height"])})
-			if log:
-				log("Synced viewport to screen size")
-		except Exception as exc:
-			if log:
-				log(f"Failed to sync viewport size: {exc}")
+		except Exception:
+			pass
 
 	def _get_screen_size(self) -> tuple[int, int]:
 		try:
@@ -547,9 +496,6 @@ class PlaywrightRunner:
 				confirm_button.scroll_into_view_if_needed()
 			except Exception:
 				self._page.evaluate("window.scrollBy(0, 500)")
-
-			if log:
-				log(f"Scrolled to confirm button (attempt {attempt + 1})")
 
 	def _fill_first_available(self, selectors: list[str], value: str, label: str) -> None:
 		last_error = ""

@@ -49,6 +49,14 @@ async def start_process(req: StartRequest):
     
     return {"status": "success", "message": "Started processing"}
 
+@app.post("/api/stop")
+async def stop_process():
+    global active_worker
+    if active_worker and active_worker.is_running:
+        active_worker.stop()
+        return {"status": "success", "message": "Stopping process..."}
+    return {"status": "error", "message": "No active process to stop."}
+
 @app.websocket("/ws/logs")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()

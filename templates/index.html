@@ -11,8 +11,8 @@
             theme: {
                 extend: {
                     colors: {
-                        glass: "rgba(255, 255, 255, 0.05)",
-                        glassBorder: "rgba(255, 255, 255, 0.1)",
+                        glass: "rgba(255, 255, 255, 0.5)",
+                        glassBorder: "rgba(255, 255, 255, 0.7)",
                         vnpt: "#122f41",
                     }
                 }
@@ -23,16 +23,20 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: #f8fafc;
+            background: linear-gradient(-45deg, #f3e8ff, #e0e7ff, #f5d0fe, #ede9fe);
+            background-size: 400% 400%;
+            animation: gradientMove 15s ease infinite;
+            color: #1e293b;
             min-height: 100vh;
+            position: relative;
         }
         .glass-panel {
             background: var(--tw-colors-glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--tw-colors-glassBorder);
             border-radius: 1rem;
+            box-shadow: 0 8px 32px 0 rgba(100, 100, 111, 0.1);
         }
         /* Custom Scrollbar for Terminal */
         .terminal-scroll::-webkit-scrollbar {
@@ -64,6 +68,9 @@
 </head>
 <body class="p-6 md:p-8 flex flex-col gap-6">
 
+    <!-- Particle Canvas Background -->
+    <canvas id="particles-canvas" class="fixed inset-0 pointer-events-none" style="z-index: -1;"></canvas>
+
     <!-- Header -->
     <header class="flex justify-between items-center">
         <div>
@@ -94,33 +101,40 @@
                 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Excel Input File</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Excel Input File</label>
                         <div class="flex gap-2">
-                            <input type="text" id="excel-path" class="w-full bg-slate-800/50 border border-slate-600 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-500 transition-colors" placeholder="C:\path\to\input.xlsx">
-                            <button onclick="pickExcel()" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap">Browse</button>
+                            <input type="text" id="excel-path" class="w-full bg-white/70 border border-slate-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-purple-500 transition-colors shadow-inner" placeholder="C:\path\to\input.xlsx">
+                            <button onclick="pickExcel()" class="bg-white/80 hover:bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shadow-sm">Browse</button>
                         </div>
                     </div>
                     
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Photos Directory</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Photos Directory</label>
                         <div class="flex gap-2">
-                            <input type="text" id="photo-folder" class="w-full bg-slate-800/50 border border-slate-600 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-500 transition-colors" placeholder="C:\path\to\photos">
-                            <button onclick="pickFolder()" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap">Browse</button>
+                            <input type="text" id="photo-folder" class="w-full bg-white/70 border border-slate-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-purple-500 transition-colors shadow-inner" placeholder="C:\path\to\photos">
+                            <button onclick="pickFolder()" class="bg-white/80 hover:bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shadow-sm">Browse</button>
                         </div>
                     </div>
                 </div>
 
-                <button id="btn-start" onclick="startProcess()" class="mt-6 w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-3 px-4 rounded-lg shadow-lg shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-95 flex justify-center items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span>START AUTOMATION</span>
-                </button>
+                <div class="mt-6 flex gap-3">
+                    <button id="btn-start" onclick="startProcess()" class="w-2/3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold py-3 px-4 rounded-lg shadow-lg shadow-purple-500/30 transition-all transform hover:scale-[1.02] active:scale-95 flex justify-center items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>START AUTOMATION</span>
+                    </button>
+                    
+                    <button id="btn-stop" onclick="stopProcess()" disabled class="w-1/3 disabled:opacity-50 disabled:cursor-not-allowed bg-rose-50 border border-rose-200 hover:bg-rose-100 text-rose-600 font-semibold py-3 px-4 rounded-lg transition-all flex justify-center items-center gap-2 shadow-sm">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"></path></svg>
+                        <span>STOP</span>
+                    </button>
+                </div>
                 
                 <div class="mt-4 grid grid-cols-2 gap-3">
-                    <button id="btn-result" onclick="openResult()" disabled class="disabled:opacity-50 disabled:cursor-not-allowed bg-slate-800 border border-emerald-500/30 hover:bg-slate-700 text-emerald-400 font-medium py-2 px-4 rounded-lg transition-colors flex justify-center items-center gap-2">
+                    <button id="btn-result" onclick="openResult()" disabled class="disabled:opacity-50 disabled:cursor-not-allowed bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 text-emerald-700 font-medium py-2 px-4 rounded-lg transition-colors flex justify-center items-center gap-2 shadow-sm">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                         Result
                     </button>
-                    <button id="btn-log" onclick="openLog()" disabled class="disabled:opacity-50 disabled:cursor-not-allowed bg-slate-800 border border-slate-600 hover:bg-slate-700 text-slate-300 font-medium py-2 px-4 rounded-lg transition-colors flex justify-center items-center gap-2">
+                    <button id="btn-log" onclick="openLog()" disabled class="disabled:opacity-50 disabled:cursor-not-allowed bg-slate-50 border border-slate-200 hover:bg-slate-100 text-slate-700 font-medium py-2 px-4 rounded-lg transition-colors flex justify-center items-center gap-2 shadow-sm">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                         Log File
                     </button>
@@ -130,16 +144,16 @@
             <!-- Stats Grid -->
             <div class="grid grid-cols-2 gap-4">
                 <div class="glass-panel p-4 flex flex-col justify-center items-center">
-                    <span class="text-slate-400 text-sm font-medium mb-1">Success</span>
-                    <span id="stat-success" class="text-3xl font-bold text-emerald-400">0</span>
+                    <span class="text-slate-600 text-sm font-medium mb-1">Success</span>
+                    <span id="stat-success" class="text-3xl font-bold text-emerald-600">0</span>
                 </div>
                 <div class="glass-panel p-4 flex flex-col justify-center items-center">
-                    <span class="text-slate-400 text-sm font-medium mb-1">Duplicate</span>
-                    <span id="stat-duplicate" class="text-3xl font-bold text-amber-400">0</span>
+                    <span class="text-slate-600 text-sm font-medium mb-1">Duplicate</span>
+                    <span id="stat-duplicate" class="text-3xl font-bold text-amber-500">0</span>
                 </div>
                 <div class="glass-panel p-4 flex flex-col justify-center items-center col-span-2">
-                    <span class="text-slate-400 text-sm font-medium mb-1">Failed</span>
-                    <span id="stat-failed" class="text-3xl font-bold text-rose-400">0</span>
+                    <span class="text-slate-600 text-sm font-medium mb-1">Failed</span>
+                    <span id="stat-failed" class="text-3xl font-bold text-rose-500">0</span>
                 </div>
             </div>
 
@@ -157,22 +171,22 @@
                     </h2>
                     <span id="progress-text" class="text-2xl font-bold text-indigo-400">0%</span>
                 </div>
-                <div class="w-full bg-slate-800 rounded-full h-4 border border-slate-700 overflow-hidden relative">
-                    <div id="progress-bar" class="bg-gradient-to-r from-blue-500 to-indigo-500 h-4 rounded-full transition-all duration-300" style="width: 0%"></div>
+                <div class="w-full bg-slate-200 rounded-full h-4 border border-slate-300 overflow-hidden relative shadow-inner">
+                    <div id="progress-bar" class="bg-gradient-to-r from-purple-500 to-indigo-500 h-4 rounded-full transition-all duration-300" style="width: 0%"></div>
                     <!-- Glow effect for progress -->
-                    <div id="progress-glow" class="absolute top-0 left-0 h-4 bg-white/20 rounded-full transition-all duration-300 hidden animated-bg" style="width: 0%"></div>
+                    <div id="progress-glow" class="absolute top-0 left-0 h-4 bg-white/40 rounded-full transition-all duration-300 hidden animated-bg" style="width: 0%"></div>
                 </div>
             </div>
 
             <!-- Terminal -->
-            <div class="glass-panel p-0 flex flex-col flex-grow overflow-hidden border-slate-700 border">
-                <div class="bg-slate-800/80 px-4 py-2 flex items-center gap-2 border-b border-slate-700">
+            <div class="glass-panel p-0 flex flex-col flex-grow overflow-hidden">
+                <div class="bg-white/40 px-4 py-2 flex items-center gap-2 border-b border-white/50 backdrop-blur-sm">
                     <div class="w-3 h-3 rounded-full bg-rose-500"></div>
                     <div class="w-3 h-3 rounded-full bg-amber-500"></div>
                     <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
-                    <span class="ml-2 text-xs font-mono text-slate-400">System Terminal</span>
+                    <span class="ml-2 text-xs font-mono text-slate-600 font-semibold">System Terminal</span>
                 </div>
-                <div id="terminal" class="p-4 font-mono text-sm h-[400px] overflow-y-auto terminal-scroll text-slate-300 bg-[#0c111c]">
+                <div id="terminal" class="p-4 font-mono text-sm h-[400px] overflow-y-auto terminal-scroll text-slate-800 bg-white/60">
                     <div class="text-slate-500 italic mb-2">Waiting for task...</div>
                 </div>
             </div>
@@ -250,8 +264,25 @@
             }
         }
 
+        async function stopProcess() {
+            try {
+                const res = await fetch("/api/stop", { method: "POST" });
+                const data = await res.json();
+                
+                if (data.status === "error") {
+                    alert(data.message);
+                } else {
+                    document.getElementById('btn-stop').disabled = true;
+                    document.getElementById('btn-stop').innerHTML = `<svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-rose-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Stopping...`;
+                }
+            } catch (err) {
+                alert("Lỗi kết nối tới Server!");
+            }
+        }
+
         function setRunningState(isRunning) {
             const btn = document.getElementById('btn-start');
+            const btnStop = document.getElementById('btn-stop');
             const dot = document.querySelector('#status-indicator > span:last-child');
             const ping = document.querySelector('#status-indicator > span:first-child');
             const statusText = document.getElementById('status-text');
@@ -262,6 +293,9 @@
                 btn.classList.add('opacity-75', 'cursor-not-allowed');
                 btn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Processing...`;
                 
+                btnStop.disabled = false;
+                btnStop.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"></path></svg><span>STOP</span>`;
+
                 dot.className = "relative inline-flex rounded-full h-3 w-3 bg-emerald-500";
                 ping.classList.remove('hidden');
                 statusText.innerText = "Running";
@@ -275,6 +309,9 @@
                 btn.classList.remove('opacity-75', 'cursor-not-allowed');
                 btn.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> <span>START AUTOMATION</span>`;
                 
+                btnStop.disabled = true;
+                btnStop.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"></path></svg><span>STOP</span>`;
+
                 dot.className = "relative inline-flex rounded-full h-3 w-3 bg-slate-500";
                 ping.classList.add('hidden');
                 statusText.innerText = "Ready";
@@ -301,11 +338,11 @@
             
             // Highlight color based on keywords
             if (msg.includes('SUCCESS') || msg.includes('thành công')) {
-                div.className = "text-emerald-400";
+                div.className = "text-emerald-600 font-semibold";
             } else if (msg.includes('FAILED') || msg.includes('failed') || msg.includes('error')) {
-                div.className = "text-rose-400";
+                div.className = "text-rose-600 font-semibold";
             } else if (msg.includes('DUPLICATE') || msg.includes('cập nhật')) {
-                div.className = "text-amber-400";
+                div.className = "text-amber-600 font-semibold";
             }
             
             div.innerText = msg;
@@ -358,6 +395,77 @@
                 console.log("WS closed");
             };
         }
+
+        // --- Hieu ung Dom Sang (Particles) ---
+        const canvas = document.getElementById("particles-canvas");
+        const ctx = canvas.getContext("2d");
+        let particlesArray = [];
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", initCanvas);
+        initCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                // Random opacity between 0.2 and 0.8
+                this.opacity = Math.random() * 0.6 + 0.2;
+                // Add a glow/twinkle factor
+                this.twinkleSpeed = Math.random() * 0.02 + 0.01;
+                this.twinkleDir = Math.random() > 0.5 ? 1 : -1;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
+
+                // Twinkling effect
+                this.opacity += this.twinkleSpeed * this.twinkleDir;
+                if (this.opacity <= 0.1 || this.opacity >= 0.9) {
+                    this.twinkleDir *= -1;
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(167, 139, 250, ${this.opacity})`; // Soft purple dot
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = "rgba(139, 92, 246, 0.6)"; // Deep purple glow
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            // So luong hat phu thuoc vao man hinh
+            let numberOfParticles = (canvas.width * canvas.height) / 8000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
     </script>
 </body>
 </html>

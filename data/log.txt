@@ -1,81 +1,48 @@
-[21:43:14] Processing ID=1 phone=814560106 serial=1163972931
-[21:43:14] Maximized browser window
-[21:43:14] Synced viewport to screen size
-[21:43:14] Injected mock camera script with base64 image
-[21:43:14] Page navigated: https://digishop.vnpt.vn/tourist/
-[21:43:18] Opened website
-[21:43:18] Page navigated: https://digishop.vnpt.vn/tourist/
-[21:43:19] Filled phone and serial
-[21:43:24] Clicked confirm
-[21:43:24] Selected passport document
-[21:43:24] Clicked BẮT ĐẦU using selector #1
-[21:43:24] TẢI ẢNH LÊN is visible after click
-[21:43:24] TẢI ẢNH LÊN is visible
-[21:43:24] File input count: 1
-[21:43:24] Uploaded passport
-[21:43:29] Clicked TIẾP THEO (passport preview)
-[21:43:46] Clicked TÔI ĐÃ HIỂU
-[21:43:46] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
-[21:44:02] Trang Xác nhận thông tin đã tải
-[21:44:02] Đã điền Nơi cấp: GUWAHATI
-[21:44:02] Đã điền Ngày cấp: 23/05/2019
-[21:44:02] Đã bấm XÁC NHẬN thông tin
-[21:44:05] Page navigated: https://digishop.vnpt.vn/tourist/#nadi__profile
-[21:44:05] Page navigated: https://digishop.vnpt.vn/tourist/#nadi__profile
-[21:44:08] Page navigated: https://digishop.vnpt.vn/tourist/#nadi__profile
-[21:44:14] Chuyển sang bước Xác thực khuôn mặt (Camera AI)
-[21:44:14] Đang chờ AI quét khuôn mặt...
-[21:47:33] Processing ID=1 phone=814560106 serial=1163972931
-[21:47:34] Maximized browser window
-[21:47:34] Synced viewport to screen size
-[21:47:34] Injected mock camera script with base64 image
-[21:47:34] Page navigated: https://digishop.vnpt.vn/tourist/
-[21:47:39] Opened website
-[21:47:39] Page navigated: https://digishop.vnpt.vn/tourist/
-[21:47:39] Filled phone and serial
-[21:47:44] Clicked confirm
-[21:47:45] Selected passport document
-[21:47:45] Clicked BẮT ĐẦU using selector #1
-[21:47:45] TẢI ẢNH LÊN is visible after click
-[21:47:45] TẢI ẢNH LÊN is visible
-[21:47:45] File input count: 1
-[21:47:45] Uploaded passport
-[21:47:50] Clicked TIẾP THEO (passport preview)
-[21:48:06] Clicked TÔI ĐÃ HIỂU
-[21:48:06] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
-[21:48:23] Chuyển sang bước Xác thực khuôn mặt (Camera AI)
-[21:48:23] Đang chờ AI quét khuôn mặt...
-[21:48:41] Page closed
-[21:49:00] Processing ID=1 phone=814560106 serial=1163972931
-[21:49:01] Maximized browser window
-[21:49:01] Synced viewport to screen size
-[21:49:01] Injected mock camera script with base64 image
-[21:49:01] Page navigated: https://digishop.vnpt.vn/tourist/
-[21:49:06] Opened website
-[21:49:06] Page navigated: https://digishop.vnpt.vn/tourist/
-[21:49:06] Filled phone and serial
-[21:49:11] Clicked confirm
-[21:49:11] Selected passport document
-[21:49:12] Clicked BẮT ĐẦU using selector #1
-[21:49:12] TẢI ẢNH LÊN is visible after click
-[21:49:12] TẢI ẢNH LÊN is visible
-[21:49:12] File input count: 1
-[21:49:12] Uploaded passport
-[21:49:16] Clicked TIẾP THEO (passport preview)
-[21:49:33] Clicked TÔI ĐÃ HIỂU
-[21:49:33] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
-[21:49:49] Trang Xác nhận thông tin đã tải
-[21:49:49] Đã điền Nơi cấp: GUWAHATI
-[21:49:49] Đã điền Ngày cấp: 23/05/2019
-[21:49:49] Đã bấm XÁC NHẬN thông tin
-[21:49:52] Page navigated: https://digishop.vnpt.vn/tourist/#nadi__profile
-[21:49:52] Page navigated: https://digishop.vnpt.vn/tourist/#nadi__profile
-[21:49:55] Page navigated: https://digishop.vnpt.vn/tourist/#nadi__profile
-[21:50:00] Page closed
-[21:50:00] Lỗi khi điền Xác nhận thông tin (hoặc bước này không hiển thị): Target page, context or browser has been closed
-=========================== logs ===========================
-"domcontentloaded" event fired
-"load" event fired
-============================================================
-[21:50:00] Chuyển sang bước Xác thực khuôn mặt (Camera AI)
-[21:50:00] Đang chờ AI quét khuôn mặt...
+[22:25:36] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[22:25:37] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[22:25:41] Đã mở trang web
+[22:25:43] Đã điền Số điện thoại & Serial
+[22:25:51] Đã bấm xác nhận (Tiếp tục)
+[22:25:51] Đã chọn loại giấy tờ: Hộ chiếu
+[22:25:51] Đã bấm BẮT ĐẦU
+[22:25:53] Đã tải lên ảnh Hộ chiếu thành công
+[22:26:00] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[22:26:19] Đã bấm TÔI ĐÃ HIỂU
+[22:26:37] Trang Xác nhận thông tin đã tải
+[22:26:37] Đã điền Nơi cấp: GUWAHATI
+[22:26:37] Đã điền Ngày cấp: 23/05/2019
+[22:26:39] Đã bấm XÁC NHẬN thông tin
+[22:26:47] Lỗi khi xử lý: 'PlaywrightRunner' object has no attribute '_wait_and_finish_face_verification'
+[22:26:48] Đã lưu ảnh chụp màn hình lỗi: c:\Users\congn\Documents\tool\screenshots\1_20260530_222647.png
+[22:26:49] Hoàn thành toàn bộ tiến trình!
+[22:30:07] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[22:30:07] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[22:30:13] Đã mở trang web
+[22:30:15] Đã điền Số điện thoại & Serial
+[22:30:15] Đã bấm xác nhận (Tiếp tục)
+[22:30:19] Đã chọn loại giấy tờ: Hộ chiếu
+[22:30:19] Đã bấm BẮT ĐẦU
+[22:30:21] Đã tải lên ảnh Hộ chiếu thành công
+[22:30:28] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[22:30:33] Đã bấm TÔI ĐÃ HIỂU
+[22:30:36] Trang Xác nhận thông tin đã tải
+[22:30:36] Đã điền Nơi cấp: GUWAHATI
+[22:30:36] Đã điền Ngày cấp: 23/05/2019
+[22:30:38] Đã bấm XÁC NHẬN thông tin
+[22:30:46] Lỗi khi xử lý: Page.inner_text: Target page, context or browser has been closed
+[22:30:46] Hoàn thành toàn bộ tiến trình!
+[22:34:05] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[22:34:06] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[22:34:16] Đã mở trang web
+[22:34:18] Đã điền Số điện thoại & Serial
+[22:34:18] Đã bấm xác nhận (Tiếp tục)
+[22:34:19] Đã chọn loại giấy tờ: Hộ chiếu
+[22:34:19] Đã bấm BẮT ĐẦU
+[22:34:21] Đã tải lên ảnh Hộ chiếu thành công
+[22:34:28] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[22:34:33] Đã bấm TÔI ĐÃ HIỂU
+[22:34:36] Trang Xác nhận thông tin đã tải
+[22:34:36] Đã điền Nơi cấp: GUWAHATI
+[22:34:36] Đã điền Ngày cấp: 23/05/2019
+[22:34:38] Đã bấm XÁC NHẬN thông tin
+[22:35:30] Hoàn thành toàn bộ tiến trình!

@@ -25,23 +25,23 @@ class WebWorker(threading.Thread):
 
 	def run(self) -> None:
 		try:
-			self._emit({"type": "status", "message": "Starting process..."})
+			self._emit({"type": "status", "message": "Đang khởi động tiến trình..."})
 			records = read_input_excel(self.excel_path)
 			total = len(records)
 			if total == 0:
-				self._log("No records found in Excel.")
+				self._log("Lỗi: Không tìm thấy dữ liệu khách hàng trong file Excel.")
 				self._emit({"type": "finished"})
 				return
 
-			runner = PlaywrightRunner()
+			self.runner = PlaywrightRunner()
 
 			for index, record in enumerate(records, start=1):
 				if not self.is_running:
-					self._log("Process stopped by user.")
+					self._log("Tiến trình đã bị dừng bởi người dùng.")
 					break
 
-				self._log(f"Processing ID={record['id']} phone={record['phone']} serial={record['serial']}")
-				status, message = self._process_record(runner, record)
+				self._log(f"Đang xử lý Khách hàng: ID={record['id']} | Số điện thoại={record['phone']} | Serial={record['serial']}")
+				status, message = self._process_record(self.runner, record)
 
 				if status == "SUCCESS":
 					self.success += 1
@@ -51,7 +51,7 @@ class WebWorker(threading.Thread):
 					self.failed += 1
 
 				record_result = {**record, "status": status, "message": message}
-				runner.append_result(self.result_path, record_result)
+				self.runner.append_result(self.result_path, record_result)
 
 				self._emit({
 					"type": "counters",
@@ -63,17 +63,27 @@ class WebWorker(threading.Thread):
 				progress = int(index / total * 100)
 				self._emit({"type": "progress", "value": progress})
 
-			runner.close()
-			self._log("Done.")
+			if hasattr(self, 'runner') and self.runner:
+				try:
+					self.runner.close()
+				except Exception:
+					pass
+			self._log("Hoàn thành toàn bộ tiến trình!")
 			self._emit({"type": "finished", "result_path": self.result_path, "log_path": self.log_path})
 		except Exception as exc:
-			self._log(f"Fatal error: {exc}")
+			self._log(f"Lỗi nghiêm trọng: {exc}")
 			self._emit({"type": "finished", "error": str(exc)})
 		finally:
 			self.is_running = False
 
 	def stop(self):
 		self.is_running = False
+		if hasattr(self, 'runner') and self.runner:
+			try:
+				# Aggressively close the runner to interrupt any blocking Playwright calls
+				self.runner.close()
+			except Exception:
+				pass
 
 	def _emit(self, data: dict[str, Any]) -> None:
 		self.message_queue.put(data)
@@ -81,26 +91,19 @@ class WebWorker(threading.Thread):
 	def _process_record(self, runner: PlaywrightRunner, record: dict) -> tuple[str, str]:
 		passport, portrait = self._resolve_photos(record["id"])
 		if not passport or not portrait:
-			missing = "passport" if not passport else "portrait"
-			return "FAILED", f"Missing {missing} image"
+			missing = "Ảnh Hộ chiếu" if not passport else "Ảnh chân dung"
+			return "FAILED", f"Thiếu {missing}"
 
-		attempts = 0
-		last_error = ""
-		while attempts < 2:
-			attempts += 1
-			try:
-				status, message = runner.run(record, passport, portrait, log=self._log)
-				return status, message
-			except Exception as exc:
-				last_error = str(exc)
-				self._log(f"Attempt {attempts} failed: {last_error}")
-				if attempts >= 2:
-					screenshot = runner.save_screenshot(record["id"])
-					if screenshot:
-						self._log(f"Saved screenshot: {screenshot}")
-					return "FAILED", last_error or "Unexpected error"
-
-		return "FAILED", last_error or "Unknown error"
+		try:
+			status, message = runner.run(record, passport, portrait, log=self._log)
+			return status, message
+		except Exception as exc:
+			last_error = str(exc)
+			self._log(f"Lỗi khi xử lý: {last_error}")
+			screenshot = runner.save_screenshot(record["id"])
+			if screenshot:
+				self._log(f"Đã lưu ảnh chụp màn hình lỗi: {screenshot}")
+			return "FAILED", last_error or "Lỗi không xác định"
 
 	def _resolve_photos(self, record_id: str) -> tuple[str | None, str | None]:
 		base = Path(self.photo_folder) / str(record_id)

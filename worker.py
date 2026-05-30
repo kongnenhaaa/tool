@@ -61,23 +61,16 @@ class Worker(QThread):
 			missing = "passport" if not passport else "portrait"
 			return "FAILED", f"Missing {missing} image"
 
-		attempts = 0
-		last_error = ""
-		while attempts < 2:
-			attempts += 1
-			try:
-				status, message = runner.run(record, passport, portrait, log=self._log)
-				return status, message
-			except Exception as exc:
-				last_error = str(exc)
-				self._log(f"Attempt {attempts} failed: {last_error}")
-				if attempts >= 2:
-					screenshot = runner.save_screenshot(record["id"])
-					if screenshot:
-						self._log(f"Saved screenshot: {screenshot}")
-					return "FAILED", last_error or "Unexpected error"
-
-		return "FAILED", last_error or "Unknown error"
+		try:
+			status, message = runner.run(record, passport, portrait, log=self._log)
+			return status, message
+		except Exception as exc:
+			last_error = str(exc)
+			self._log(f"Failed: {last_error}")
+			screenshot = runner.save_screenshot(record["id"])
+			if screenshot:
+				self._log(f"Saved screenshot: {screenshot}")
+			return "FAILED", last_error or "Unexpected error"
 
 	def _resolve_photos(self, record_id: str) -> tuple[str | None, str | None]:
 		base = Path(self.photo_folder) / str(record_id)
