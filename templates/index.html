@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYC AUTOMATION TOOL PRO</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        glass: "rgba(255, 255, 255, 0.05)",
+                        glassBorder: "rgba(255, 255, 255, 0.1)",
+                        vnpt: "#122f41",
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: var(--tw-colors-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--tw-colors-glassBorder);
+            border-radius: 1rem;
+        }
+        /* Custom Scrollbar for Terminal */
+        .terminal-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .terminal-scroll::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2); 
+            border-radius: 4px;
+        }
+        .terminal-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2); 
+            border-radius: 4px;
+        }
+        .terminal-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.4); 
+        }
+        
+        .animated-bg {
+            background-size: 200% 200%;
+            animation: gradientMove 3s ease infinite;
+        }
+        
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+</head>
+<body class="p-6 md:p-8 flex flex-col gap-6">
+
+    <!-- Header -->
+    <header class="flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">KYC AUTOMATION PRO</h1>
+            <p class="text-slate-400 text-sm mt-1">Version 2.0 - Powered by Playwright & AI</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span id="status-indicator" class="flex h-3 w-3 relative">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 hidden"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-slate-500"></span>
+            </span>
+            <span id="status-text" class="text-sm text-slate-400 font-medium">Ready</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left Column: Inputs & Stats -->
+        <div class="lg:col-span-5 flex flex-col gap-6">
+            
+            <!-- Inputs Panel -->
+            <div class="glass-panel p-6">
+                <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Data Configuration
+                </h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Excel Input File</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="excel-path" class="w-full bg-slate-800/50 border border-slate-600 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-500 transition-colors" placeholder="C:\path\to\input.xlsx">
+                            <button onclick="pickExcel()" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap">Browse</button>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Photos Directory</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="photo-folder" class="w-full bg-slate-800/50 border border-slate-600 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-500 transition-colors" placeholder="C:\path\to\photos">
+                            <button onclick="pickFolder()" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap">Browse</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="btn-start" onclick="startProcess()" class="mt-6 w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-3 px-4 rounded-lg shadow-lg shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-95 flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span>START AUTOMATION</span>
+                </button>
+                
+                <div class="mt-4 grid grid-cols-2 gap-3">
+                    <button id="btn-result" onclick="openResult()" disabled class="disabled:opacity-50 disabled:cursor-not-allowed bg-slate-800 border border-emerald-500/30 hover:bg-slate-700 text-emerald-400 font-medium py-2 px-4 rounded-lg transition-colors flex justify-center items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Result
+                    </button>
+                    <button id="btn-log" onclick="openLog()" disabled class="disabled:opacity-50 disabled:cursor-not-allowed bg-slate-800 border border-slate-600 hover:bg-slate-700 text-slate-300 font-medium py-2 px-4 rounded-lg transition-colors flex justify-center items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Log File
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="glass-panel p-4 flex flex-col justify-center items-center">
+                    <span class="text-slate-400 text-sm font-medium mb-1">Success</span>
+                    <span id="stat-success" class="text-3xl font-bold text-emerald-400">0</span>
+                </div>
+                <div class="glass-panel p-4 flex flex-col justify-center items-center">
+                    <span class="text-slate-400 text-sm font-medium mb-1">Duplicate</span>
+                    <span id="stat-duplicate" class="text-3xl font-bold text-amber-400">0</span>
+                </div>
+                <div class="glass-panel p-4 flex flex-col justify-center items-center col-span-2">
+                    <span class="text-slate-400 text-sm font-medium mb-1">Failed</span>
+                    <span id="stat-failed" class="text-3xl font-bold text-rose-400">0</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Progress & Terminal -->
+        <div class="lg:col-span-7 flex flex-col gap-6">
+            
+            <!-- Progress Section -->
+            <div class="glass-panel p-6">
+                <div class="flex justify-between items-end mb-2">
+                    <h2 class="text-lg font-semibold flex items-center gap-2">
+                        <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        Progress
+                    </h2>
+                    <span id="progress-text" class="text-2xl font-bold text-indigo-400">0%</span>
+                </div>
+                <div class="w-full bg-slate-800 rounded-full h-4 border border-slate-700 overflow-hidden relative">
+                    <div id="progress-bar" class="bg-gradient-to-r from-blue-500 to-indigo-500 h-4 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    <!-- Glow effect for progress -->
+                    <div id="progress-glow" class="absolute top-0 left-0 h-4 bg-white/20 rounded-full transition-all duration-300 hidden animated-bg" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Terminal -->
+            <div class="glass-panel p-0 flex flex-col flex-grow overflow-hidden border-slate-700 border">
+                <div class="bg-slate-800/80 px-4 py-2 flex items-center gap-2 border-b border-slate-700">
+                    <div class="w-3 h-3 rounded-full bg-rose-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                    <span class="ml-2 text-xs font-mono text-slate-400">System Terminal</span>
+                </div>
+                <div id="terminal" class="p-4 font-mono text-sm h-[400px] overflow-y-auto terminal-scroll text-slate-300 bg-[#0c111c]">
+                    <div class="text-slate-500 italic mb-2">Waiting for task...</div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        let resultPath = "";
+        let logPath = "";
+
+        // Tương tác với pywebview API
+        async function pickExcel() {
+            if (window.pywebview) {
+                const path = await window.pywebview.api.pick_excel();
+                if (path) document.getElementById('excel-path').value = path;
+            } else {
+                alert("Only available in Desktop app mode");
+            }
+        }
+
+        async function pickFolder() {
+            if (window.pywebview) {
+                const path = await window.pywebview.api.pick_folder();
+                if (path) document.getElementById('photo-folder').value = path;
+            } else {
+                alert("Only available in Desktop app mode");
+            }
+        }
+
+        async function openResult() {
+            if (window.pywebview && resultPath) {
+                await window.pywebview.api.open_path(resultPath);
+            }
+        }
+
+        async function openLog() {
+            if (window.pywebview && logPath) {
+                await window.pywebview.api.open_path(logPath);
+            }
+        }
+
+        // Bắt đầu quá trình
+        async function startProcess() {
+            const excelPath = document.getElementById('excel-path').value.trim();
+            const photoFolder = document.getElementById('photo-folder').value.trim();
+
+            if (!excelPath || !photoFolder) {
+                alert("Vui lòng chọn File Excel và Thư mục ảnh!");
+                return;
+            }
+
+            // Giao diện
+            setRunningState(true);
+            resetUI();
+            
+            try {
+                const res = await fetch("/api/start", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ excel_path: excelPath, photo_folder: photoFolder })
+                });
+                const data = await res.json();
+                
+                if (data.status === "error") {
+                    alert(data.message);
+                    setRunningState(false);
+                    return;
+                }
+                
+                connectWebSocket();
+            } catch (err) {
+                alert("Lỗi kết nối tới Server!");
+                setRunningState(false);
+            }
+        }
+
+        function setRunningState(isRunning) {
+            const btn = document.getElementById('btn-start');
+            const dot = document.querySelector('#status-indicator > span:last-child');
+            const ping = document.querySelector('#status-indicator > span:first-child');
+            const statusText = document.getElementById('status-text');
+            const progressGlow = document.getElementById('progress-glow');
+
+            if (isRunning) {
+                btn.disabled = true;
+                btn.classList.add('opacity-75', 'cursor-not-allowed');
+                btn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Processing...`;
+                
+                dot.className = "relative inline-flex rounded-full h-3 w-3 bg-emerald-500";
+                ping.classList.remove('hidden');
+                statusText.innerText = "Running";
+                statusText.classList.replace('text-slate-400', 'text-emerald-400');
+                progressGlow.classList.remove('hidden');
+                
+                document.getElementById('btn-result').disabled = true;
+                document.getElementById('btn-log').disabled = true;
+            } else {
+                btn.disabled = false;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+                btn.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> <span>START AUTOMATION</span>`;
+                
+                dot.className = "relative inline-flex rounded-full h-3 w-3 bg-slate-500";
+                ping.classList.add('hidden');
+                statusText.innerText = "Ready";
+                statusText.classList.replace('text-emerald-400', 'text-slate-400');
+                progressGlow.classList.add('hidden');
+            }
+        }
+
+        function resetUI() {
+            document.getElementById('stat-success').innerText = "0";
+            document.getElementById('stat-duplicate').innerText = "0";
+            document.getElementById('stat-failed').innerText = "0";
+            document.getElementById('progress-bar').style.width = "0%";
+            document.getElementById('progress-glow').style.width = "0%";
+            document.getElementById('progress-text').innerText = "0%";
+            document.getElementById('terminal').innerHTML = "";
+            resultPath = "";
+            logPath = "";
+        }
+
+        function appendLog(msg) {
+            const term = document.getElementById('terminal');
+            const div = document.createElement('div');
+            
+            // Highlight color based on keywords
+            if (msg.includes('SUCCESS') || msg.includes('thành công')) {
+                div.className = "text-emerald-400";
+            } else if (msg.includes('FAILED') || msg.includes('failed') || msg.includes('error')) {
+                div.className = "text-rose-400";
+            } else if (msg.includes('DUPLICATE') || msg.includes('cập nhật')) {
+                div.className = "text-amber-400";
+            }
+            
+            div.innerText = msg;
+            term.appendChild(div);
+            term.scrollTop = term.scrollHeight; // Auto-scroll
+        }
+
+        let ws = null;
+        function connectWebSocket() {
+            if (ws) ws.close();
+            
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            ws = new WebSocket(`${protocol}//${window.location.host}/ws/logs`);
+            
+            ws.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                
+                if (data.type === "log") {
+                    appendLog(data.message);
+                }
+                else if (data.type === "progress") {
+                    document.getElementById('progress-bar').style.width = `${data.value}%`;
+                    document.getElementById('progress-glow').style.width = `${data.value}%`;
+                    document.getElementById('progress-text').innerText = `${data.value}%`;
+                }
+                else if (data.type === "counters") {
+                    document.getElementById('stat-success').innerText = data.success;
+                    document.getElementById('stat-duplicate').innerText = data.duplicate;
+                    document.getElementById('stat-failed').innerText = data.failed;
+                }
+                else if (data.type === "status") {
+                    appendLog(`--- ${data.message} ---`);
+                }
+                else if (data.type === "finished") {
+                    if (data.error) {
+                        appendLog(`[ERROR] Lỗi hệ thống: ${data.error}`);
+                    }
+                    if (data.result_path) {
+                        resultPath = data.result_path;
+                        logPath = data.log_path;
+                        document.getElementById('btn-result').disabled = false;
+                        document.getElementById('btn-log').disabled = false;
+                    }
+                    setRunningState(false);
+                    ws.close();
+                }
+            };
+            
+            ws.onclose = function() {
+                console.log("WS closed");
+            };
+        }
+    </script>
+</body>
+</html>
