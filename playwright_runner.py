@@ -182,32 +182,32 @@ class PlaywrightRunner:
 				log(f"Next button click failed: {exc}")
 
 		try:
-			self._page.wait_for_selector("input[type='file']", timeout=60000)
-		except Exception:
-			pass
-
-		file_inputs = self._page.query_selector_all("input[type='file']")
-		if len(file_inputs) >= 1:
-			file_inputs[0].set_input_files(portrait_path)
+			capture_btn = self._page.locator("button:has-text('CHỤP ẢNH')").first
+			self._page.wait_for_function(
+				"btn => btn && !btn.disabled",
+				arg=capture_btn,
+				timeout=30000,
+			)
+			capture_btn.click()
 			if log:
-				log("Uploaded portrait")
-
-			try:
-				next_btn = self._page.locator("button:has-text('TIẾP THEO')").first
-				self._page.wait_for_function(
-					"btn => btn && !btn.disabled",
-					arg=next_btn,
-					timeout=30000,
-				)
-				next_btn.click()
-				if log:
-					log("Clicked TIẾP THEO (verification step)")
-			except Exception as exc:
-				if log:
-					log(f"Next button click failed: {exc}")
-		else:
+				log("Clicked capture button for fake webcam")
+		except Exception as exc:
 			if log:
-				log("No file input for portrait")
+				log(f"Capture button click failed: {exc}")
+
+		try:
+			next_btn = self._page.locator("button:has-text('TIẾP THEO')").first
+			self._page.wait_for_function(
+				"btn => btn && !btn.disabled",
+				arg=next_btn,
+				timeout=30000,
+			)
+			next_btn.click()
+			if log:
+				log("Clicked TIẾP THEO (verification step)")
+		except Exception as exc:
+			if log:
+				log(f"Next button click failed: {exc}")
 
 		try:
 			self._page.wait_for_load_state("networkidle", timeout=60000)
