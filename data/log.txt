@@ -57,3 +57,35 @@ Call log:
 [19:57:21] Clicked TÔI ĐÃ HIỂU
 [19:57:21] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
 [19:57:21] Page navigated: https://digishop.vnpt.vn/tourist/
+[19:57:39] Page closed
+[19:57:39] Face preview next click failed: Locator.wait_for: Target page, context or browser has been closed
+[19:57:39] Attempt 1 failed: Page.inner_text: Target page, context or browser has been closed
+[19:57:39] Maximized browser window
+[19:57:39] Synced viewport to screen size
+[19:57:39] Loaded fake webcam base64 data
+[19:57:39] Page navigated: https://digishop.vnpt.vn/tourist/
+[19:57:40] Page closed
+[19:57:40] Attempt 2 failed: Page.goto: Target page, context or browser has been closed
+Call log:
+  - navigating to "https://digishop.vnpt.vn/tourist/", waiting until "domcontentloaded"
+
+[19:57:41] Done.
+[20:06:25] Processing ID=1 phone=814560106 serial=1163972931
+[20:06:26] Maximized browser window
+[20:06:26] Synced viewport to screen size
+[20:06:26] Injected mock camera script with base64 image
+[20:06:26] Page navigated: https://digishop.vnpt.vn/tourist/
+[20:06:31] Opened website
+[20:06:31] Page navigated: https://digishop.vnpt.vn/tourist/
+[20:06:32] Filled phone and serial
+[20:06:37] Clicked confirm
+[20:06:37] Selected passport document
+[20:06:38] Clicked BẮT ĐẦU using selector #1
+[20:06:38] TẢI ẢNH LÊN is visible after click
+[20:06:38] TẢI ẢNH LÊN is visible
+[20:06:38] File input count: 1
+[20:06:38] Uploaded passport
+[20:06:42] Clicked TIẾP THEO (passport preview)
+[20:06:59] Clicked TÔI ĐÃ HIỂU
+[20:06:59] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
+[20:06:59] Page navigated: https://digishop.vnpt.vn/tourist/

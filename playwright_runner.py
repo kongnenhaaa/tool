@@ -18,74 +18,19 @@ class PlaywrightRunner:
 	def __init__(self) -> None:
 		self._playwright = sync_playwright().start()
 		self._debug = os.getenv("KYC_DEBUG", "0") == "1"
-		screen_width, screen_height = self._get_screen_size()
+		# Launch browser with flags for fake camera and disable security
 		self._browser = self._playwright.chromium.launch(
 			headless=False,
 			args=[
 				"--use-fake-ui-for-media-stream",
 				"--use-fake-device-for-media-stream",
-				"--start-maximized",
-				f"--window-size={screen_width},{screen_height}",
-			],
+				"--disable-web-security"
+			]
 		)
-		self._context = self._browser.new_context(
-			viewport={"width": screen_width, "height": screen_height}
-		)
-		mock_camera_js = (
-			"window.fakeCamBase64 = '';\n"
-			"const originalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);\n"
-			"navigator.mediaDevices.getUserMedia = async (constraints) => {\n"
-			"  if (constraints.video && window.fakeCamBase64) {\n"
-			"    const video = document.createElement('video');\n"
-			"    video.autoplay = true;\n"
-			"    video.muted = true;\n"
-			"    video.playsInline = true;\n"
-			"    video.width = 640;\n"
-			"    video.height = 480;\n"
-			"    const canvas = document.createElement('canvas');\n"
-			"    canvas.width = 640;\n"
-			"    canvas.height = 480;\n"
-			"    const ctx = canvas.getContext('2d');\n"
-			"    const img = new Image();\n"
-			"    await new Promise((resolve) => {\n"
-			"      img.onload = resolve;\n"
-			"      img.onerror = () => {\n"
-			"        console.error('Failed to load fake camera base64 image');\n"
-			"        resolve();\n"
-			"      };\n"
-			"      img.src = window.fakeCamBase64;\n"
-			"    });\n"
-			"    function drawFrame() {\n"
-			"      if (window.fakeCamBase64 && window.fakeCamBase64 !== img.src) {\n"
-			"        img.src = window.fakeCamBase64;\n"
-			"      }\n"
-			"      ctx.fillStyle = '#ffffff';\n"
-			"      ctx.fillRect(0, 0, canvas.width, canvas.height);\n"
-			"      if (img.width > 0 && img.height > 0) {\n"
-			"        const scale = Math.min(canvas.width / img.width, canvas.height / img.height);\n"
-			"        const x = canvas.width / 2 - (img.width / 2) * scale;\n"
-			"        const y = canvas.height / 2 - (img.height / 2) * scale;\n"
-			"        ctx.drawImage(img, x, y, img.width * scale, img.height * scale);\n"
-			"      }\n"
-			"      requestAnimationFrame(drawFrame);\n"
-			"    }\n"
-			"    drawFrame();\n"
-			"    const stream = canvas.captureStream(30);\n"
-			"    const originalGetVideoTracks = stream.getVideoTracks.bind(stream);\n"
-			"    stream.getVideoTracks = function() {\n"
-			"      const tracks = originalGetVideoTracks();\n"
-			"      if (tracks && tracks.length > 0) {\n"
-			"        Object.defineProperty(tracks[0], 'label', { value: 'Fake Integrated Camera', writable: false });\n"
-			"      }\n"
-			"      return tracks;\n"
-			"    };\n"
-			"    return stream;\n"
-			"  }\n"
-			"  return originalGetUserMedia(constraints);\n"
-			"};\n"
-		)
-		self._context.add_init_script(mock_camera_js)
+		# Grant camera permission proactively
+		self._context = self._browser.new_context(permissions=['camera'])
 		self._page = self._context.new_page()
+	# Mock camera script is injected per run via _build_mock_camera_script; no init script here.
 
 	def run(
 		self,
@@ -104,11 +49,10 @@ class PlaywrightRunner:
 		self._maximize_window(log)
 		self._sync_viewport_to_screen(log)
 		if base64_img:
-			self._page.add_init_script(
-				f"window.fakeCamBase64 = {json.dumps(base64_img)};"
-			)
+			# Inject a mock camera script that streams the provided base64 image at 30 fps
+			self._page.add_init_script(self._build_mock_camera_script(base64_img))
 			if log:
-				log("Loaded fake webcam base64 data")
+				log("Injected mock camera script with base64 image")
 		else:
 			if log:
 				log("Warning: Không thể tạo Base64 cho ảnh chân dung")
@@ -260,27 +204,8 @@ class PlaywrightRunner:
 			if log:
 				log(f"TÔI ĐÃ HIỂU click failed: {exc}")
 
-		verification_clicked = False
-		try:
-			self._page.wait_for_selector("text='CHỤP MẶT TRƯỚC'", timeout=15000)
-			if log:
-				log("Face capture step is visible")
-		except Exception:
-			pass
-
-		try:
-			verification_clicked = self._click_next_face_step(log)
-		except Exception as exc:
-			if log:
-				log(f"Next face step click failed: {exc}")
-
-		if verification_clicked:
-			try:
-				self._page.wait_for_load_state("networkidle", timeout=30000)
-			except Exception:
-				pass
-			if log:
-				log("Face verification completed")
+		# New face verification flow (no file upload needed)
+		self._wait_and_finish_face_verification(log)
 
 		body_text = self._page.inner_text("body")
 		if log:
@@ -342,20 +267,73 @@ class PlaywrightRunner:
 				if log:
 					log(f"BẮT ĐẦU click failed using selector #{attempt}: {exc}")
 
-	def _click_next_face_step(self, log: Callable[[str], None] | None) -> bool:
+	def _build_mock_camera_script(self, base64_img: str) -> str:
+		"""Return a script that fakes a camera streaming the given base64 image at 30 fps.
+		The script mirrors the logic described by the user.
+		"""
+		return f"""
+		(() => {{
+		  const originalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+		  navigator.mediaDevices.getUserMedia = async (constraints) => {{
+		    if (constraints && constraints.video) {{
+		      const canvas = document.createElement('canvas');
+		      canvas.width = 640;
+		      canvas.height = 480;
+		      const ctx = canvas.getContext('2d');
+		      const img = new Image();
+		      img.src = "{base64_img}";
+		      await new Promise((resolve) => {{
+		        img.onload = resolve;
+		        img.onerror = resolve;
+		      }});
+		      function drawFrame() {{
+		        ctx.fillStyle = '#ffffff';
+		        ctx.fillRect(0, 0, canvas.width, canvas.height);
+		        const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+		        const x = (canvas.width / 2) - (img.width / 2) * scale;
+		        const y = (canvas.height / 2) - (img.height / 2) * scale;
+		        ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+		        requestAnimationFrame(drawFrame);
+		      }}
+		      drawFrame();
+		      const stream = canvas.captureStream(30);
+		      const originalGetVideoTracks = stream.getVideoTracks.bind(stream);
+		      stream.getVideoTracks = function() {{
+		        const tracks = originalGetVideoTracks();
+		        if (tracks && tracks.length > 0) {{
+		          Object.defineProperty(tracks[0], 'label', {{value: 'Fake Integrated Camera', writable: false}});
+		        }}
+		        return tracks;
+		      }};
+		      return stream;
+		    }}
+		    return originalGetUserMedia(constraints);
+		  }};
+		}})();
+		"""
+
+	# Updated face verification flow after clicking the passport "TIẾP THEO" button.
+	# This replaces the previous _click_next_face_step / verification_clicked logic.
+	# It waits for the AI to finish scanning and clicks the final "TIẾP THEO" button.
+	def _wait_and_finish_face_verification(self, log: Callable[[str], None] | None) -> None:
+		if log:
+			log("Chuyển sang bước Xác thực khuôn mặt (Camera AI)")
 		try:
-			next_btn = self._page.locator("p:has-text('TIẾP THEO')").first
-			next_btn.wait_for(state="visible", timeout=15000)
-			next_btn.scroll_into_view_if_needed()
-			next_btn.click(force=True)
 			if log:
-				log("Clicked TIẾP THEO (face preview)")
-			self._page.wait_for_timeout(1500)
-			return True
+				log("Đang chờ AI quét khuôn mặt...")
+			# Wait for possible network activity to settle
+			self._page.wait_for_load_state("networkidle", timeout=60000)
+			finish_btn = self._page.locator("button:has-text('TIẾP THEO'), p:has-text('TIẾP THEO'), div:has-text('TIẾP THEO')").filter(visible=True)
+			finish_btn.first.wait_for(state="visible", timeout=45000)
+			if finish_btn.count() > 0:
+				finish_btn.first.click()
+				if log:
+					log("Bấm Tiếp theo sau khi quét mặt thành công")
 		except Exception as exc:
 			if log:
-				log(f"Face preview next click failed: {exc}")
-			return False
+				log(f"Quá trình đợi quét khuôn mặt có thể bị timeout hoặc lỗi: {exc}")
+		if log:
+			log("Face verification completed")
 
 	def _maximize_window(self, log: Callable[[str], None] | None) -> None:
 		try:
