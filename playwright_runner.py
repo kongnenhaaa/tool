@@ -9,12 +9,51 @@ from typing import Callable
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
+from utils import get_cropped_face_base64
+
 
 class PlaywrightRunner:
 	def __init__(self) -> None:
 		self._playwright = sync_playwright().start()
-		self._browser = self._playwright.chromium.launch(headless=True)
+		self._browser = self._playwright.chromium.launch(
+			headless=True,
+			args=["--use-fake-ui-for-media-stream"],
+		)
 		self._context = self._browser.new_context()
+		self._page = self._context.new_page()
+
+	def _build_mock_camera_script(self, base64_img: str) -> str:
+		return (
+			"(() => {\n"
+			"  const originalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);\n"
+			"  navigator.mediaDevices.getUserMedia = async (constraints) => {\n"
+			"    if (constraints && constraints.video) {\n"
+			"      const canvas = document.createElement('canvas');\n"
+			"      canvas.width = 640;\n"
+			"      canvas.height = 480;\n"
+			"      const ctx = canvas.getContext('2d');\n"
+			"      const img = new Image();\n"
+			f"      img.src = \"{base64_img}\";\n"
+			"      await new Promise((resolve, reject) => {\n"
+			"        img.onload = resolve;\n"
+			"        img.onerror = reject;\n"
+			"      });\n"
+			"      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);\n"
+			"      return canvas.captureStream(30);\n"
+			"    }\n"
+			"    return originalGetUserMedia(constraints);\n"
+			"  };\n"
+			"})();\n"
+		)
+
+	def _reset_context_with_mock_camera(self, base64_img: str) -> None:
+		try:
+			self._context.close()
+		except Exception:
+			pass
+
+		self._context = self._browser.new_context()
+		self._context.add_init_script(self._build_mock_camera_script(base64_img))
 		self._page = self._context.new_page()
 
 	def run(
@@ -24,6 +63,13 @@ class PlaywrightRunner:
 		portrait_path: str,
 		log: Callable[[str], None] | None = None,
 	) -> tuple[str, str]:
+		base64_img = get_cropped_face_base64(portrait_path)
+		if not base64_img:
+			if log:
+				log("No face detected in portrait image")
+			return "FAILED", "No face detected in portrait image"
+
+		self._reset_context_with_mock_camera(base64_img)
 		self._page.goto("https://digishop.vnpt.vn/tourist/", timeout=90000, wait_until="networkidle")
 		if log:
 			log("Opened website")
