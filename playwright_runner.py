@@ -11,7 +11,7 @@ from typing import Callable
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
-from utils import get_cropped_face_base64
+from utils import get_cropped_face_base64, get_face_frame_base64
 
 
 class PlaywrightRunner:
@@ -62,12 +62,13 @@ class PlaywrightRunner:
 		portrait_path: str,
 		log: Callable[[str], None] | None = None,
 	) -> tuple[str, str]:
-		base64_img = get_cropped_face_base64(portrait_path)
+		base64_img = get_face_frame_base64(portrait_path)
 		try:
 			self._page.close()
 		except Exception:
 			pass
 		self._page = self._context.new_page()
+		self._attach_page_listeners(log)
 		self._maximize_window(log)
 		self._sync_viewport_to_screen(log)
 		if base64_img:
@@ -133,7 +134,7 @@ class PlaywrightRunner:
 			self._page.wait_for_function(
 				"btn => btn && !btn.disabled",
 				arg=confirm_button,
-				timeout=15000,
+				timeout=5000,
 			)
 		except Exception:
 			pass
@@ -143,7 +144,7 @@ class PlaywrightRunner:
 			log("Clicked confirm")
 
 		try:
-			self._page.wait_for_selector("text=Hộ chiếu", timeout=15000)
+			self._page.wait_for_selector("text=Hộ chiếu", timeout=5000)
 			self._page.click("text=Hộ chiếu")
 			if log:
 				log("Selected passport document")
@@ -181,29 +182,48 @@ class PlaywrightRunner:
 		file_inputs[0].set_input_files(passport_path)
 		if log:
 			log("Uploaded passport")
+		self._page.wait_for_timeout(2000)
 
 		try:
+			self._page.wait_for_selector("text='CHỤP LẠI'", timeout=30000)
+			self._page.wait_for_timeout(1000)
 			next_btn = self._page.locator(
-				"div:has-text('TIẾP THEO'), button:has-text('TIẾP THEO')"
+				"div.vnpt-border.vnpt-cursor-pointer:has(p:has-text('TIẾP THEO'))"
 			).first
 			next_btn.wait_for(state="visible", timeout=15000)
 			next_btn.scroll_into_view_if_needed()
 			next_btn.click(force=True)
 			if log:
-				log("Clicked TIẾP THEO (portrait step)")
+				log("Clicked TIẾP THEO (passport preview)")
+			self._page.wait_for_timeout(1500)
+			try:
+				self._page.wait_for_selector("text='CHỤP MẶT TRƯỚC'", timeout=15000)
+			except Exception:
+				pass
 		except Exception as exc:
 			if log:
-				log(f"Next button click failed: {exc}")
+				log(f"Passport preview next click failed: {exc}")
 
 		try:
 			understood_btn = self._page.locator(
-				"button:has-text('TÔI ĐÃ HIỂU'), div:has-text('TÔI ĐÃ HIỂU')"
+				"div.vnpt-bg-primary.vnpt-cursor-pointer:has-text('TÔI ĐÃ HIỂU')"
 			).first
 			understood_btn.wait_for(state="visible", timeout=15000)
 			understood_btn.scroll_into_view_if_needed()
 			understood_btn.click(force=True)
 			if log:
 				log("Clicked TÔI ĐÃ HIỂU")
+			try:
+				self._page.wait_for_load_state("domcontentloaded", timeout=5000)
+				if log:
+					log(f"After TÔI ĐÃ HIỂU URL: {self._page.url}")
+			except Exception:
+				pass
+			self._page.wait_for_timeout(1500)
+			try:
+				self._page.wait_for_selector("text='CHỤP MẶT TRƯỚC'", timeout=15000)
+			except Exception:
+				pass
 		except Exception as exc:
 			if log:
 				log(f"TÔI ĐÃ HIỂU click failed: {exc}")
@@ -235,6 +255,26 @@ class PlaywrightRunner:
 			log("Read result from page")
 		status, message = self._classify_result(body_text)
 		return status, message
+
+	def _attach_page_listeners(
+		self, log: Callable[[str], None] | None
+	) -> None:
+		if not log:
+			return
+
+		def _on_frame_navigated(frame) -> None:
+			if frame == self._page.main_frame:
+				log(f"Page navigated: {frame.url}")
+
+		def _on_page_crash() -> None:
+			log("Page crashed")
+
+		def _on_page_close() -> None:
+			log("Page closed")
+
+		self._page.on("framenavigated", _on_frame_navigated)
+		self._page.on("crash", _on_page_crash)
+		self._page.on("close", _on_page_close)
 
 	def _click_start_button(self, log: Callable[[str], None] | None) -> None:
 		selectors = [
@@ -271,23 +311,19 @@ class PlaywrightRunner:
 					log(f"BẮT ĐẦU click failed using selector #{attempt}: {exc}")
 
 	def _click_next_face_step(self, log: Callable[[str], None] | None) -> bool:
-		selectors = [
-			"div:has-text('CHỤP MẶT TRƯỚC') ~ div div:has-text('TIẾP THEO')",
-			"div:has-text('TIẾP THEO'), button:has-text('TIẾP THEO')",
-		]
-		for attempt, selector in enumerate(selectors, start=1):
-			try:
-				next_btn = self._page.locator(selector).first
-				next_btn.wait_for(state="visible", timeout=15000)
-				next_btn.scroll_into_view_if_needed()
-				next_btn.click(force=True)
-				if log:
-					log(f"Clicked TIẾP THEO (face step) using selector #{attempt}")
-				return True
-			except Exception as exc:
-				if log:
-					log(f"Face TIẾP THEO click failed using selector #{attempt}: {exc}")
-		return False
+		try:
+			next_btn = self._page.locator("p:has-text('TIẾP THEO')").first
+			next_btn.wait_for(state="visible", timeout=15000)
+			next_btn.scroll_into_view_if_needed()
+			next_btn.click(force=True)
+			if log:
+				log("Clicked TIẾP THEO (face preview)")
+			self._page.wait_for_timeout(1500)
+			return True
+		except Exception as exc:
+			if log:
+				log(f"Face preview next click failed: {exc}")
+			return False
 
 	def _maximize_window(self, log: Callable[[str], None] | None) -> None:
 		try:
