@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ctypes
 import json
 import os
 from datetime import datetime
@@ -16,14 +17,19 @@ from utils import get_cropped_face_base64
 class PlaywrightRunner:
 	def __init__(self) -> None:
 		self._playwright = sync_playwright().start()
+		screen_width, screen_height = self._get_screen_size()
 		self._browser = self._playwright.chromium.launch(
 			headless=False,
 			args=[
 				"--use-fake-ui-for-media-stream",
 				"--use-fake-device-for-media-stream",
+				"--start-maximized",
+				f"--window-size={screen_width},{screen_height}",
 			],
 		)
-		self._context = self._browser.new_context()
+		self._context = self._browser.new_context(
+			viewport={"width": screen_width, "height": screen_height}
+		)
 		mock_camera_js = (
 			"window.fakeCamBase64 = '';\n"
 			"const originalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);\n"
@@ -61,6 +67,8 @@ class PlaywrightRunner:
 		except Exception:
 			pass
 		self._page = self._context.new_page()
+		self._maximize_window(log)
+		self._sync_viewport_to_screen(log)
 		if base64_img:
 			self._page.add_init_script(
 				f"window.fakeCamBase64 = {json.dumps(base64_img)};"
@@ -118,6 +126,7 @@ class PlaywrightRunner:
 			log("Filled phone and serial")
 
 		confirm_button = self._page.locator("#serial_validate_button")
+		self._scroll_to_confirm(confirm_button, log)
 		try:
 			self._page.wait_for_function(
 				"btn => btn && !btn.disabled",
@@ -136,8 +145,9 @@ class PlaywrightRunner:
 			self._page.click("text=Hộ chiếu")
 			if log:
 				log("Selected passport document")
-			self._page.wait_for_selector("button:has-text('BẮT ĐẦU')", timeout=30000)
-			self._page.click("button:has-text('BẮT ĐẦU')")
+			start_btn = self._page.locator("button:has-text('BẮT ĐẦU'), text=Bắt đầu").first
+			start_btn.wait_for(state="visible", timeout=30000)
+			start_btn.click()
 			if log:
 				log("Clicked BẮT ĐẦU")
 		except Exception as exc:
@@ -162,6 +172,14 @@ class PlaywrightRunner:
 			except Exception:
 				pass
 			raise RuntimeError("No file input found")
+
+		try:
+			file_inputs[0].click()
+			if log:
+				log("Clicked passport file input")
+		except Exception as exc:
+			if log:
+				log(f"Passport file input click failed: {exc}")
 
 		file_inputs[0].set_input_files(passport_path)
 		if log:
@@ -221,6 +239,58 @@ class PlaywrightRunner:
 			log("Read result from page")
 		status, message = self._classify_result(body_text)
 		return status, message
+
+	def _maximize_window(self, log: Callable[[str], None] | None) -> None:
+		try:
+			self._page.evaluate(
+				"window.moveTo(0, 0); window.resizeTo(screen.availWidth, screen.availHeight);"
+			)
+			if log:
+				log("Maximized browser window")
+		except Exception as exc:
+			if log:
+				log(f"Failed to maximize window: {exc}")
+
+	def _sync_viewport_to_screen(self, log: Callable[[str], None] | None) -> None:
+		try:
+			size = self._page.evaluate(
+				"({ width: window.screen.availWidth, height: window.screen.availHeight })"
+			)
+			self._page.set_viewport_size({"width": int(size["width"]), "height": int(size["height"])})
+			if log:
+				log("Synced viewport to screen size")
+		except Exception as exc:
+			if log:
+				log(f"Failed to sync viewport size: {exc}")
+
+	def _get_screen_size(self) -> tuple[int, int]:
+		try:
+			user32 = ctypes.windll.user32
+			try:
+				user32.SetProcessDPIAware()
+			except Exception:
+				pass
+			width = int(user32.GetSystemMetrics(0))
+			height = int(user32.GetSystemMetrics(1))
+			return max(width, 800), max(height, 600)
+		except Exception:
+			return 1920, 1080
+
+	def _scroll_to_confirm(self, confirm_button, log: Callable[[str], None] | None) -> None:
+		for attempt in range(5):
+			try:
+				if confirm_button.is_visible():
+					return
+			except Exception:
+				pass
+
+			try:
+				confirm_button.scroll_into_view_if_needed()
+			except Exception:
+				self._page.evaluate("window.scrollBy(0, 500)")
+
+			if log:
+				log(f"Scrolled to confirm button (attempt {attempt + 1})")
 
 	def _fill_first_available(self, selectors: list[str], value: str, label: str) -> None:
 		last_error = ""
