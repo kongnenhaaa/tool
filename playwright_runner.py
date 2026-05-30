@@ -297,8 +297,8 @@ class PlaywrightRunner:
 		  const _origEnumerate    = navigator.mediaDevices.enumerateDevices.bind(navigator.mediaDevices);
 
 		  /* ---------- constants ---------- */
-		  const W  = 640;
-		  const H  = 360;
+		  const W  = 1280;
+		  const H  = 720;
 		  const FPS = 30;
 		  const DEVICE_ID  = 'fake-cam-0a1b2c3d';
 		  const GROUP_ID   = 'fake-grp-4e5f6a7b';
@@ -319,16 +319,24 @@ class PlaywrightRunner:
 		  }});
 
 		  function drawFrame() {{
-		    ctx.fillStyle = '#ffffff';
-		    ctx.fillRect(0, 0, W, H);
+		    ctx.fillStyle = '#ffffff'; // Tô nền trắng xung quanh
+		    ctx.fillRect(0, 0, canvas.width, canvas.height);
 		    if (img.naturalWidth > 0 && img.naturalHeight > 0) {{
-		      /* Use cover (Math.max) instead of fit (Math.min) so the face
-		         fills the entire canvas without letterbox bars. The source
-		         image from utils.py is already 640x480 so this draws 1:1. */
-		      const scale = Math.max(W / img.naturalWidth, H / img.naturalHeight);
-		      const dx = (W - img.naturalWidth  * scale) / 2;
-		      const dy = (H - img.naturalHeight * scale) / 2;
-		      ctx.drawImage(img, dx, dy, img.naturalWidth * scale, img.naturalHeight * scale);
+		        // --- CÔNG THỨC MỚI: Thu nhỏ ảnh ---
+		        // Hệ số thu nhỏ (zoom_factor) ép ảnh lọt giữa nền trắng. 
+		        // 0.45 là tỷ lệ vàng cho hệ thống eKYC VNPT.
+		        const zoom_factor = 0.45; 
+		        
+		        const scale = Math.min(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight) * zoom_factor;
+		        
+		        const scaledWidth = img.naturalWidth * scale;
+		        const scaledHeight = img.naturalHeight * scale;
+		        
+		        // Căn giữa ảnh theo chiều ngang (X) và chiều dọc (Y)
+		        const dx = (canvas.width - scaledWidth) / 2;
+		        const dy = (canvas.height - scaledHeight) / 2;
+		        
+		        ctx.drawImage(img, dx, dy, scaledWidth, scaledHeight);
 		    }}
 		    requestAnimationFrame(drawFrame);
 		  }}
@@ -370,9 +378,9 @@ class PlaywrightRunner:
 
 		  fakeTrack.getCapabilities = () => ({{
 		    ..._origGetCapabilities(),
-		    width:      {{ min: 160,  max: 1920 }},
-		    height:     {{ min: 120,  max: 1080 }},
-		    frameRate:  {{ min: 1,    max: 60 }},
+		    width:      {{ min: 640,  max: 1920 }},
+		    height:     {{ min: 480,  max: 1080 }},
+		    frameRate:  {{ min: 15,   max: 60 }},
 		    deviceId:   DEVICE_ID,
 		    groupId:    GROUP_ID,
 		    facingMode: ['user', 'environment']
