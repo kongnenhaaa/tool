@@ -38,3 +38,22 @@ Call log:
 [19:51:06] Synced viewport to screen size
 [19:51:06] Loaded fake webcam base64 data
 [19:51:06] Page navigated: https://digishop.vnpt.vn/tourist/
+[19:56:44] Processing ID=1 phone=814560106 serial=1163972931
+[19:56:44] Maximized browser window
+[19:56:44] Synced viewport to screen size
+[19:56:44] Loaded fake webcam base64 data
+[19:56:45] Page navigated: https://digishop.vnpt.vn/tourist/
+[19:56:53] Opened website
+[19:56:53] Page navigated: https://digishop.vnpt.vn/tourist/
+[19:56:53] Filled phone and serial
+[19:56:58] Clicked confirm
+[19:56:59] Selected passport document
+[19:57:00] Clicked BẮT ĐẦU using selector #1
+[19:57:00] TẢI ẢNH LÊN is visible after click
+[19:57:00] TẢI ẢNH LÊN is visible
+[19:57:00] File input count: 1
+[19:57:00] Uploaded passport
+[19:57:04] Clicked TIẾP THEO (passport preview)
+[19:57:21] Clicked TÔI ĐÃ HIỂU
+[19:57:21] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
+[19:57:21] Page navigated: https://digishop.vnpt.vn/tourist/
