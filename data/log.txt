@@ -144,3 +144,16 @@ Call log:
 [20:24:25] TẢI ẢNH LÊN is visible
 [20:24:25] File input count: 1
 [20:24:25] Uploaded passport
+[20:24:30] Clicked TIẾP THEO (passport preview)
+[20:24:47] Clicked TÔI ĐÃ HIỂU
+[20:24:47] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
+[20:25:03] Chuyển sang bước Xác thực khuôn mặt (Camera AI)
+[20:25:03] Đang chờ AI quét khuôn mặt...
+[20:25:48] Quá trình đợi quét khuôn mặt có thể bị timeout hoặc lỗi: Locator.wait_for: Timeout 45000ms exceeded.
+Call log:
+  - waiting for locator("button:has-text('TIẾP THEO'), p:has-text('TIẾP THEO'), div:has-text('TIẾP THEO')").filter(visible=True).first to be visible
+
+[20:25:48] Face verification completed
+[20:25:48] Read result from page
+[20:25:48] Page closed
+[20:25:49] Done.

@@ -298,7 +298,7 @@ class PlaywrightRunner:
 
 		  /* ---------- constants ---------- */
 		  const W  = 640;
-		  const H  = 480;
+		  const H  = 360;
 		  const FPS = 30;
 		  const DEVICE_ID  = 'fake-cam-0a1b2c3d';
 		  const GROUP_ID   = 'fake-grp-4e5f6a7b';

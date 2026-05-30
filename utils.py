@@ -51,10 +51,10 @@ def get_cropped_face_base64(image_path: str) -> str:
 def get_face_frame_base64(
 	image_path: str,
 	target_width: int = 640,
-	target_height: int = 480,
+	target_height: int = 360,
 ) -> str:
-	"""Create a webcam-style frame (4:3) with the face centered and sized
-	to fill approximately 60-65% of the frame height.
+	"""Create a webcam-style frame (16:9) with the face centered and sized
+	to fill approximately 40% of the frame height, matching VNPT's 640x360 oval.
 
 	This produces an image that looks natural inside the eKYC oval frame:
 	- Face is vertically centered with enough forehead/chin margin.
@@ -92,13 +92,13 @@ def get_face_frame_base64(
 			cx = x + w / 2
 			cy = y + h / 2
 
-			# We want the face to occupy ~60% of the output frame height.
-			# face_h ≈ 0.60 * target_height  →  crop_h = face_h / 0.60
-			# But crop_h is in source-image pixels, so we need to scale.
+			# We want the face to occupy ~40% of the output frame height
+			# so it fits comfortably inside the VNPT oval frame.
+			# face_h ≈ 0.40 * target_height  →  crop_h = face_h / 0.40
 			# The face bounding box height in the source image is `h`.
-			# We want: (h / crop_h) * target_height ≈ 0.60 * target_height
-			# → crop_h ≈ h / 0.60
-			desired_face_ratio = 0.55  # face fills 55% of frame height
+			# We want: (h / crop_h) * target_height ≈ 0.40 * target_height
+			# → crop_h ≈ h / 0.40
+			desired_face_ratio = 0.40  # face fills 40% of frame height
 			crop_h = h / desired_face_ratio
 			crop_w = crop_h * target_aspect
 
