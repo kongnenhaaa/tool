@@ -233,3 +233,200 @@ Call log:
 [18:45:46] Maximized browser window
 [18:45:46] Synced viewport to screen size
 [18:45:46] Loaded fake webcam base64 data
+[18:53:10] Processing ID=1 phone=814560106 serial=1163972931
+[18:53:10] Maximized browser window
+[18:53:10] Synced viewport to screen size
+[18:53:10] Loaded fake webcam base64 data
+[18:53:43] Opened website
+[18:53:43] Saved debug screenshot: debug.png
+[18:53:43] Input count: 7
+[18:53:43] Input[0]: <input type="search" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="rc_select_0_list" aria-autocomplete="list" aria-controls="rc_select_0_list" readonly="" unselectable="on" value="" id="rc_select_0" style="opacity: 0;">
+[18:53:43] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[18:53:43] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[18:53:44] Input[3]: <input maxlength="100" id="name" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:53:44] Input[4]: <input maxlength="100" id="email" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:53:44] Input[5]: <input maxlength="11" id="phone" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:53:44] Input[6]: <input maxlength="100" id="address" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:53:44] Filled phone and serial
+[18:54:14] Clicked confirm
+[18:54:14] Selected passport document
+[18:54:14] Clicked BẮT ĐẦU
+[18:55:10] File input count: 1
+[18:55:10] Uploaded passport
+[18:55:31] Next button click failed: Page.wait_for_function: Target page, context or browser has been closed
+[18:55:31] Capture button click failed: Page.wait_for_function: Target page, context or browser has been closed
+[18:55:31] Next button click failed: Page.wait_for_function: Target page, context or browser has been closed
+[18:55:47] Processing ID=1 phone=814560106 serial=1163972931
+[18:55:48] Maximized browser window
+[18:55:48] Synced viewport to screen size
+[18:55:48] Loaded fake webcam base64 data
+[18:56:19] Opened website
+[18:56:19] Saved debug screenshot: debug.png
+[18:56:19] Input count: 7
+[18:56:19] Input[0]: <input type="search" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="rc_select_0_list" aria-autocomplete="list" aria-controls="rc_select_0_list" readonly="" unselectable="on" value="" id="rc_select_0" style="opacity: 0;">
+[18:56:19] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[18:56:19] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[18:56:19] Input[3]: <input maxlength="100" id="name" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:56:19] Input[4]: <input maxlength="100" id="email" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:56:19] Input[5]: <input maxlength="11" id="phone" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:56:19] Input[6]: <input maxlength="100" id="address" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:56:19] Filled phone and serial
+[18:56:49] Clicked confirm
+[18:56:50] Selected passport document
+[18:56:50] Clicked BẮT ĐẦU
+[18:58:20] File input count: 0
+[18:58:20] Saved debug HTML: debug.html
+[18:58:20] Attempt 1 failed: No file input found
+[18:58:20] Maximized browser window
+[18:58:20] Synced viewport to screen size
+[18:58:20] Loaded fake webcam base64 data
+[19:00:48] Processing ID=1 phone=814560106 serial=1163972931
+[19:00:49] Maximized browser window
+[19:00:49] Synced viewport to screen size
+[19:00:49] Loaded fake webcam base64 data
+[19:00:55] Opened website
+[19:00:57] Saved debug screenshot: debug.png
+[19:00:57] Input count: 7
+[19:00:57] Input[0]: <input type="search" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="rc_select_0_list" aria-autocomplete="list" aria-controls="rc_select_0_list" readonly="" unselectable="on" value="" id="rc_select_0" style="opacity: 0;">
+[19:00:57] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[19:00:57] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[19:00:57] Input[3]: <input maxlength="100" id="name" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[19:00:57] Input[4]: <input maxlength="100" id="email" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[19:00:57] Input[5]: <input maxlength="11" id="phone" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[19:00:57] Input[6]: <input maxlength="100" id="address" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[19:00:57] Filled phone and serial
+[19:01:12] Clicked confirm
+[19:01:12] Selected passport document
+[19:01:12] Clicked BẮT ĐẦU using selector #1
+[19:01:12] TẢI ẢNH LÊN is visible after click
+[19:01:12] TẢI ẢNH LÊN is visible
+[19:01:12] File input count: 1
+[19:01:12] Uploaded passport
+[19:02:33] Processing ID=1 phone=814560106 serial=1163972931
+[19:02:34] Maximized browser window
+[19:02:34] Synced viewport to screen size
+[19:02:34] Loaded fake webcam base64 data
+[19:02:37] Opened website
+[19:02:38] Saved debug screenshot: debug.png
+[19:02:38] Input count: 7
+[19:02:38] Input[0]: <input type="search" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="rc_select_0_list" aria-autocomplete="list" aria-controls="rc_select_0_list" readonly="" unselectable="on" value="" id="rc_select_0" style="opacity: 0;">
+[19:02:38] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[19:02:38] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[19:02:38] Input[3]: <input maxlength="100" id="name" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[19:02:38] Input[4]: <input maxlength="100" id="email" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[19:02:38] Input[5]: <input maxlength="11" id="phone" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[19:02:38] Input[6]: <input maxlength="100" id="address" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[19:02:38] Filled phone and serial
+[19:02:53] Clicked confirm
+[19:02:53] Selected passport document
+[19:02:53] Clicked BẮT ĐẦU using selector #1
+[19:02:53] TẢI ẢNH LÊN is visible after click
+[19:02:53] TẢI ẢNH LÊN is visible
+[19:02:53] File input count: 1
+[19:02:53] Uploaded passport
+[19:03:08] Next button click failed: Page.wait_for_function: Timeout 15000ms exceeded.
+[19:03:23] Capture button click failed: Page.wait_for_function: Timeout 15000ms exceeded.
+[19:03:38] Next button click failed: Page.wait_for_function: Timeout 15000ms exceeded.
+[19:03:38] Face verification completed
+[19:03:38] Read result from page
+[19:03:39] Done.
+[19:04:02] Processing ID=1 phone=814560106 serial=1163972931
+[19:04:02] Maximized browser window
+[19:04:02] Synced viewport to screen size
+[19:04:02] Loaded fake webcam base64 data
+[19:04:09] Opened website
+[19:04:10] Saved debug screenshot: debug.png
+[19:04:10] Input count: 7
+[19:04:10] Input[0]: <input type="search" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="rc_select_0_list" aria-autocomplete="list" aria-controls="rc_select_0_list" readonly="" unselectable="on" value="" id="rc_select_0" style="opacity: 0;">
+[19:04:10] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[19:04:10] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[19:04:10] Input[3]: <input maxlength="100" id="name" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[19:04:10] Input[4]: <input maxlength="100" id="email" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[19:04:10] Input[5]: <input maxlength="11" id="phone" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[19:04:10] Input[6]: <input maxlength="100" id="address" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[19:04:10] Filled phone and serial
+[19:05:29] Processing ID=1 phone=814560106 serial=1163972931
+[19:05:30] Maximized browser window
+[19:05:30] Synced viewport to screen size
+[19:05:30] Loaded fake webcam base64 data
+[19:05:37] Opened website
+[19:05:37] Filled phone and serial
+[19:05:53] Clicked confirm
+[19:05:53] Selected passport document
+[19:05:53] Clicked BẮT ĐẦU using selector #1
+[19:05:53] TẢI ẢNH LÊN is visible after click
+[19:05:53] TẢI ẢNH LÊN is visible
+[19:05:53] File input count: 1
+[19:05:53] Uploaded passport
+[19:05:57] Clicked TIẾP THEO (portrait step)
+[19:06:12] Capture button click failed: Page.wait_for_function: Timeout 15000ms exceeded.
+[19:06:27] Next button click failed: Page.wait_for_function: Timeout 15000ms exceeded.
+[19:06:27] Face verification completed
+[19:06:27] Read result from page
+[19:06:27] Done.
+[19:07:36] Processing ID=1 phone=814560106 serial=1163972931
+[19:07:36] Maximized browser window
+[19:07:36] Synced viewport to screen size
+[19:07:36] Loaded fake webcam base64 data
+[19:07:43] Opened website
+[19:07:43] Filled phone and serial
+[19:07:59] Clicked confirm
+[19:07:59] Selected passport document
+[19:07:59] Clicked BẮT ĐẦU using selector #1
+[19:07:59] TẢI ẢNH LÊN is visible after click
+[19:07:59] TẢI ẢNH LÊN is visible
+[19:07:59] File input count: 1
+[19:07:59] Uploaded passport
+[19:08:02] Clicked TIẾP THEO (portrait step)
+[19:08:17] Capture button click failed: Locator.wait_for: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator("div:has-text('CHỤP ẢNH'), button:has-text('CHỤP ẢNH')").first to be visible
+
+[19:08:17] Clicked TIẾP THEO (verification step)
+[19:08:17] Face verification completed
+[19:08:17] Read result from page
+[19:08:18] Done.
+[19:13:47] Processing ID=1 phone=814560106 serial=1163972931
+[19:13:48] Maximized browser window
+[19:13:48] Synced viewport to screen size
+[19:13:48] Loaded fake webcam base64 data
+[19:13:55] Opened website
+[19:13:55] Filled phone and serial
+[19:14:10] Clicked confirm
+[19:14:11] Selected passport document
+[19:14:11] Clicked BẮT ĐẦU using selector #1
+[19:14:11] TẢI ẢNH LÊN is visible after click
+[19:14:11] TẢI ẢNH LÊN is visible
+[19:14:11] File input count: 1
+[19:14:11] Uploaded passport
+[19:14:14] Clicked TIẾP THEO (portrait step)
+[19:14:29] TÔI ĐÃ HIỂU click failed: Locator.wait_for: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator("button:has-text('TÔI ĐÃ HIỂU'), div:has-text('TÔI ĐÃ HIỂU')").first to be visible
+
+[19:14:44] Capture button click failed: Locator.wait_for: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator("div:has-text('CHỤP ẢNH'), button:has-text('CHỤP ẢNH')").first to be visible
+
+[19:14:44] Skip verification step because capture was not clicked
+[19:14:44] Read result from page
+[19:14:44] Done.
+[19:18:38] Processing ID=1 phone=814560106 serial=1163972931
+[19:18:38] Maximized browser window
+[19:18:38] Synced viewport to screen size
+[19:18:38] Loaded fake webcam base64 data
+[19:18:45] Opened website
+[19:18:46] Filled phone and serial
+[19:19:01] Clicked confirm
+[19:19:01] Selected passport document
+[19:19:01] Clicked BẮT ĐẦU using selector #1
+[19:19:01] TẢI ẢNH LÊN is visible after click
+[19:19:01] TẢI ẢNH LÊN is visible
+[19:19:01] File input count: 1
+[19:19:01] Uploaded passport
+[19:19:05] Clicked TIẾP THEO (portrait step)
+[19:19:20] TÔI ĐÃ HIỂU click failed: Locator.wait_for: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator("button:has-text('TÔI ĐÃ HIỂU'), div:has-text('TÔI ĐÃ HIỂU')").first to be visible
+
+[19:19:20] Face capture step is visible
