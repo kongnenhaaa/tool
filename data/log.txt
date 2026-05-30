@@ -1,288 +1,81 @@
-[19:48:12] Processing ID=1 phone=814560106 serial=1163972931
-[19:48:12] Maximized browser window
-[19:48:12] Synced viewport to screen size
-[19:48:12] Loaded fake webcam base64 data
-[19:48:14] Page navigated: https://digishop.vnpt.vn/tourist/
-[19:48:21] Opened website
-[19:48:21] Page navigated: https://digishop.vnpt.vn/tourist/
-[19:48:22] Filled phone and serial
-[19:48:27] Clicked confirm
-[19:48:27] Selected passport document
-[19:48:27] Clicked BẮT ĐẦU using selector #1
-[19:48:27] TẢI ẢNH LÊN is visible after click
-[19:48:27] TẢI ẢNH LÊN is visible
-[19:48:27] File input count: 1
-[19:48:27] Uploaded passport
-[19:48:31] Clicked TIẾP THEO (passport preview)
-[19:48:48] Clicked TÔI ĐÃ HIỂU
-[19:48:48] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
-[19:48:48] Page navigated: https://digishop.vnpt.vn/tourist/
-[19:49:49] Face preview next click failed: Page.wait_for_selector: Timeout 30000ms exceeded.
-Call log:
-  - waiting for locator("text='CHỤP LẠI'") to be visible
-
-[19:49:49] Read result from page
-[19:49:49] Page closed
-[19:49:50] Done.
-[19:51:05] Processing ID=1 phone=814560106 serial=1163972931
-[19:51:05] Maximized browser window
-[19:51:06] Synced viewport to screen size
-[19:51:06] Loaded fake webcam base64 data
-[19:51:06] Page navigated: https://digishop.vnpt.vn/tourist/
-[19:51:06] Page closed
-[19:51:06] Attempt 1 failed: Page.goto: Target page, context or browser has been closed
-Call log:
-  - navigating to "https://digishop.vnpt.vn/tourist/", waiting until "domcontentloaded"
-
-[19:51:06] Maximized browser window
-[19:51:06] Synced viewport to screen size
-[19:51:06] Loaded fake webcam base64 data
-[19:51:06] Page navigated: https://digishop.vnpt.vn/tourist/
-[19:56:44] Processing ID=1 phone=814560106 serial=1163972931
-[19:56:44] Maximized browser window
-[19:56:44] Synced viewport to screen size
-[19:56:44] Loaded fake webcam base64 data
-[19:56:45] Page navigated: https://digishop.vnpt.vn/tourist/
-[19:56:53] Opened website
-[19:56:53] Page navigated: https://digishop.vnpt.vn/tourist/
-[19:56:53] Filled phone and serial
-[19:56:58] Clicked confirm
-[19:56:59] Selected passport document
-[19:57:00] Clicked BẮT ĐẦU using selector #1
-[19:57:00] TẢI ẢNH LÊN is visible after click
-[19:57:00] TẢI ẢNH LÊN is visible
-[19:57:00] File input count: 1
-[19:57:00] Uploaded passport
-[19:57:04] Clicked TIẾP THEO (passport preview)
-[19:57:21] Clicked TÔI ĐÃ HIỂU
-[19:57:21] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
-[19:57:21] Page navigated: https://digishop.vnpt.vn/tourist/
-[19:57:39] Page closed
-[19:57:39] Face preview next click failed: Locator.wait_for: Target page, context or browser has been closed
-[19:57:39] Attempt 1 failed: Page.inner_text: Target page, context or browser has been closed
-[19:57:39] Maximized browser window
-[19:57:39] Synced viewport to screen size
-[19:57:39] Loaded fake webcam base64 data
-[19:57:39] Page navigated: https://digishop.vnpt.vn/tourist/
-[19:57:40] Page closed
-[19:57:40] Attempt 2 failed: Page.goto: Target page, context or browser has been closed
-Call log:
-  - navigating to "https://digishop.vnpt.vn/tourist/", waiting until "domcontentloaded"
-
-[19:57:41] Done.
-[20:06:25] Processing ID=1 phone=814560106 serial=1163972931
-[20:06:26] Maximized browser window
-[20:06:26] Synced viewport to screen size
-[20:06:26] Injected mock camera script with base64 image
-[20:06:26] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:06:31] Opened website
-[20:06:31] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:06:32] Filled phone and serial
-[20:06:37] Clicked confirm
-[20:06:37] Selected passport document
-[20:06:38] Clicked BẮT ĐẦU using selector #1
-[20:06:38] TẢI ẢNH LÊN is visible after click
-[20:06:38] TẢI ẢNH LÊN is visible
-[20:06:38] File input count: 1
-[20:06:38] Uploaded passport
-[20:06:42] Clicked TIẾP THEO (passport preview)
-[20:06:59] Clicked TÔI ĐÃ HIỂU
-[20:06:59] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
-[20:06:59] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:11:40] Processing ID=1 phone=814560106 serial=1163972931
-[20:11:40] Maximized browser window
-[20:11:40] Synced viewport to screen size
-[20:11:40] Injected mock camera script with base64 image
-[20:11:40] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:11:47] Opened website
-[20:11:47] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:11:47] Filled phone and serial
-[20:11:52] Clicked confirm
-[20:11:53] Selected passport document
-[20:11:53] Clicked BẮT ĐẦU using selector #1
-[20:11:53] TẢI ẢNH LÊN is visible after click
-[20:11:53] TẢI ẢNH LÊN is visible
-[20:11:53] File input count: 1
-[20:11:53] Uploaded passport
-[20:11:57] Clicked TIẾP THEO (passport preview)
-[20:12:14] Clicked TÔI ĐÃ HIỂU
-[20:12:14] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
-[20:12:14] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:12:21] Page closed
-[20:12:21] Chuyển sang bước Xác thực khuôn mặt (Camera AI)
-[20:12:21] Đang chờ AI quét khuôn mặt...
-[20:21:10] Processing ID=1 phone=814560106 serial=1163972931
-[20:21:10] Maximized browser window
-[20:21:10] Synced viewport to screen size
-[20:21:10] Injected mock camera script with base64 image
-[20:21:10] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:21:18] Opened website
-[20:21:18] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:21:18] Filled phone and serial
-[20:21:23] Clicked confirm
-[20:21:25] Selected passport document
-[20:21:25] Clicked BẮT ĐẦU using selector #1
-[20:21:25] TẢI ẢNH LÊN is visible after click
-[20:21:25] TẢI ẢNH LÊN is visible
-[20:21:25] File input count: 1
-[20:21:25] Uploaded passport
-[20:21:29] Clicked TIẾP THEO (passport preview)
-[20:21:46] Clicked TÔI ĐÃ HIỂU
-[20:21:46] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
-[20:24:14] Processing ID=1 phone=814560106 serial=1163972931
-[20:24:15] Maximized browser window
-[20:24:15] Synced viewport to screen size
-[20:24:15] Injected mock camera script with base64 image
-[20:24:15] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:24:19] Opened website
-[20:24:19] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:24:19] Filled phone and serial
-[20:24:25] Clicked confirm
-[20:24:25] Selected passport document
-[20:24:25] Clicked BẮT ĐẦU using selector #1
-[20:24:25] TẢI ẢNH LÊN is visible after click
-[20:24:25] TẢI ẢNH LÊN is visible
-[20:24:25] File input count: 1
-[20:24:25] Uploaded passport
-[20:24:30] Clicked TIẾP THEO (passport preview)
-[20:24:47] Clicked TÔI ĐÃ HIỂU
-[20:24:47] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
-[20:25:03] Chuyển sang bước Xác thực khuôn mặt (Camera AI)
-[20:25:03] Đang chờ AI quét khuôn mặt...
-[20:25:48] Quá trình đợi quét khuôn mặt có thể bị timeout hoặc lỗi: Locator.wait_for: Timeout 45000ms exceeded.
-Call log:
-  - waiting for locator("button:has-text('TIẾP THEO'), p:has-text('TIẾP THEO'), div:has-text('TIẾP THEO')").filter(visible=True).first to be visible
-
-[20:25:48] Face verification completed
-[20:25:48] Read result from page
-[20:25:48] Page closed
-[20:25:49] Done.
-[20:29:03] Processing ID=1 phone=814560106 serial=1163972931
-[20:29:04] Maximized browser window
-[20:29:04] Synced viewport to screen size
-[20:29:04] Injected mock camera script with base64 image
-[20:29:04] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:29:11] Opened website
-[20:29:11] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:29:11] Filled phone and serial
-[20:29:16] Clicked confirm
-[20:29:20] Selected passport document
-[20:29:20] Clicked BẮT ĐẦU using selector #1
-[20:29:20] TẢI ẢNH LÊN is visible after click
-[20:29:20] TẢI ẢNH LÊN is visible
-[20:29:20] File input count: 1
-[20:29:20] Uploaded passport
-[20:29:24] Clicked TIẾP THEO (passport preview)
-[20:29:41] Clicked TÔI ĐÃ HIỂU
-[20:29:41] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
-[20:29:57] Chuyển sang bước Xác thực khuôn mặt (Camera AI)
-[20:29:57] Đang chờ AI quét khuôn mặt...
-[20:31:30] Processing ID=1 phone=814560106 serial=1163972931
-[20:31:30] Maximized browser window
-[20:31:30] Synced viewport to screen size
-[20:31:30] Injected mock camera script with base64 image
-[20:31:31] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:31:38] Opened website
-[20:31:38] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:31:39] Filled phone and serial
-[20:31:44] Clicked confirm
-[20:31:44] Selected passport document
-[20:31:44] Clicked BẮT ĐẦU using selector #1
-[20:31:44] TẢI ẢNH LÊN is visible after click
-[20:31:44] TẢI ẢNH LÊN is visible
-[20:31:44] File input count: 1
-[20:31:44] Uploaded passport
-[20:31:49] Clicked TIẾP THEO (passport preview)
-[20:32:05] Clicked TÔI ĐÃ HIỂU
-[20:32:05] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
-[20:32:17] Page closed
-[20:32:17] Chuyển sang bước Xác thực khuôn mặt (Camera AI)
-[20:32:17] Đang chờ AI quét khuôn mặt...
-[20:32:17] Quá trình đợi quét khuôn mặt có thể bị timeout hoặc lỗi: Locator.wait_for: Target page, context or browser has been closed
-[20:32:17] Face verification completed
-[20:32:17] Attempt 1 failed: Page.inner_text: Target page, context or browser has been closed
-[20:32:17] Maximized browser window
-[20:32:17] Synced viewport to screen size
-[20:32:17] Injected mock camera script with base64 image
-[20:32:17] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:32:19] Page closed
-[20:32:19] Attempt 2 failed: Page.goto: Target page, context or browser has been closed
-Call log:
-  - navigating to "https://digishop.vnpt.vn/tourist/", waiting until "domcontentloaded"
-
-[20:32:19] Done.
-[20:35:45] Processing ID=1 phone=814560106 serial=1163972931
-[20:35:45] Maximized browser window
-[20:35:45] Synced viewport to screen size
-[20:35:45] Injected mock camera script with base64 image
-[20:35:46] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:35:54] Opened website
-[20:35:54] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:35:55] Filled phone and serial
-[20:36:00] Clicked confirm
-[20:36:00] Selected passport document
-[20:36:00] Clicked BẮT ĐẦU using selector #1
-[20:36:00] TẢI ẢNH LÊN is visible after click
-[20:36:00] TẢI ẢNH LÊN is visible
-[20:36:00] File input count: 1
-[20:36:00] Uploaded passport
-[20:36:05] Clicked TIẾP THEO (passport preview)
-[20:36:21] Clicked TÔI ĐÃ HIỂU
-[20:36:21] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
-[20:36:39] Processing ID=1 phone=814560106 serial=1163972931
-[20:36:39] Maximized browser window
-[20:36:39] Synced viewport to screen size
-[20:36:39] Injected mock camera script with base64 image
-[20:36:39] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:36:45] Opened website
-[20:36:45] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:36:46] Filled phone and serial
-[20:36:51] Clicked confirm
-[20:36:52] Selected passport document
-[20:36:52] Clicked BẮT ĐẦU using selector #1
-[20:36:52] TẢI ẢNH LÊN is visible after click
-[20:36:52] TẢI ẢNH LÊN is visible
-[20:36:52] File input count: 1
-[20:36:52] Uploaded passport
-[20:36:56] Clicked TIẾP THEO (passport preview)
-[20:37:13] Clicked TÔI ĐÃ HIỂU
-[20:37:13] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
-[20:37:29] Chuyển sang bước Xác thực khuôn mặt (Camera AI)
-[20:37:29] Đang chờ AI quét khuôn mặt...
-[20:37:37] Page closed
-[20:37:37] Quá trình đợi quét khuôn mặt có thể bị timeout hoặc lỗi: Locator.wait_for: Target page, context or browser has been closed
-Call log:
-  - waiting for locator("button:has-text('TIẾP THEO'), p:has-text('TIẾP THEO'), div:has-text('TIẾP THEO')").filter(visible=True).first to be visible
-
-[20:37:37] Face verification completed
-[20:37:37] Attempt 1 failed: Page.inner_text: Target page, context or browser has been closed
-[20:37:37] Maximized browser window
-[20:37:37] Synced viewport to screen size
-[20:37:37] Injected mock camera script with base64 image
-[20:37:37] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:37:38] Page closed
-[20:37:38] Attempt 2 failed: Page.goto: Target page, context or browser has been closed
-Call log:
-  - navigating to "https://digishop.vnpt.vn/tourist/", waiting until "domcontentloaded"
-
-[20:37:38] Done.
-[20:53:12] Processing ID=1 phone=814560106 serial=1163972931
-[20:53:12] Maximized browser window
-[20:53:12] Synced viewport to screen size
-[20:53:12] Injected mock camera script with base64 image
-[20:53:12] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:53:17] Opened website
-[20:53:17] Page navigated: https://digishop.vnpt.vn/tourist/
-[20:53:18] Filled phone and serial
-[20:53:23] Clicked confirm
-[20:53:23] Selected passport document
-[20:53:23] Clicked BẮT ĐẦU using selector #1
-[20:53:23] TẢI ẢNH LÊN is visible after click
-[20:53:23] TẢI ẢNH LÊN is visible
-[20:53:23] File input count: 1
-[20:53:23] Uploaded passport
-[20:53:28] Clicked TIẾP THEO (passport preview)
-[20:53:44] Clicked TÔI ĐÃ HIỂU
-[20:53:44] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
-[20:54:01] Chuyển sang bước Xác thực khuôn mặt (Camera AI)
-[20:54:01] Đang chờ AI quét khuôn mặt...
+[21:43:14] Processing ID=1 phone=814560106 serial=1163972931
+[21:43:14] Maximized browser window
+[21:43:14] Synced viewport to screen size
+[21:43:14] Injected mock camera script with base64 image
+[21:43:14] Page navigated: https://digishop.vnpt.vn/tourist/
+[21:43:18] Opened website
+[21:43:18] Page navigated: https://digishop.vnpt.vn/tourist/
+[21:43:19] Filled phone and serial
+[21:43:24] Clicked confirm
+[21:43:24] Selected passport document
+[21:43:24] Clicked BẮT ĐẦU using selector #1
+[21:43:24] TẢI ẢNH LÊN is visible after click
+[21:43:24] TẢI ẢNH LÊN is visible
+[21:43:24] File input count: 1
+[21:43:24] Uploaded passport
+[21:43:29] Clicked TIẾP THEO (passport preview)
+[21:43:46] Clicked TÔI ĐÃ HIỂU
+[21:43:46] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
+[21:44:02] Trang Xác nhận thông tin đã tải
+[21:44:02] Đã điền Nơi cấp: GUWAHATI
+[21:44:02] Đã điền Ngày cấp: 23/05/2019
+[21:44:02] Đã bấm XÁC NHẬN thông tin
+[21:44:05] Page navigated: https://digishop.vnpt.vn/tourist/#nadi__profile
+[21:44:05] Page navigated: https://digishop.vnpt.vn/tourist/#nadi__profile
+[21:44:08] Page navigated: https://digishop.vnpt.vn/tourist/#nadi__profile
+[21:44:14] Chuyển sang bước Xác thực khuôn mặt (Camera AI)
+[21:44:14] Đang chờ AI quét khuôn mặt...
+[21:47:33] Processing ID=1 phone=814560106 serial=1163972931
+[21:47:34] Maximized browser window
+[21:47:34] Synced viewport to screen size
+[21:47:34] Injected mock camera script with base64 image
+[21:47:34] Page navigated: https://digishop.vnpt.vn/tourist/
+[21:47:39] Opened website
+[21:47:39] Page navigated: https://digishop.vnpt.vn/tourist/
+[21:47:39] Filled phone and serial
+[21:47:44] Clicked confirm
+[21:47:45] Selected passport document
+[21:47:45] Clicked BẮT ĐẦU using selector #1
+[21:47:45] TẢI ẢNH LÊN is visible after click
+[21:47:45] TẢI ẢNH LÊN is visible
+[21:47:45] File input count: 1
+[21:47:45] Uploaded passport
+[21:47:50] Clicked TIẾP THEO (passport preview)
+[21:48:06] Clicked TÔI ĐÃ HIỂU
+[21:48:06] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
+[21:48:23] Chuyển sang bước Xác thực khuôn mặt (Camera AI)
+[21:48:23] Đang chờ AI quét khuôn mặt...
+[21:48:41] Page closed
+[21:49:00] Processing ID=1 phone=814560106 serial=1163972931
+[21:49:01] Maximized browser window
+[21:49:01] Synced viewport to screen size
+[21:49:01] Injected mock camera script with base64 image
+[21:49:01] Page navigated: https://digishop.vnpt.vn/tourist/
+[21:49:06] Opened website
+[21:49:06] Page navigated: https://digishop.vnpt.vn/tourist/
+[21:49:06] Filled phone and serial
+[21:49:11] Clicked confirm
+[21:49:11] Selected passport document
+[21:49:12] Clicked BẮT ĐẦU using selector #1
+[21:49:12] TẢI ẢNH LÊN is visible after click
+[21:49:12] TẢI ẢNH LÊN is visible
+[21:49:12] File input count: 1
+[21:49:12] Uploaded passport
+[21:49:16] Clicked TIẾP THEO (passport preview)
+[21:49:33] Clicked TÔI ĐÃ HIỂU
+[21:49:33] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
+[21:49:49] Trang Xác nhận thông tin đã tải
+[21:49:49] Đã điền Nơi cấp: GUWAHATI
+[21:49:49] Đã điền Ngày cấp: 23/05/2019
+[21:49:49] Đã bấm XÁC NHẬN thông tin
+[21:49:52] Page navigated: https://digishop.vnpt.vn/tourist/#nadi__profile
+[21:49:52] Page navigated: https://digishop.vnpt.vn/tourist/#nadi__profile
+[21:49:55] Page navigated: https://digishop.vnpt.vn/tourist/#nadi__profile
+[21:50:00] Page closed
+[21:50:00] Lỗi khi điền Xác nhận thông tin (hoặc bước này không hiển thị): Target page, context or browser has been closed
+=========================== logs ===========================
+"domcontentloaded" event fired
+"load" event fired
+============================================================
+[21:50:00] Chuyển sang bước Xác thực khuôn mặt (Camera AI)
+[21:50:00] Đang chờ AI quét khuôn mặt...

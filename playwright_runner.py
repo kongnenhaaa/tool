@@ -203,6 +203,9 @@ class PlaywrightRunner:
 			if log:
 				log(f"TÔI ĐÃ HIỂU click failed: {exc}")
 
+		# Wait for the confirmation page and fill the missing data
+		self._fill_confirmation_info(record, log)
+
 		# Face verification flow – wait for AI to scan and click next
 		self._wait_and_finish_face_verification(log)
 
@@ -446,6 +449,49 @@ class PlaywrightRunner:
 				log(f"Quá trình đợi quét khuôn mặt có thể bị timeout hoặc lỗi: {exc}")
 		if log:
 			log("Face verification completed")
+
+	def _fill_confirmation_info(self, record: dict, log: Callable[[str], None] | None) -> None:
+		try:
+			# Đợi trang Xác nhận thông tin load (input Nơi cấp xuất hiện)
+			self._page.wait_for_selector("input[name='noicap']", timeout=15000)
+			if log:
+				log("Trang Xác nhận thông tin đã tải")
+			
+			if record.get("noi_cap"):
+				self._page.fill("input[name='noicap']", record["noi_cap"])
+				if log: log(f"Đã điền Nơi cấp: {record['noi_cap']}")
+			
+			if record.get("ngay_cap"):
+				# Tìm ô nhập "Ngày cấp" thông qua placeholder
+				date_input = self._page.locator("input[placeholder='Chọn thời điểm']").first
+				if date_input.count() > 0:
+					date_input.fill(record["ngay_cap"])
+					date_input.press("Enter")
+					if log: log(f"Đã điền Ngày cấp: {record['ngay_cap']}")
+				else:
+					# Thử tìm qua name
+					try:
+						date_by_name = self._page.locator("input[name='ngaycap']").first
+						date_by_name.fill(record["ngay_cap"])
+						date_by_name.press("Enter")
+						if log: log(f"Đã điền Ngày cấp (by name): {record['ngay_cap']}")
+					except Exception:
+						pass
+						
+			# Bấm nút Xác nhận / Tiếp theo
+			confirm_btn = self._page.locator(
+				"button:has-text('XÁC NHẬN'), div:has-text('XÁC NHẬN'), "
+				"button:has-text('TIẾP THEO'), div:has-text('TIẾP THEO')"
+			).filter(visible=True)
+			
+			if confirm_btn.count() > 0:
+				confirm_btn.last.click()
+				if log: log("Đã bấm XÁC NHẬN thông tin")
+				self._page.wait_for_timeout(3000)
+				self._page.wait_for_load_state("networkidle", timeout=10000)
+		except Exception as exc:
+			if log:
+				log(f"Lỗi khi điền Xác nhận thông tin (hoặc bước này không hiển thị): {exc}")
 
 	# ------------------------------------------------------------------ #
 	#  Window / viewport helpers                                           #
