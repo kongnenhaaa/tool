@@ -1,0 +1,181 @@
+[12:04:09] Processing ID=1 phone=814560106 serial=1163972931
+[12:04:27] Opened website
+[12:04:27] Saved debug screenshot: debug.png
+[12:04:27] Input count: 7
+[12:04:27] Input[0]: <input type="search" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="rc_select_0_list" aria-autocomplete="list" aria-controls="rc_select_0_list" readonly="" unselectable="on" value="" id="rc_select_0" style="opacity: 0;">
+[12:04:27] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[12:04:27] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[12:04:27] Input[3]: <input maxlength="100" id="name" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:04:27] Input[4]: <input maxlength="100" id="email" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:04:27] Input[5]: <input maxlength="11" id="phone" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:04:27] Input[6]: <input maxlength="100" id="address" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:04:27] Filled phone and serial
+[12:04:57] Submitted form
+[12:05:58] File input count: 0
+[12:05:58] Saved debug HTML: debug.html
+[12:05:58] Attempt 1 failed: File inputs not found
+[12:09:11] Processing ID=1 phone=814560106 serial=1163972931
+[12:09:29] Opened website
+[12:09:29] Saved debug screenshot: debug.png
+[12:09:29] Input count: 7
+[12:09:29] Input[0]: <input type="search" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="rc_select_0_list" aria-autocomplete="list" aria-controls="rc_select_0_list" readonly="" unselectable="on" value="" id="rc_select_0" style="opacity: 0;">
+[12:09:29] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[12:09:29] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[12:09:29] Input[3]: <input maxlength="100" id="name" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:09:29] Input[4]: <input maxlength="100" id="email" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:09:29] Input[5]: <input maxlength="11" id="phone" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:09:30] Input[6]: <input maxlength="100" id="address" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:09:30] Filled phone and serial
+[12:10:00] Submitted form
+[12:10:30] Attempt 1 failed: Locator.wait_for: Timeout 30000ms exceeded.
+Call log:
+  - waiting for get_by_role("button", name="Hộ chiếu").first to be visible
+
+[12:10:46] Opened website
+[12:10:46] Saved debug screenshot: debug.png
+[12:10:46] Input count: 7
+[12:10:46] Input[0]: <input type="search" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="rc_select_0_list" aria-autocomplete="list" aria-controls="rc_select_0_list" readonly="" unselectable="on" value="" id="rc_select_0" style="opacity: 0;">
+[12:10:46] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[12:10:46] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[12:10:46] Input[3]: <input maxlength="100" id="name" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:10:46] Input[4]: <input maxlength="100" id="email" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:10:46] Input[5]: <input maxlength="11" id="phone" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:10:46] Input[6]: <input maxlength="100" id="address" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:10:46] Filled phone and serial
+[12:11:16] Submitted form
+[12:12:55] Processing ID=1 phone=814560106 serial=1163972931
+[12:13:12] Opened website
+[12:13:12] Saved debug screenshot: debug.png
+[12:13:12] Input count: 7
+[12:13:12] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[12:13:12] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[12:13:12] Filled phone and serial
+[12:13:42] Submitted form
+[12:13:43] Saved debug screenshot: after_submit.png
+[12:13:43] Button count: 5
+[12:13:43] Button[0]: ĐĂNG NHẬP
+[12:13:43] Button[4]: Đăng ký
+[12:13:43] Clicked text: Hộ chiếu
+[12:14:43] Attempt 1 failed: Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for get_by_role("button", name="Tải ảnh lên").first
+
+[12:14:56] Opened website
+[12:14:57] Saved debug screenshot: debug.png
+[12:14:57] Input count: 7
+[12:14:57] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[12:14:57] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[12:14:57] Filled phone and serial
+[12:15:27] Submitted form
+[12:15:28] Saved debug screenshot: after_submit.png
+[12:15:28] Button count: 5
+[12:15:28] Button[0]: ĐĂNG NHẬP
+[12:15:28] Button[4]: Đăng ký
+[12:15:28] Clicked text: Hộ chiếu
+[12:16:28] Attempt 2 failed: Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for get_by_role("button", name="Tải ảnh lên").first
+
+[12:16:28] Saved screenshot: c:\Users\congn\Documents\tool\screenshots\1_20260530_121628.png
+[12:16:28] Done.
+[12:41:36] Processing ID=1 phone=814560106 serial=1163972931
+[12:42:00] Opened website
+[12:42:00] Saved debug screenshot: debug.png
+[12:42:00] Input count: 7
+[12:42:00] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[12:42:00] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[12:42:00] Filled phone and serial
+[12:42:30] Submitted form
+[12:42:31] Saved debug screenshot: after_submit.png
+[12:42:31] Button count: 5
+[12:42:31] Button[0]: ĐĂNG NHẬP
+[12:42:31] Button[4]: Đăng ký
+[12:42:31] Clicked text: Hộ chiếu
+[12:43:31] Attempt 1 failed: Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for get_by_role("button", name="Tải ảnh lên").first
+
+[12:43:47] Opened website
+[12:43:47] Saved debug screenshot: debug.png
+[12:43:47] Input count: 7
+[12:43:47] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[12:43:47] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[12:43:47] Filled phone and serial
+[12:44:17] Submitted form
+[12:44:18] Saved debug screenshot: after_submit.png
+[12:44:18] Button count: 5
+[12:44:18] Button[0]: ĐĂNG NHẬP
+[12:44:18] Button[4]: Đăng ký
+[12:44:18] Clicked text: Hộ chiếu
+[12:45:18] Attempt 2 failed: Locator.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for get_by_role("button", name="Tải ảnh lên").first
+
+[12:45:18] Saved screenshot: c:\Users\congn\Documents\tool\screenshots\1_20260530_124518.png
+[12:45:18] Done.
+[12:56:25] Processing ID=1 phone=814560106 serial=1163972931
+[12:56:44] Opened website
+[12:56:45] Saved debug screenshot: debug.png
+[12:56:45] Input count: 7
+[12:56:45] Input[0]: <input type="search" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="rc_select_0_list" aria-autocomplete="list" aria-controls="rc_select_0_list" readonly="" unselectable="on" value="" id="rc_select_0" style="opacity: 0;">
+[12:56:45] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[12:56:45] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[12:56:45] Input[3]: <input maxlength="100" id="name" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:56:45] Input[4]: <input maxlength="100" id="email" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:56:45] Input[5]: <input maxlength="11" id="phone" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:56:45] Input[6]: <input maxlength="100" id="address" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:56:45] Filled phone and serial
+[12:57:15] Clicked confirm
+[12:57:45] Modal click failed: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("button:has-text('BẬT ĐẦU')") to be visible
+
+[12:58:52] Processing ID=1 phone=814560106 serial=1163972931
+[12:59:10] Opened website
+[12:59:11] Saved debug screenshot: debug.png
+[12:59:11] Input count: 7
+[12:59:11] Input[0]: <input type="search" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="rc_select_0_list" aria-autocomplete="list" aria-controls="rc_select_0_list" readonly="" unselectable="on" value="" id="rc_select_0" style="opacity: 0;">
+[12:59:11] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[12:59:11] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[12:59:11] Input[3]: <input maxlength="100" id="name" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:59:11] Input[4]: <input maxlength="100" id="email" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:59:11] Input[5]: <input maxlength="11" id="phone" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:59:11] Input[6]: <input maxlength="100" id="address" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[12:59:11] Filled phone and serial
+[12:59:41] Clicked confirm
+[13:00:11] Modal click failed: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("button:has-text('BẬT ĐẦU')") to be visible
+
+[13:02:40] Processing ID=1 phone=814560106 serial=1163972931
+[13:03:00] Opened website
+[13:03:01] Saved debug screenshot: debug.png
+[13:03:01] Input count: 7
+[13:03:01] Input[0]: <input type="search" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="rc_select_0_list" aria-autocomplete="list" aria-controls="rc_select_0_list" readonly="" unselectable="on" value="" id="rc_select_0" style="opacity: 0;">
+[13:03:01] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[13:03:01] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[13:03:01] Input[3]: <input maxlength="100" id="name" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[13:03:01] Input[4]: <input maxlength="100" id="email" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[13:03:01] Input[5]: <input maxlength="11" id="phone" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[13:03:01] Input[6]: <input maxlength="100" id="address" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[13:03:01] Filled phone and serial
+[13:03:31] Clicked confirm
+[13:03:31] Selected passport document
+[13:04:01] Modal click failed: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("button:has-text('BẮT ĐẦU')") to be visible
+
+[13:05:01] File input count: 0
+[13:05:01] Saved debug HTML: debug.html
+[13:05:01] Attempt 1 failed: No file input found
+[13:05:15] Opened website
+[13:05:15] Saved debug screenshot: debug.png
+[13:05:15] Input count: 7
+[13:05:15] Input[0]: <input type="search" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="rc_select_0_list" aria-autocomplete="list" aria-controls="rc_select_0_list" readonly="" unselectable="on" value="" id="rc_select_0" style="opacity: 0;">
+[13:05:15] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[13:05:15] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[13:05:15] Input[3]: <input maxlength="100" id="name" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[13:05:15] Input[4]: <input maxlength="100" id="email" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[13:05:15] Input[5]: <input maxlength="11" id="phone" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[13:05:15] Input[6]: <input maxlength="100" id="address" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[13:05:15] Filled phone and serial
