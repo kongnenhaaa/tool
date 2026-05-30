@@ -157,3 +157,57 @@ Call log:
 [20:25:48] Read result from page
 [20:25:48] Page closed
 [20:25:49] Done.
+[20:29:03] Processing ID=1 phone=814560106 serial=1163972931
+[20:29:04] Maximized browser window
+[20:29:04] Synced viewport to screen size
+[20:29:04] Injected mock camera script with base64 image
+[20:29:04] Page navigated: https://digishop.vnpt.vn/tourist/
+[20:29:11] Opened website
+[20:29:11] Page navigated: https://digishop.vnpt.vn/tourist/
+[20:29:11] Filled phone and serial
+[20:29:16] Clicked confirm
+[20:29:20] Selected passport document
+[20:29:20] Clicked BẮT ĐẦU using selector #1
+[20:29:20] TẢI ẢNH LÊN is visible after click
+[20:29:20] TẢI ẢNH LÊN is visible
+[20:29:20] File input count: 1
+[20:29:20] Uploaded passport
+[20:29:24] Clicked TIẾP THEO (passport preview)
+[20:29:41] Clicked TÔI ĐÃ HIỂU
+[20:29:41] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
+[20:29:57] Chuyển sang bước Xác thực khuôn mặt (Camera AI)
+[20:29:57] Đang chờ AI quét khuôn mặt...
+[20:31:30] Processing ID=1 phone=814560106 serial=1163972931
+[20:31:30] Maximized browser window
+[20:31:30] Synced viewport to screen size
+[20:31:30] Injected mock camera script with base64 image
+[20:31:31] Page navigated: https://digishop.vnpt.vn/tourist/
+[20:31:38] Opened website
+[20:31:38] Page navigated: https://digishop.vnpt.vn/tourist/
+[20:31:39] Filled phone and serial
+[20:31:44] Clicked confirm
+[20:31:44] Selected passport document
+[20:31:44] Clicked BẮT ĐẦU using selector #1
+[20:31:44] TẢI ẢNH LÊN is visible after click
+[20:31:44] TẢI ẢNH LÊN is visible
+[20:31:44] File input count: 1
+[20:31:44] Uploaded passport
+[20:31:49] Clicked TIẾP THEO (passport preview)
+[20:32:05] Clicked TÔI ĐÃ HIỂU
+[20:32:05] After TÔI ĐÃ HIỂU URL: https://digishop.vnpt.vn/tourist/
+[20:32:17] Page closed
+[20:32:17] Chuyển sang bước Xác thực khuôn mặt (Camera AI)
+[20:32:17] Đang chờ AI quét khuôn mặt...
+[20:32:17] Quá trình đợi quét khuôn mặt có thể bị timeout hoặc lỗi: Locator.wait_for: Target page, context or browser has been closed
+[20:32:17] Face verification completed
+[20:32:17] Attempt 1 failed: Page.inner_text: Target page, context or browser has been closed
+[20:32:17] Maximized browser window
+[20:32:17] Synced viewport to screen size
+[20:32:17] Injected mock camera script with base64 image
+[20:32:17] Page navigated: https://digishop.vnpt.vn/tourist/
+[20:32:19] Page closed
+[20:32:19] Attempt 2 failed: Page.goto: Target page, context or browser has been closed
+Call log:
+  - navigating to "https://digishop.vnpt.vn/tourist/", waiting until "domcontentloaded"
+
+[20:32:19] Done.

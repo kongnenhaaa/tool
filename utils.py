@@ -92,13 +92,12 @@ def get_face_frame_base64(
 			cx = x + w / 2
 			cy = y + h / 2
 
-			# We want the face to occupy ~40% of the output frame height
-			# so it fits comfortably inside the VNPT oval frame.
-			# face_h ≈ 0.40 * target_height  →  crop_h = face_h / 0.40
+			# We want the face to occupy ~25% of the output frame height
+			# so it fits comfortably inside the VNPT oval frame with
+			# enough margin for forehead, chin, and both sides.
+			# face_h ≈ 0.25 * target_height  →  crop_h = h / 0.25
 			# The face bounding box height in the source image is `h`.
-			# We want: (h / crop_h) * target_height ≈ 0.40 * target_height
-			# → crop_h ≈ h / 0.40
-			desired_face_ratio = 0.40  # face fills 40% of frame height
+			desired_face_ratio = 0.25  # face fills 25% of frame height
 			crop_h = h / desired_face_ratio
 			crop_w = crop_h * target_aspect
 
