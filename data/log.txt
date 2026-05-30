@@ -137,3 +137,99 @@ Call log:
 Call log:
   - waiting for button:has-text('BẮT ĐẦU'), text=Bắt đầu >> nth=0 to be visible
 
+[18:31:49] File input count: 0
+[18:31:49] Saved debug HTML: debug.html
+[18:31:49] Attempt 1 failed: No file input found
+[18:31:49] Maximized browser window
+[18:31:49] Synced viewport to screen size
+[18:31:49] Loaded fake webcam base64 data
+[18:32:15] Opened website
+[18:32:15] Saved debug screenshot: debug.png
+[18:32:15] Input count: 7
+[18:32:15] Input[0]: <input type="search" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="rc_select_0_list" aria-autocomplete="list" aria-controls="rc_select_0_list" readonly="" unselectable="on" value="" id="rc_select_0" style="opacity: 0;">
+[18:32:15] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[18:32:15] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[18:32:15] Input[3]: <input maxlength="100" id="name" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:32:15] Input[4]: <input maxlength="100" id="email" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:32:15] Input[5]: <input maxlength="11" id="phone" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:32:15] Input[6]: <input maxlength="100" id="address" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:32:15] Filled phone and serial
+[18:32:45] Clicked confirm
+[18:32:46] Selected passport document
+[18:32:46] Modal click failed: Locator.wait_for: Unexpected token "=" while parsing css selector "button:has-text('BẮT ĐẦU'), text=Bắt đầu". Did you mean to CSS.escape it?
+Call log:
+  - waiting for button:has-text('BẮT ĐẦU'), text=Bắt đầu >> nth=0 to be visible
+
+[18:33:46] File input count: 0
+[18:33:46] Saved debug HTML: debug.html
+[18:33:46] Attempt 2 failed: No file input found
+[18:33:47] Saved screenshot: c:\Users\congn\Documents\tool\screenshots\1_20260530_183346.png
+[18:33:48] Done.
+[18:36:47] Processing ID=1 phone=814560106 serial=1163972931
+[18:36:47] Maximized browser window
+[18:36:47] Synced viewport to screen size
+[18:36:47] Loaded fake webcam base64 data
+[18:37:38] Opened website
+[18:37:39] Saved debug screenshot: debug.png
+[18:37:39] Input count: 7
+[18:37:39] Input[0]: <input type="search" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="rc_select_0_list" aria-autocomplete="list" aria-controls="rc_select_0_list" readonly="" unselectable="on" value="" id="rc_select_0" style="opacity: 0;">
+[18:37:39] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[18:37:39] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[18:37:39] Input[3]: <input maxlength="100" id="name" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:37:39] Input[4]: <input maxlength="100" id="email" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:37:39] Input[5]: <input maxlength="11" id="phone" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:37:39] Input[6]: <input maxlength="100" id="address" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:37:39] Filled phone and serial
+[18:38:09] Clicked confirm
+[18:38:10] Selected passport document
+[18:38:40] Modal click failed: Locator.wait_for: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("button:has-text('BẮT ĐẦU'), button:has-text('Bắt đầu')").first to be visible
+
+[18:39:40] File input count: 0
+[18:39:40] Saved debug HTML: debug.html
+[18:39:40] Attempt 1 failed: No file input found
+[18:39:40] Maximized browser window
+[18:39:40] Synced viewport to screen size
+[18:39:40] Loaded fake webcam base64 data
+[18:40:37] Opened website
+[18:40:38] Saved debug screenshot: debug.png
+[18:40:38] Input count: 7
+[18:40:38] Input[0]: <input type="search" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="rc_select_0_list" aria-autocomplete="list" aria-controls="rc_select_0_list" readonly="" unselectable="on" value="" id="rc_select_0" style="opacity: 0;">
+[18:40:38] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[18:40:38] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[18:40:38] Input[3]: <input maxlength="100" id="name" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:40:38] Input[4]: <input maxlength="100" id="email" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:40:38] Input[5]: <input maxlength="11" id="phone" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:40:38] Input[6]: <input maxlength="100" id="address" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:40:38] Filled phone and serial
+[18:41:08] Clicked confirm
+[18:41:09] Selected passport document
+[18:41:39] Modal click failed: Locator.wait_for: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("button:has-text('BẮT ĐẦU'), button:has-text('Bắt đầu')").first to be visible
+
+[18:43:41] Processing ID=1 phone=814560106 serial=1163972931
+[18:43:42] Maximized browser window
+[18:43:42] Synced viewport to screen size
+[18:43:42] Loaded fake webcam base64 data
+[18:44:14] Opened website
+[18:44:15] Saved debug screenshot: debug.png
+[18:44:15] Input count: 7
+[18:44:15] Input[0]: <input type="search" autocomplete="off" class="ant-select-selection-search-input" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="rc_select_0_list" aria-autocomplete="list" aria-controls="rc_select_0_list" readonly="" unselectable="on" value="" id="rc_select_0" style="opacity: 0;">
+[18:44:15] Input[1]: <input id="msisdn_validate" type="text" class="boxinput" placeholder="Nhập số thuê bao" value="" style="">
+[18:44:15] Input[2]: <input id="serial_validate" type="text" class="boxinput" placeholder="Nhập 10 số serial (từ 10 đến 19)" value="" style="">
+[18:44:15] Input[3]: <input maxlength="100" id="name" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:44:15] Input[4]: <input maxlength="100" id="email" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:44:15] Input[5]: <input maxlength="11" id="phone" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:44:15] Input[6]: <input maxlength="100" id="address" aria-required="true" class="ant-input ant-input-lg css-98ntnt ant-input-outlined form-control input-reg" type="text" value="" style="">
+[18:44:15] Filled phone and serial
+[18:44:45] Clicked confirm
+[18:44:45] Selected passport document
+[18:44:45] Clicked BẮT ĐẦU
+[18:45:45] File input count: 0
+[18:45:45] Saved debug HTML: debug.html
+[18:45:45] Attempt 1 failed: No file input found
+[18:45:46] Maximized browser window
+[18:45:46] Synced viewport to screen size
+[18:45:46] Loaded fake webcam base64 data

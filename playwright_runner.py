@@ -145,7 +145,9 @@ class PlaywrightRunner:
 			self._page.click("text=Hộ chiếu")
 			if log:
 				log("Selected passport document")
-			start_btn = self._page.locator("button:has-text('BẮT ĐẦU'), text=Bắt đầu").first
+			start_btn = self._page.locator(
+				"div:has-text('BẮT ĐẦU'), div:has-text('Bắt đầu')"
+			).first
 			start_btn.wait_for(state="visible", timeout=30000)
 			start_btn.click()
 			if log:
