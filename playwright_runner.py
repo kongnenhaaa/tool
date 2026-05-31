@@ -269,8 +269,8 @@ class PlaywrightRunner:
 		  const _origEnumerate    = navigator.mediaDevices.enumerateDevices.bind(navigator.mediaDevices);
 
 		  /* ---------- constants ---------- */
-		  const W  = 1280;
-		  const H  = 720;
+		  const W  = 640;
+		  const H  = 360;
 		  const FPS = 30;
 		  const DEVICE_ID  = 'fake-cam-0a1b2c3d';
 		  const GROUP_ID   = 'fake-grp-4e5f6a7b';
@@ -290,23 +290,35 @@ class PlaywrightRunner:
 		    img.onerror = r;
 		  }});
 
+		  window.fakeCamZoom = 1.0;
+		  
+		  // Auto-zoom AI: tự động nhận diện cảnh báo của VNPT để zoom gần/xa
+		  setInterval(() => {{
+		      const warningMsg = document.querySelector('.warning-message p, .vnpt-text-warning');
+		      if (warningMsg) {{
+		          const text = warningMsg.textContent.trim().toLowerCase();
+		          if (text.includes('gần hơn nữa')) {{
+		              window.fakeCamZoom += 0.015; // Phóng to dần đều
+		          }} else if (text.includes('xa hơn')) {{
+		              window.fakeCamZoom -= 0.015; // Thu nhỏ dần đều (nếu cần)
+		          }}
+		      }}
+		  }}, 100);
+
 		  function drawFrame() {{
-		    ctx.fillStyle = '#ffffff'; // Tô nền trắng xung quanh
-		    ctx.fillRect(0, 0, canvas.width, canvas.height);
 		    if (img.naturalWidth > 0 && img.naturalHeight > 0) {{
-		        // --- CÔNG THỨC MỚI: Thu nhỏ ảnh ---
-		        // Hệ số thu nhỏ (zoom_factor) ép ảnh lọt giữa nền trắng. 
-		        // 0.45 là tỷ lệ vàng cho hệ thống eKYC VNPT.
-		        const zoom_factor = 0.45; 
-		        
-		        const scale = Math.min(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight) * zoom_factor;
+		        // Dùng object-fit cover logic để ảnh không bị méo tỷ lệ
+		        const baseScale = Math.max(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
+		        const scale = baseScale * window.fakeCamZoom;
 		        
 		        const scaledWidth = img.naturalWidth * scale;
 		        const scaledHeight = img.naturalHeight * scale;
-		        
-		        // Căn giữa ảnh theo chiều ngang (X) và chiều dọc (Y)
 		        const dx = (canvas.width - scaledWidth) / 2;
 		        const dy = (canvas.height - scaledHeight) / 2;
+		        
+		        // Xóa nền canvas bằng màu đen (đề phòng khi zoom out)
+		        ctx.fillStyle = '#000000';
+		        ctx.fillRect(0, 0, canvas.width, canvas.height);
 		        
 		        ctx.drawImage(img, dx, dy, scaledWidth, scaledHeight);
 		    }}
@@ -403,39 +415,42 @@ class PlaywrightRunner:
 
 			# Inject CSS xóa nền trắng + điền ảnh chân dung vào khung
 			try:
-				# Inject <style> tag để override CSS gốc của VNPT (inline style không dùng !important được)
-				self._page.add_style_tag(content="""
-					.inbox-idcard,
-					.box-idcard,
-					.col-right .inbox-idcard,
-					.col-right .box-idcard {
-						background: transparent !important;
-						background-color: transparent !important;
-						box-shadow: none !important;
-						border: none !important;
-						padding: 0 !important;
-					}
-					.inbox-idcard img,
-					.col-right .inbox-idcard img {
-						width: 100% !important;
-						height: 100% !important;
-						object-fit: cover !important;
-						max-width: none !important;
-						max-height: none !important;
-						border-radius: 4px !important;
-					}
-				""")
-				
-				# Inject ảnh chân dung vào đúng thẻ img rỗng
 				if hasattr(self, '_portrait_path') and self._portrait_path:
 					import base64 as _b64
 					with open(self._portrait_path, 'rb') as f:
 						portrait_b64 = _b64.b64encode(f.read()).decode('utf-8')
+					
 					self._page.evaluate(f"""
-						document.querySelectorAll('.inbox-idcard img').forEach(img => {{
+						document.querySelectorAll('img').forEach(img => {{
 							const src = img.getAttribute('src') || '';
-							if (src === '' || src === 'data:image/png;base64,' || src.endsWith(',')) {{
+							// Tìm thẻ img rỗng (hoặc src bị lỗi) thuộc khu vực khuôn mặt
+							if ((src === '' || src === 'data:image/png;base64,' || src.endsWith(',')) && 
+								(img.closest('.col-right') || img.closest('.box-idcard') || img.closest('.inbox-idcard'))) {{
+								
+								// Gán ảnh
 								img.src = 'data:image/jpeg;base64,{portrait_b64}';
+								img.style.setProperty('display', 'block', 'important');
+								img.style.setProperty('max-width', '100%', 'important');
+								img.style.setProperty('max-height', '100%', 'important');
+								img.style.setProperty('width', 'auto', 'important');
+								img.style.setProperty('height', 'auto', 'important');
+								img.style.setProperty('object-fit', 'contain', 'important');
+								img.style.setProperty('border-radius', '8px', 'important');
+								img.style.setProperty('margin', 'auto', 'important');
+								
+								// Xóa nền trắng mảng bám của 4 thẻ cha bọc bên ngoài
+								let parent = img.parentElement;
+								for(let i=0; i<4; i++) {{
+									if(!parent || parent.tagName === 'BODY') break;
+									parent.style.setProperty('background', 'transparent', 'important');
+									parent.style.setProperty('background-color', 'transparent', 'important');
+									parent.style.setProperty('box-shadow', 'none', 'important');
+									parent.style.setProperty('border', 'none', 'important');
+									parent.style.setProperty('display', 'flex', 'important');
+									parent.style.setProperty('justify-content', 'center', 'important');
+									parent.style.setProperty('align-items', 'center', 'important');
+									parent = parent.parentElement;
+								}}
 							}}
 						}});
 					""")

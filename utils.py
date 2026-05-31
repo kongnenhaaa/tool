@@ -81,64 +81,64 @@ def get_face_frame_base64(
 			minSize=(60, 60),
 		)
 
-		target_aspect = target_width / target_height
-
 		if len(faces) > 0:
-			# Pick the largest face
+			# We want the face to occupy exactly 35% of the frame height
+			desired_face_ratio = 0.35
+			face_target_h = int(target_height * desired_face_ratio)
+			
+			# Lấy khuôn mặt to nhất
 			faces_sorted = sorted(faces, key=lambda f: f[2] * f[3], reverse=True)
 			x, y, w, h = faces_sorted[0]
-
-			# Center of the detected face
+			
+			# Tọa độ trung tâm khuôn mặt
 			cx = x + w / 2
-			cy = y + h / 2
-
-			# We want the face to occupy ~25% of the output frame height
-			# so it fits comfortably inside the VNPT oval frame with
-			# enough margin for forehead, chin, and both sides.
-			# face_h ≈ 0.25 * target_height  →  crop_h = h / 0.25
-			# The face bounding box height in the source image is `h`.
-			desired_face_ratio = 0.25  # face fills 25% of frame height
-			crop_h = h / desired_face_ratio
-			crop_w = crop_h * target_aspect
-
-			# If crop is larger than image, clamp
-			if crop_w > img_w:
-				crop_w = img_w
-				crop_h = crop_w / target_aspect
-			if crop_h > img_h:
-				crop_h = img_h
-				crop_w = crop_h * target_aspect
-
-			# Move center up slightly (faces look more natural when slightly
-			# above center — show a bit more forehead area)
-			cy = cy - h * 0.05
+			cy = y + h / 2 - h * 0.05  # Nhích lên một chút cho tự nhiên
+			
+			scale = face_target_h / h
 		else:
-			# No face detected — center crop
 			cx = img_w / 2
 			cy = img_h / 2
-			crop_h = min(img_h, img_w / target_aspect)
-			crop_w = crop_h * target_aspect
+			scale = target_height / img_h
 
-		# Compute crop bounds, keeping within image
-		x1 = int(max(0, cx - crop_w / 2))
-		x2 = int(min(img_w, cx + crop_w / 2))
-		y1 = int(max(0, cy - crop_h / 2))
-		y2 = int(min(img_h, cy + crop_h / 2))
+		# Scale ảnh gốc theo tỷ lệ để khuôn mặt đạt chuẩn 45% chiều cao
+		new_w = int(img_w * scale)
+		new_h = int(img_h * scale)
+		scaled_img = cv2.resize(img, (new_w, new_h))
 
-		# If the crop was clamped at an edge, shift the other side
-		if x2 - x1 < int(crop_w):
-			if x1 == 0:
-				x2 = min(img_w, int(crop_w))
-			elif x2 == img_w:
-				x1 = max(0, img_w - int(crop_w))
-		if y2 - y1 < int(crop_h):
-			if y1 == 0:
-				y2 = min(img_h, int(crop_h))
-			elif y2 == img_h:
-				y1 = max(0, img_h - int(crop_h))
+		scaled_cx = int(cx * scale)
+		scaled_cy = int(cy * scale)
 
-		frame = img[y1:y2, x1:x2]
-		frame = cv2.resize(frame, (target_width, target_height))
+		# Tính toán vị trí để đặt ảnh scaled_img sao cho khuôn mặt nằm giữa frame
+		paste_x = target_width // 2 - scaled_cx
+		paste_y = target_height // 2 - scaled_cy
+
+		# 1. TẠO HÌNH NỀN BỊ LÀM MỜ (BLURRED BACKGROUND)
+		# Tránh viền đen/trắng, thay bằng viền mờ tự nhiên từ ảnh gốc
+		bg_scale = max(target_width / img_w, target_height / img_h)
+		bg_w = int(img_w * bg_scale)
+		bg_h = int(img_h * bg_scale)
+		bg = cv2.resize(img, (bg_w, bg_h))
+		
+		bg_x = (bg_w - target_width) // 2
+		bg_y = (bg_h - target_height) // 2
+		frame = bg[bg_y:bg_y+target_height, bg_x:bg_x+target_width].copy()
+		
+		# Làm mờ thật mạnh phông nền
+		frame = cv2.GaussianBlur(frame, (99, 99), 0)
+
+		# 2. DÁN ẢNH CHÂN DUNG LÊN TRÊN NỀN MỜ
+		y1 = max(0, paste_y)
+		y2 = min(target_height, paste_y + new_h)
+		x1 = max(0, paste_x)
+		x2 = min(target_width, paste_x + new_w)
+
+		img_y1 = max(0, -paste_y)
+		img_y2 = img_y1 + (y2 - y1)
+		img_x1 = max(0, -paste_x)
+		img_x2 = img_x1 + (x2 - x1)
+
+		if y2 > y1 and x2 > x1:
+			frame[y1:y2, x1:x2] = scaled_img[img_y1:img_y2, img_x1:img_x2]
 
 		ok, buffer = cv2.imencode(".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 92])
 		if not ok:
