@@ -270,7 +270,7 @@ class PlaywrightRunner:
 
 		  /* ---------- constants ---------- */
 		  const W  = 640;
-		  const H  = 360;
+		  const H  = 480;
 		  const FPS = 30;
 		  const DEVICE_ID  = 'fake-cam-0a1b2c3d';
 		  const GROUP_ID   = 'fake-grp-4e5f6a7b';
@@ -299,8 +299,8 @@ class PlaywrightRunner:
 		          const text = warningMsg.textContent.trim().toLowerCase();
 		          if (text.includes('gần hơn nữa')) {{
 		              window.fakeCamZoom += 0.015; // Phóng to dần đều
-		          }} else if (text.includes('xa hơn')) {{
-		              window.fakeCamZoom -= 0.015; // Thu nhỏ dần đều (nếu cần)
+		          }} else if (text.includes('xa hơn') || text.includes('vừa khung hình')) {{
+		              window.fakeCamZoom -= 0.015; // Thu nhỏ dần đều
 		          }}
 		      }}
 		  }}, 100);
@@ -309,7 +309,8 @@ class PlaywrightRunner:
 		    if (img.naturalWidth > 0 && img.naturalHeight > 0) {{
 		        // Dùng object-fit cover logic để ảnh không bị méo tỷ lệ
 		        const baseScale = Math.max(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
-		        const scale = baseScale * window.fakeCamZoom;
+		        let scale = baseScale * window.fakeCamZoom;
+		        if (scale < baseScale) scale = baseScale; // Tuyệt đối không cho phép zoom nhỏ hơn khung để lộ viền đen
 		        
 		        const scaledWidth = img.naturalWidth * scale;
 		        const scaledHeight = img.naturalHeight * scale;
@@ -413,49 +414,7 @@ class PlaywrightRunner:
 			if log:
 				log("Trang Xác nhận thông tin đã tải")
 
-			# Inject CSS xóa nền trắng + điền ảnh chân dung vào khung
-			try:
-				if hasattr(self, '_portrait_path') and self._portrait_path:
-					import base64 as _b64
-					with open(self._portrait_path, 'rb') as f:
-						portrait_b64 = _b64.b64encode(f.read()).decode('utf-8')
-					
-					self._page.evaluate(f"""
-						document.querySelectorAll('img').forEach(img => {{
-							const src = img.getAttribute('src') || '';
-							// Tìm thẻ img rỗng (hoặc src bị lỗi) thuộc khu vực khuôn mặt
-							if ((src === '' || src === 'data:image/png;base64,' || src.endsWith(',')) && 
-								(img.closest('.col-right') || img.closest('.box-idcard') || img.closest('.inbox-idcard'))) {{
-								
-								// Gán ảnh
-								img.src = 'data:image/jpeg;base64,{portrait_b64}';
-								img.style.setProperty('display', 'block', 'important');
-								img.style.setProperty('max-width', '100%', 'important');
-								img.style.setProperty('max-height', '100%', 'important');
-								img.style.setProperty('width', 'auto', 'important');
-								img.style.setProperty('height', 'auto', 'important');
-								img.style.setProperty('object-fit', 'contain', 'important');
-								img.style.setProperty('border-radius', '8px', 'important');
-								img.style.setProperty('margin', 'auto', 'important');
-								
-								// Xóa nền trắng mảng bám của 4 thẻ cha bọc bên ngoài
-								let parent = img.parentElement;
-								for(let i=0; i<4; i++) {{
-									if(!parent || parent.tagName === 'BODY') break;
-									parent.style.setProperty('background', 'transparent', 'important');
-									parent.style.setProperty('background-color', 'transparent', 'important');
-									parent.style.setProperty('box-shadow', 'none', 'important');
-									parent.style.setProperty('border', 'none', 'important');
-									parent.style.setProperty('display', 'flex', 'important');
-									parent.style.setProperty('justify-content', 'center', 'important');
-									parent.style.setProperty('align-items', 'center', 'important');
-									parent = parent.parentElement;
-								}}
-							}}
-						}});
-					""")
-			except Exception:
-				pass
+
 
 			if record.get("noi_cap"):
 				self._page.fill("input[name='noicap']", record["noi_cap"])
