@@ -48,10 +48,57 @@ def get_cropped_face_base64(image_path: str) -> str:
 		return ""
 
 
+import numpy as np
+
+def apply_anti_glare(img: np.ndarray) -> np.ndarray:
+	"""
+	Phủ một lớp mờ sẫm màu lên các vùng bị chói sáng (màn hình) 
+	để đánh lừa hệ thống Anti-Spoofing (Liveness) của eKYC.
+	"""
+	try:
+		hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+		h, s, v = cv2.split(hsv)
+		
+		# Tìm các vùng chói sáng (Value > 210)
+		mask = v > 210
+		mask_float = mask.astype(np.float32)
+		
+		# Làm mờ mặt nạ thật mạnh để tạo lớp phủ mềm mại (không bị lộ viền)
+		mask_blurred = cv2.GaussianBlur(mask_float, (21, 21), 0)
+		
+		# 1. Giảm cường độ sáng tối đa 20% ở những điểm lóa nhất
+		v_float = v.astype(np.float32)
+		v_new = v_float * (1 - 0.2 * mask_blurred)
+		v_new = np.clip(v_new, 0, 255).astype(np.uint8)
+		hsv_new = cv2.merge((h, s, v_new))
+		img_darkened = cv2.cvtColor(hsv_new, cv2.COLOR_HSV2BGR)
+		
+		# 2. Xóa sạch các chi tiết sắc nét của màn hình trong vùng chói
+		img_blurred = cv2.GaussianBlur(img_darkened, (15, 15), 0)
+		
+		# 3. Trộn ảnh gốc (đã tối lại) với ảnh mờ dựa theo mặt nạ
+		mask_3d = np.repeat(mask_blurred[:, :, np.newaxis], 3, axis=2)
+		final_img = img_darkened * (1 - mask_3d) + img_blurred * mask_3d
+		final_img = final_img.astype(np.uint8)
+
+		# 4. [TĂNG CHIỀU SÂU 3D] Sử dụng CLAHE để tăng độ tương phản cục bộ
+		# Điều này giúp khuôn mặt bớt "phẳng" (2D) và nổi khối (3D) hơn, qua mặt AI cực tốt.
+		lab = cv2.cvtColor(final_img, cv2.COLOR_BGR2LAB)
+		l, a, b = cv2.split(lab)
+		clahe = cv2.createCLAHE(clipLimit=1.5, tileGridSize=(8, 8))
+		cl = clahe.apply(l)
+		limg = cv2.merge((cl, a, b))
+		final_enhanced = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
+
+		return final_enhanced
+	except Exception:
+		return img
+
 def get_face_frame_base64(
 	image_path: str,
 	target_width: int = 1280,
 	target_height: int = 720,
+	apply_filter: bool = False,
 ) -> str:
 	"""
 	Xác định khuôn mặt trong ảnh, crop theo tỷ lệ chuẩn 16:9 (1280x720)
@@ -67,6 +114,10 @@ def get_face_frame_base64(
 		img = cv2.imread(image_path)
 		if img is None:
 			return ""
+			
+		# [ANTI-GLARE]: Áp dụng thuật toán khử chói màn hình nếu được yêu cầu
+		if apply_filter:
+			img = apply_anti_glare(img)
 
 		img_h, img_w = img.shape[:2]
 		gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -148,7 +199,7 @@ def get_face_frame_base64(
 		print(f"Loi khi xu ly anh {image_path}: {exc}")
 		return ""
 
-def get_id_photo_base64(image_path: str) -> str:
+def get_id_photo_base64(image_path: str, apply_filter: bool = False) -> str:
 	"""
 	Crop một ảnh 3:4 chuẩn thẻ (như ảnh thẻ CMND) quanh khuôn mặt
 	để hiển thị trên trang Xác nhận thông tin. Không bù viền mờ.
@@ -160,6 +211,10 @@ def get_id_photo_base64(image_path: str) -> str:
 		img = cv2.imread(image_path)
 		if img is None:
 			return ""
+			
+		# [ANTI-GLARE]: Áp dụng thuật toán khử chói nếu được yêu cầu
+		if apply_filter:
+			img = apply_anti_glare(img)
 
 		face_cascade = cv2.CascadeClassifier(
 			cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
@@ -178,9 +233,9 @@ def get_id_photo_base64(image_path: str) -> str:
 		target_aspect = 3.0 / 4.0
 
 		if len(faces) > 0:
-			# Khuôn mặt chiếm 70% chiều cao để loại bỏ hoàn toàn phần vai/ngực
-			# (Không thể to hơn 75% vì khung dọc hẹp ngang, sẽ bị lẹm 2 bên tai)
-			desired_face_ratio = 0.70
+			# Khuôn mặt chiếm 55% chiều cao để lấy được toàn bộ đầu, tai và cổ.
+			# (Không để quá to 70% vì những người có khuôn mặt bè ngang (như ảnh 2) sẽ bị cắt lẹm 2 tai dẫn đến lỗi eKYC)
+			desired_face_ratio = 0.55
 			faces_sorted = sorted(faces, key=lambda f: f[2] * f[3], reverse=True)
 			x, y, w, h = faces_sorted[0]
 			

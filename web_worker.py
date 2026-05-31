@@ -41,7 +41,15 @@ class WebWorker(threading.Thread):
 					break
 
 				self._log(f"Đang xử lý Khách hàng: ID={record['id']} | Số điện thoại={record['phone']} | Serial={record['serial']}")
-				status, message = self._process_record(self.runner, record)
+				
+				# Chạy lần 1 với ảnh gốc (không có bộ lọc đổi da)
+				status, message = self._process_record(self.runner, record, apply_filter=False)
+
+				# Nếu lần 1 bị rớt do lỗi Liveness (không đạt), thử lại lần 2 với bộ lọc "đổi da"
+				if status == "FAILED" and "không đạt" in message.lower() and self.is_running:
+					self._log("Lỗi eKYC! Kích hoạt chế độ THỬ LẠI với bộ lọc thay đổi da (Anti-Glare & CLAHE)...")
+					# Chạy lần 2 (có bộ lọc)
+					status, message = self._process_record(self.runner, record, apply_filter=True)
 
 				# Nếu đã bấm STOP thì dừng, không lưu kết quả STOPPED
 				if status == "STOPPED":
@@ -93,14 +101,14 @@ class WebWorker(threading.Thread):
 	def _emit(self, data: dict[str, Any]) -> None:
 		self.message_queue.put(data)
 
-	def _process_record(self, runner: PlaywrightRunner, record: dict) -> tuple[str, str]:
+	def _process_record(self, runner: PlaywrightRunner, record: dict, apply_filter: bool = False) -> tuple[str, str]:
 		passport, portrait = self._resolve_photos(record["id"])
 		if not passport or not portrait:
 			missing = "Ảnh Hộ chiếu" if not passport else "Ảnh chân dung"
 			return "FAILED", f"Thiếu {missing}"
 
 		try:
-			status, message = runner.run(record, passport, portrait, log=self._log)
+			status, message = runner.run(record, passport, portrait, log=self._log, apply_filter=apply_filter)
 			return status, message
 		except Exception as exc:
 			# Nếu stop được gọi trong khi đang chạy, không tính là FAILED

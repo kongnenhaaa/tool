@@ -1497,3 +1497,614 @@ Call log:
 [13:19:18] Đã bấm XÁC NHẬN thông tin
 [13:19:20] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
 [13:19:20] Hoàn thành toàn bộ tiến trình!
+[00:03:42] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[00:03:43] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:03:49] Đã mở trang web
+[00:03:51] Đã điền Số điện thoại & Serial
+[00:03:51] Đã bấm xác nhận (Tiếp tục)
+[00:03:52] Đã chọn loại giấy tờ: Hộ chiếu
+[00:03:52] Đã bấm BẮT ĐẦU
+[00:03:53] Đã tải lên ảnh Hộ chiếu thành công
+[00:03:58] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:04:03] Đã bấm TÔI ĐÃ HIỂU
+[00:04:10] Trang Xác nhận thông tin đã tải
+[00:04:11] Đã điền Nơi cấp: RANCHI
+[00:04:11] Đã điền Ngày cấp: 06/06/2025
+[00:04:11] Đã bấm XÁC NHẬN thông tin
+[00:04:12] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[00:04:13] Hoàn thành toàn bộ tiến trình!
+[00:06:23] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[00:06:24] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:06:30] Đã mở trang web
+[00:06:32] Đã điền Số điện thoại & Serial
+[00:06:32] Đã bấm xác nhận (Tiếp tục)
+[00:06:34] Đã chọn loại giấy tờ: Hộ chiếu
+[00:06:34] Đã bấm BẮT ĐẦU
+[00:06:35] Đã tải lên ảnh Hộ chiếu thành công
+[00:06:40] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:06:45] Đã bấm TÔI ĐÃ HIỂU
+[00:06:52] Trang Xác nhận thông tin đã tải
+[00:06:57] Đã điền Nơi cấp: RANCHI
+[00:07:02] Đã điền Ngày cấp: 06/06/2025
+[00:07:08] Đã bấm XÁC NHẬN thông tin
+[00:07:09] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[00:07:10] Hoàn thành toàn bộ tiến trình!
+[00:27:35] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[00:27:35] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:27:41] Đã mở trang web
+[00:27:43] Đã điền Số điện thoại & Serial
+[00:27:43] Đã bấm xác nhận (Tiếp tục)
+[00:27:44] Đã chọn loại giấy tờ: Hộ chiếu
+[00:27:44] Đã bấm BẮT ĐẦU
+[00:27:45] Đã tải lên ảnh Hộ chiếu thành công
+[00:27:50] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:27:55] Đã bấm TÔI ĐÃ HIỂU
+[00:28:02] Trang Xác nhận thông tin đã tải
+[00:28:07] Đã điền Nơi cấp: RANCHI
+[00:28:12] Đã điền Ngày cấp: 06/06/2025
+[00:28:17] Đã bấm XÁC NHẬN thông tin
+[00:28:18] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[00:28:23] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84832037122 | Serial=2228055088
+[00:28:24] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:28:29] Đã mở trang web
+[00:28:31] Đã điền Số điện thoại & Serial
+[00:28:31] Đã bấm xác nhận (Tiếp tục)
+[00:28:32] Đã chọn loại giấy tờ: Hộ chiếu
+[00:28:32] Đã bấm BẮT ĐẦU
+[00:28:33] Đã tải lên ảnh Hộ chiếu thành công
+[00:28:38] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:28:43] Đã bấm TÔI ĐÃ HIỂU
+[00:29:40] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[00:29:40] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:29:49] Đã mở trang web
+[00:29:51] Đã điền Số điện thoại & Serial
+[00:29:51] Đã bấm xác nhận (Tiếp tục)
+[00:29:53] Đã chọn loại giấy tờ: Hộ chiếu
+[00:29:53] Đã bấm BẮT ĐẦU
+[00:29:54] Đã tải lên ảnh Hộ chiếu thành công
+[00:29:59] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:30:04] Đã bấm TÔI ĐÃ HIỂU
+[00:30:10] Trang Xác nhận thông tin đã tải
+[00:30:15] Đã điền Nơi cấp: RANCHI
+[00:30:20] Đã điền Ngày cấp: 06/06/2025
+[00:30:26] Đã bấm XÁC NHẬN thông tin
+[00:30:27] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[00:30:32] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84832037122 | Serial=2228055088
+[00:30:33] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:30:37] Đã mở trang web
+[00:30:39] Đã điền Số điện thoại & Serial
+[00:30:39] Đã bấm xác nhận (Tiếp tục)
+[00:30:40] Đã chọn loại giấy tờ: Hộ chiếu
+[00:30:40] Đã bấm BẮT ĐẦU
+[00:30:41] Đã tải lên ảnh Hộ chiếu thành công
+[00:30:46] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:30:51] Đã bấm TÔI ĐÃ HIỂU
+[00:31:04] Lỗi khi xử lý: Page.inner_text: Target page, context or browser has been closed
+[00:31:05] Hoàn thành toàn bộ tiến trình!
+[00:32:18] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[00:32:18] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:32:23] Đã mở trang web
+[00:32:25] Đã điền Số điện thoại & Serial
+[00:32:25] Đã bấm xác nhận (Tiếp tục)
+[00:32:26] Đã chọn loại giấy tờ: Hộ chiếu
+[00:32:27] Đã bấm BẮT ĐẦU
+[00:32:28] Đã tải lên ảnh Hộ chiếu thành công
+[00:32:33] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:32:38] Đã bấm TÔI ĐÃ HIỂU
+[00:32:44] Trang Xác nhận thông tin đã tải
+[00:32:49] Đã điền Nơi cấp: RANCHI
+[00:32:54] Đã điền Ngày cấp: 06/06/2025
+[00:32:59] Đã bấm XÁC NHẬN thông tin
+[00:33:01] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[00:33:06] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84832037122 | Serial=2228055088
+[00:33:06] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:33:10] Đã mở trang web
+[00:33:12] Đã điền Số điện thoại & Serial
+[00:33:12] Đã bấm xác nhận (Tiếp tục)
+[00:33:13] Đã chọn loại giấy tờ: Hộ chiếu
+[00:33:13] Đã bấm BẮT ĐẦU
+[00:33:14] Đã tải lên ảnh Hộ chiếu thành công
+[00:33:19] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:33:24] Đã bấm TÔI ĐÃ HIỂU
+[00:35:09] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[00:35:09] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:35:15] Đã mở trang web
+[00:35:17] Đã điền Số điện thoại & Serial
+[00:35:17] Đã bấm xác nhận (Tiếp tục)
+[00:35:18] Đã chọn loại giấy tờ: Hộ chiếu
+[00:35:18] Đã bấm BẮT ĐẦU
+[00:35:20] Đã tải lên ảnh Hộ chiếu thành công
+[00:35:25] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:35:30] Đã bấm TÔI ĐÃ HIỂU
+[00:35:37] Trang Xác nhận thông tin đã tải
+[00:35:42] Đã điền Nơi cấp: RANCHI
+[00:35:47] Đã điền Ngày cấp: 06/06/2025
+[00:35:52] Đã bấm XÁC NHẬN thông tin
+[00:35:54] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[00:35:59] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84832037122 | Serial=2228055088
+[00:35:59] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:36:04] Đã mở trang web
+[00:36:06] Đã điền Số điện thoại & Serial
+[00:36:06] Đã bấm xác nhận (Tiếp tục)
+[00:36:07] Đã chọn loại giấy tờ: Hộ chiếu
+[00:36:07] Đã bấm BẮT ĐẦU
+[00:36:08] Đã tải lên ảnh Hộ chiếu thành công
+[00:36:13] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:36:18] Đã bấm TÔI ĐÃ HIỂU
+[00:36:25] Trang Xác nhận thông tin đã tải
+[00:36:30] Đã điền Nơi cấp: Ministry of Home Affairs
+[00:36:35] Đã điền Ngày cấp: 03/02/2024
+[00:36:40] Đã bấm XÁC NHẬN thông tin
+[00:37:01] Hoàn thành toàn bộ tiến trình!
+[00:37:40] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[00:37:41] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:37:46] Đã mở trang web
+[00:37:48] Đã điền Số điện thoại & Serial
+[00:37:48] Đã bấm xác nhận (Tiếp tục)
+[00:37:49] Đã chọn loại giấy tờ: Hộ chiếu
+[00:37:49] Đã bấm BẮT ĐẦU
+[00:37:50] Đã tải lên ảnh Hộ chiếu thành công
+[00:37:55] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:38:00] Đã bấm TÔI ĐÃ HIỂU
+[00:38:06] Trang Xác nhận thông tin đã tải
+[00:38:11] Đã điền Nơi cấp: RANCHI
+[00:38:16] Đã điền Ngày cấp: 06/06/2025
+[00:38:21] Đã bấm XÁC NHẬN thông tin
+[00:38:23] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[00:38:28] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84832037122 | Serial=2228055088
+[00:38:28] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:38:32] Đã mở trang web
+[00:38:34] Đã điền Số điện thoại & Serial
+[00:38:35] Đã bấm xác nhận (Tiếp tục)
+[00:38:35] Đã chọn loại giấy tờ: Hộ chiếu
+[00:38:36] Đã bấm BẮT ĐẦU
+[00:38:37] Đã tải lên ảnh Hộ chiếu thành công
+[00:38:42] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:38:47] Đã bấm TÔI ĐÃ HIỂU
+[00:39:01] Lỗi khi xử lý: Page.inner_text: Target page, context or browser has been closed
+[00:39:01] Hoàn thành toàn bộ tiến trình!
+[00:39:14] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[00:39:15] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:39:21] Đã mở trang web
+[00:39:23] Đã điền Số điện thoại & Serial
+[00:39:23] Đã bấm xác nhận (Tiếp tục)
+[00:39:24] Đã chọn loại giấy tờ: Hộ chiếu
+[00:39:24] Đã bấm BẮT ĐẦU
+[00:39:25] Đã tải lên ảnh Hộ chiếu thành công
+[00:39:30] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:39:35] Đã bấm TÔI ĐÃ HIỂU
+[00:39:41] Trang Xác nhận thông tin đã tải
+[00:39:47] Đã điền Nơi cấp: RANCHI
+[00:39:52] Đã điền Ngày cấp: 06/06/2025
+[00:39:57] Đã bấm XÁC NHẬN thông tin
+[00:39:58] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[00:40:03] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84832037122 | Serial=2228055088
+[00:40:04] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:40:06] Đã mở trang web
+[00:40:08] Đã điền Số điện thoại & Serial
+[00:40:08] Đã bấm xác nhận (Tiếp tục)
+[00:40:09] Đã chọn loại giấy tờ: Hộ chiếu
+[00:40:09] Đã bấm BẮT ĐẦU
+[00:40:10] Đã tải lên ảnh Hộ chiếu thành công
+[00:40:15] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:40:20] Đã bấm TÔI ĐÃ HIỂU
+[00:40:30] Lỗi khi xử lý: Page.inner_text: Target page, context or browser has been closed
+[00:40:31] Hoàn thành toàn bộ tiến trình!
+[00:42:08] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[00:42:09] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:42:14] Đã mở trang web
+[00:42:16] Đã điền Số điện thoại & Serial
+[00:42:16] Đã bấm xác nhận (Tiếp tục)
+[00:42:17] Đã chọn loại giấy tờ: Hộ chiếu
+[00:42:17] Đã bấm BẮT ĐẦU
+[00:42:18] Đã tải lên ảnh Hộ chiếu thành công
+[00:42:23] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:42:28] Đã bấm TÔI ĐÃ HIỂU
+[00:42:35] Trang Xác nhận thông tin đã tải
+[00:42:40] Đã điền Nơi cấp: RANCHI
+[00:42:45] Đã điền Ngày cấp: 06/06/2025
+[00:42:50] Đã bấm XÁC NHẬN thông tin
+[00:42:51] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[00:42:57] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84832037122 | Serial=2228055088
+[00:42:57] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:43:03] Đã mở trang web
+[00:43:05] Đã điền Số điện thoại & Serial
+[00:43:05] Đã bấm xác nhận (Tiếp tục)
+[00:43:06] Đã chọn loại giấy tờ: Hộ chiếu
+[00:43:06] Đã bấm BẮT ĐẦU
+[00:43:07] Đã tải lên ảnh Hộ chiếu thành công
+[00:43:12] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:43:17] Đã bấm TÔI ĐÃ HIỂU
+[00:43:58] Hoàn thành toàn bộ tiến trình!
+[00:46:18] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[00:46:19] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:46:27] Đã mở trang web
+[00:46:29] Đã điền Số điện thoại & Serial
+[00:46:29] Đã bấm xác nhận (Tiếp tục)
+[00:46:32] Đã chọn loại giấy tờ: Hộ chiếu
+[00:46:32] Đã bấm BẮT ĐẦU
+[00:46:33] Đã tải lên ảnh Hộ chiếu thành công
+[00:46:38] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:46:43] Đã bấm TÔI ĐÃ HIỂU
+[00:46:50] Trang Xác nhận thông tin đã tải
+[00:46:55] Đã điền Nơi cấp: RANCHI
+[00:47:00] Đã điền Ngày cấp: 06/06/2025
+[00:47:05] Đã bấm XÁC NHẬN thông tin
+[00:47:06] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[00:47:11] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84832037122 | Serial=2228055088
+[00:47:11] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:47:17] Đã mở trang web
+[00:47:19] Đã điền Số điện thoại & Serial
+[00:47:19] Đã bấm xác nhận (Tiếp tục)
+[00:47:21] Đã chọn loại giấy tờ: Hộ chiếu
+[00:47:21] Đã bấm BẮT ĐẦU
+[00:47:22] Đã tải lên ảnh Hộ chiếu thành công
+[00:47:27] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:47:32] Đã bấm TÔI ĐÃ HIỂU
+[00:47:38] Trang Xác nhận thông tin đã tải
+[00:47:43] Đã điền Nơi cấp: МВД 02101
+[00:47:48] Đã điền Ngày cấp: 18/12/2023
+[00:47:53] Đã bấm XÁC NHẬN thông tin
+[00:47:53] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[00:47:59] Hoàn thành toàn bộ tiến trình!
+[00:50:41] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[00:50:42] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:50:49] Đã mở trang web
+[00:50:51] Đã điền Số điện thoại & Serial
+[00:50:51] Đã bấm xác nhận (Tiếp tục)
+[00:50:54] Đã chọn loại giấy tờ: Hộ chiếu
+[00:50:54] Đã bấm BẮT ĐẦU
+[00:50:55] Đã tải lên ảnh Hộ chiếu thành công
+[00:51:00] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:51:05] Đã bấm TÔI ĐÃ HIỂU
+[00:51:12] Trang Xác nhận thông tin đã tải
+[00:51:17] Đã điền Nơi cấp: RANCHI
+[00:51:22] Đã điền Ngày cấp: 06/06/2025
+[00:51:27] Đã bấm XÁC NHẬN thông tin
+[00:51:29] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[00:51:34] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84832037122 | Serial=2228055088
+[00:51:34] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:51:42] Đã mở trang web
+[00:51:44] Đã điền Số điện thoại & Serial
+[00:51:44] Đã bấm xác nhận (Tiếp tục)
+[00:51:45] Đã chọn loại giấy tờ: Hộ chiếu
+[00:51:45] Đã bấm BẮT ĐẦU
+[00:51:46] Đã tải lên ảnh Hộ chiếu thành công
+[00:51:51] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:51:56] Đã bấm TÔI ĐÃ HIỂU
+[00:52:14] Lỗi khi xử lý: Page.inner_text: Target page, context or browser has been closed
+[00:52:14] Hoàn thành toàn bộ tiến trình!
+[00:54:29] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[00:54:29] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:54:37] Đã mở trang web
+[00:54:39] Đã điền Số điện thoại & Serial
+[00:54:39] Đã bấm xác nhận (Tiếp tục)
+[00:54:42] Đã chọn loại giấy tờ: Hộ chiếu
+[00:54:42] Đã bấm BẮT ĐẦU
+[00:54:43] Đã tải lên ảnh Hộ chiếu thành công
+[00:54:48] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:54:53] Đã bấm TÔI ĐÃ HIỂU
+[00:54:59] Trang Xác nhận thông tin đã tải
+[00:55:04] Đã điền Nơi cấp: RANCHI
+[00:55:09] Đã điền Ngày cấp: 06/06/2025
+[00:55:15] Đã bấm XÁC NHẬN thông tin
+[00:55:17] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[00:55:22] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84832037122 | Serial=2228055088
+[00:55:22] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:55:28] Đã mở trang web
+[00:55:30] Đã điền Số điện thoại & Serial
+[00:55:30] Đã bấm xác nhận (Tiếp tục)
+[00:55:31] Đã chọn loại giấy tờ: Hộ chiếu
+[00:55:31] Đã bấm BẮT ĐẦU
+[00:55:32] Đã tải lên ảnh Hộ chiếu thành công
+[00:55:38] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:55:43] Đã bấm TÔI ĐÃ HIỂU
+[00:55:48] Trang Xác nhận thông tin đã tải
+[00:55:54] Đã điền Nơi cấp: UTC PASIR GUDANG
+[00:55:59] Đã điền Ngày cấp: 25/10/2023
+[00:56:04] Đã bấm XÁC NHẬN thông tin
+[00:56:06] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[00:56:09] Lỗi khi xử lý: Page.wait_for_timeout: Target page, context or browser has been closed
+[00:56:09] Hoàn thành toàn bộ tiến trình!
+[00:59:31] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[00:59:32] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[00:59:40] Đã mở trang web
+[00:59:42] Đã điền Số điện thoại & Serial
+[00:59:42] Đã bấm xác nhận (Tiếp tục)
+[00:59:45] Đã chọn loại giấy tờ: Hộ chiếu
+[00:59:45] Đã bấm BẮT ĐẦU
+[00:59:46] Đã tải lên ảnh Hộ chiếu thành công
+[00:59:51] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[00:59:56] Đã bấm TÔI ĐÃ HIỂU
+[01:00:02] Trang Xác nhận thông tin đã tải
+[01:00:07] Đã điền Nơi cấp: RANCHI
+[01:00:12] Đã điền Ngày cấp: 06/06/2025
+[01:00:18] Đã bấm XÁC NHẬN thông tin
+[01:00:19] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[01:00:24] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84832037122 | Serial=2228055088
+[01:00:24] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:00:32] Đã mở trang web
+[01:00:34] Đã điền Số điện thoại & Serial
+[01:00:34] Đã bấm xác nhận (Tiếp tục)
+[01:00:35] Đã chọn loại giấy tờ: Hộ chiếu
+[01:00:35] Đã bấm BẮT ĐẦU
+[01:00:36] Đã tải lên ảnh Hộ chiếu thành công
+[01:00:41] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:00:46] Đã bấm TÔI ĐÃ HIỂU
+[01:00:53] Trang Xác nhận thông tin đã tải
+[01:00:58] Đã điền Nơi cấp: MINISTRY OF HOME AFFAIRS
+[01:01:03] Đã điền Ngày cấp: 03/02/2024
+[01:01:08] Đã bấm XÁC NHẬN thông tin
+[01:01:09] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[01:01:15] Hoàn thành toàn bộ tiến trình!
+[01:01:32] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[01:01:32] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:01:41] Đã mở trang web
+[01:01:43] Đã điền Số điện thoại & Serial
+[01:01:43] Đã bấm xác nhận (Tiếp tục)
+[01:01:45] Đã chọn loại giấy tờ: Hộ chiếu
+[01:01:45] Đã bấm BẮT ĐẦU
+[01:01:46] Đã tải lên ảnh Hộ chiếu thành công
+[01:01:52] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:02:06] Đã bấm TÔI ĐÃ HIỂU
+[01:02:13] Trang Xác nhận thông tin đã tải
+[01:02:18] Đã điền Nơi cấp: RANCHI
+[01:02:23] Đã điền Ngày cấp: 06/06/2025
+[01:02:28] Đã bấm XÁC NHẬN thông tin
+[01:02:29] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[01:02:34] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84832037122 | Serial=2228055088
+[01:02:34] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:02:39] Đã mở trang web
+[01:02:42] Đã điền Số điện thoại & Serial
+[01:02:42] Đã bấm xác nhận (Tiếp tục)
+[01:02:42] Đã chọn loại giấy tờ: Hộ chiếu
+[01:02:42] Đã bấm BẮT ĐẦU
+[01:02:44] Đã tải lên ảnh Hộ chiếu thành công
+[01:02:49] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:02:54] Đã bấm TÔI ĐÃ HIỂU
+[01:03:18] Lỗi khi xử lý: Page.inner_text: Target page, context or browser has been closed
+[01:04:09] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[01:04:10] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:04:17] Đã mở trang web
+[01:04:20] Đã điền Số điện thoại & Serial
+[01:04:20] Đã bấm xác nhận (Tiếp tục)
+[01:04:21] Đã chọn loại giấy tờ: Hộ chiếu
+[01:04:21] Đã bấm BẮT ĐẦU
+[01:04:22] Đã tải lên ảnh Hộ chiếu thành công
+[01:04:27] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:04:32] Đã bấm TÔI ĐÃ HIỂU
+[01:04:44] Trang Xác nhận thông tin đã tải
+[01:04:49] Đã điền Nơi cấp: RANCHI
+[01:04:54] Đã điền Ngày cấp: 06/06/2025
+[01:04:59] Đã bấm XÁC NHẬN thông tin
+[01:05:00] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[01:05:05] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84832037122 | Serial=2228055088
+[01:05:06] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:05:11] Đã mở trang web
+[01:05:14] Đã điền Số điện thoại & Serial
+[01:05:14] Đã bấm xác nhận (Tiếp tục)
+[01:05:14] Đã chọn loại giấy tờ: Hộ chiếu
+[01:05:14] Đã bấm BẮT ĐẦU
+[01:05:16] Đã tải lên ảnh Hộ chiếu thành công
+[01:05:21] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:05:26] Đã bấm TÔI ĐÃ HIỂU
+[01:05:32] Lỗi eKYC ngay tại bước Xác thực khuôn mặt: Thông tin ekyc không đạt. Vui lòng thử lại!
+[01:05:35] Hoàn thành toàn bộ tiến trình!
+[01:11:04] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[01:11:05] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:11:11] Đã mở trang web
+[01:11:13] Đã điền Số điện thoại & Serial
+[01:11:13] Đã bấm xác nhận (Tiếp tục)
+[01:11:15] Đã chọn loại giấy tờ: Hộ chiếu
+[01:11:15] Đã bấm BẮT ĐẦU
+[01:11:16] Đã tải lên ảnh Hộ chiếu thành công
+[01:11:21] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:11:26] Đã bấm TÔI ĐÃ HIỂU
+[01:11:37] Trang Xác nhận thông tin đã tải
+[01:11:42] Đã điền Nơi cấp: RANCHI
+[01:11:47] Đã điền Ngày cấp: 06/06/2025
+[01:11:53] Đã bấm XÁC NHẬN thông tin
+[01:11:54] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[01:11:59] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84832037122 | Serial=2228055088
+[01:11:59] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:12:07] Đã mở trang web
+[01:12:09] Đã điền Số điện thoại & Serial
+[01:12:09] Đã bấm xác nhận (Tiếp tục)
+[01:12:11] Đã chọn loại giấy tờ: Hộ chiếu
+[01:12:11] Đã bấm BẮT ĐẦU
+[01:12:12] Đã tải lên ảnh Hộ chiếu thành công
+[01:12:17] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:12:22] Đã bấm TÔI ĐÃ HIỂU
+[01:12:29] Lỗi eKYC ngay tại bước Xác thực khuôn mặt: Thông tin ekyc không đạt. Vui lòng thử lại!
+[01:12:31] Đang xử lý Khách hàng: ID=3 | Số điện thoại=84832041950 | Serial=2228055301
+[01:12:32] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:12:37] Đã mở trang web
+[01:12:39] Đã điền Số điện thoại & Serial
+[01:12:39] Đã bấm xác nhận (Tiếp tục)
+[01:12:40] Đã chọn loại giấy tờ: Hộ chiếu
+[01:12:40] Đã bấm BẮT ĐẦU
+[01:12:41] Đã tải lên ảnh Hộ chiếu thành công
+[01:12:46] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:12:52] Đã bấm TÔI ĐÃ HIỂU
+[01:13:03] Trang Xác nhận thông tin đã tải
+[01:13:08] Đã điền Nơi cấp: МВД 02101
+[01:13:13] Đã điền Ngày cấp: 18/12/2023
+[01:13:18] Đã bấm XÁC NHẬN thông tin
+[01:13:38] Hoàn thành toàn bộ tiến trình!
+[01:14:04] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[01:14:04] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:14:12] Đã mở trang web
+[01:14:14] Đã điền Số điện thoại & Serial
+[01:14:14] Đã bấm xác nhận (Tiếp tục)
+[01:14:15] Đã chọn loại giấy tờ: Hộ chiếu
+[01:14:15] Đã bấm BẮT ĐẦU
+[01:14:16] Đã tải lên ảnh Hộ chiếu thành công
+[01:14:21] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:14:26] Đã bấm TÔI ĐÃ HIỂU
+[01:14:37] Trang Xác nhận thông tin đã tải
+[01:14:43] Đã điền Nơi cấp: RANCHI
+[01:14:48] Đã điền Ngày cấp: 06/06/2025
+[01:14:53] Đã bấm XÁC NHẬN thông tin
+[01:14:54] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[01:14:59] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84832037122 | Serial=2228055088
+[01:15:00] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:15:08] Đã mở trang web
+[01:15:10] Đã điền Số điện thoại & Serial
+[01:15:10] Đã bấm xác nhận (Tiếp tục)
+[01:15:12] Đã chọn loại giấy tờ: Hộ chiếu
+[01:15:12] Đã bấm BẮT ĐẦU
+[01:15:13] Đã tải lên ảnh Hộ chiếu thành công
+[01:15:18] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:15:23] Đã bấm TÔI ĐÃ HIỂU
+[01:15:30] Lỗi eKYC ngay tại bước Xác thực khuôn mặt: Thông tin ekyc không đạt. Vui lòng thử lại!
+[01:15:32] Đang xử lý Khách hàng: ID=3 | Số điện thoại=84832041950 | Serial=2228055301
+[01:15:32] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:15:40] Đã mở trang web
+[01:15:42] Đã điền Số điện thoại & Serial
+[01:15:43] Đã bấm xác nhận (Tiếp tục)
+[01:15:44] Đã chọn loại giấy tờ: Hộ chiếu
+[01:15:44] Đã bấm BẮT ĐẦU
+[01:15:45] Đã tải lên ảnh Hộ chiếu thành công
+[01:15:50] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:15:55] Đã bấm TÔI ĐÃ HIỂU
+[01:16:07] Trang Xác nhận thông tin đã tải
+[01:16:12] Đã điền Nơi cấp: МВД 02101
+[01:16:17] Đã điền Ngày cấp: 18/12/2023
+[01:16:22] Đã bấm XÁC NHẬN thông tin
+[01:16:23] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[01:16:29] Hoàn thành toàn bộ tiến trình!
+[01:21:27] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[01:21:28] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:21:36] Đã mở trang web
+[01:21:38] Đã điền Số điện thoại & Serial
+[01:21:38] Đã bấm xác nhận (Tiếp tục)
+[01:21:42] Đã chọn loại giấy tờ: Hộ chiếu
+[01:21:42] Đã bấm BẮT ĐẦU
+[01:21:43] Đã tải lên ảnh Hộ chiếu thành công
+[01:21:48] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:21:53] Đã bấm TÔI ĐÃ HIỂU
+[01:22:04] Trang Xác nhận thông tin đã tải
+[01:22:09] Đã điền Nơi cấp: RANCHI
+[01:22:14] Đã điền Ngày cấp: 06/06/2025
+[01:22:19] Đã bấm XÁC NHẬN thông tin
+[01:22:22] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[01:22:27] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84832037122 | Serial=2228055088
+[01:22:28] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:22:35] Đã mở trang web
+[01:22:37] Đã điền Số điện thoại & Serial
+[01:22:37] Đã bấm xác nhận (Tiếp tục)
+[01:22:39] Đã chọn loại giấy tờ: Hộ chiếu
+[01:22:39] Đã bấm BẮT ĐẦU
+[01:22:40] Đã tải lên ảnh Hộ chiếu thành công
+[01:22:45] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:22:50] Đã bấm TÔI ĐÃ HIỂU
+[01:22:56] Lỗi eKYC ngay tại bước Xác thực khuôn mặt: Thông tin ekyc không đạt. Vui lòng thử lại!
+[01:22:58] Đang xử lý Khách hàng: ID=3 | Số điện thoại=84832041950 | Serial=2228055301
+[01:22:59] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:23:07] Đã mở trang web
+[01:23:09] Đã điền Số điện thoại & Serial
+[01:23:09] Đã bấm xác nhận (Tiếp tục)
+[01:23:10] Đã chọn loại giấy tờ: Hộ chiếu
+[01:23:10] Đã bấm BẮT ĐẦU
+[01:23:11] Đã tải lên ảnh Hộ chiếu thành công
+[01:23:16] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:23:22] Đã bấm TÔI ĐÃ HIỂU
+[01:23:33] Trang Xác nhận thông tin đã tải
+[01:23:38] Đã điền Nơi cấp: МВД 02101
+[01:23:43] Đã điền Ngày cấp: 18/12/2023
+[01:23:48] Đã bấm XÁC NHẬN thông tin
+[01:23:50] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[01:23:55] Hoàn thành toàn bộ tiến trình!
+[01:25:13] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[01:25:14] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:25:19] Đã mở trang web
+[01:25:21] Đã điền Số điện thoại & Serial
+[01:25:21] Đã bấm xác nhận (Tiếp tục)
+[01:25:22] Đã chọn loại giấy tờ: Hộ chiếu
+[01:25:22] Đã bấm BẮT ĐẦU
+[01:25:23] Đã tải lên ảnh Hộ chiếu thành công
+[01:25:28] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:25:33] Đã bấm TÔI ĐÃ HIỂU
+[01:25:44] Trang Xác nhận thông tin đã tải
+[01:25:50] Đã điền Nơi cấp: RANCHI
+[01:25:55] Đã điền Ngày cấp: 06/06/2025
+[01:26:00] Đã bấm XÁC NHẬN thông tin
+[01:26:02] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[01:26:07] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84832037122 | Serial=2228055088
+[01:26:08] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:26:16] Đã mở trang web
+[01:26:18] Đã điền Số điện thoại & Serial
+[01:26:19] Đã bấm xác nhận (Tiếp tục)
+[01:26:19] Đã chọn loại giấy tờ: Hộ chiếu
+[01:26:20] Đã bấm BẮT ĐẦU
+[01:26:21] Đã tải lên ảnh Hộ chiếu thành công
+[01:26:26] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:26:31] Đã bấm TÔI ĐÃ HIỂU
+[01:26:43] Trang Xác nhận thông tin đã tải
+[01:26:48] Đã điền Nơi cấp: MINISTRY OF HOME AFFAIRS
+[01:26:53] Đã điền Ngày cấp: 03/02/2024
+[01:26:58] Đã bấm XÁC NHẬN thông tin
+[01:27:01] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[01:27:06] Đang xử lý Khách hàng: ID=3 | Số điện thoại=84832041950 | Serial=2228055301
+[01:27:07] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:27:16] Đã mở trang web
+[01:27:18] Đã điền Số điện thoại & Serial
+[01:27:18] Đã bấm xác nhận (Tiếp tục)
+[01:27:19] Đã chọn loại giấy tờ: Hộ chiếu
+[01:27:19] Đã bấm BẮT ĐẦU
+[01:27:20] Đã tải lên ảnh Hộ chiếu thành công
+[01:27:25] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:27:30] Đã bấm TÔI ĐÃ HIỂU
+[01:27:41] Trang Xác nhận thông tin đã tải
+[01:27:47] Đã điền Nơi cấp: МВД 02101
+[01:27:52] Đã điền Ngày cấp: 18/12/2023
+[01:27:57] Đã bấm XÁC NHẬN thông tin
+[01:27:58] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[01:28:02] Lỗi khi xử lý: Page.wait_for_timeout: Target page, context or browser has been closed
+[01:28:03] Hoàn thành toàn bộ tiến trình!
+[01:31:56] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[01:31:57] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:32:03] Đã mở trang web
+[01:32:05] Đã điền Số điện thoại & Serial
+[01:32:05] Đã bấm xác nhận (Tiếp tục)
+[01:32:06] Đã chọn loại giấy tờ: Hộ chiếu
+[01:32:06] Đã bấm BẮT ĐẦU
+[01:32:07] Đã tải lên ảnh Hộ chiếu thành công
+[01:32:12] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:32:17] Đã bấm TÔI ĐÃ HIỂU
+[01:32:29] Trang Xác nhận thông tin đã tải
+[01:32:34] Đã điền Nơi cấp: RANCHI
+[01:32:39] Đã điền Ngày cấp: 06/06/2025
+[01:32:45] Đã bấm XÁC NHẬN thông tin
+[01:32:46] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[01:32:51] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84832037122 | Serial=2228055088
+[01:32:52] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:32:54] Đã mở trang web
+[01:32:56] Đã điền Số điện thoại & Serial
+[01:32:56] Đã bấm xác nhận (Tiếp tục)
+[01:32:57] Đã chọn loại giấy tờ: Hộ chiếu
+[01:32:57] Đã bấm BẮT ĐẦU
+[01:32:58] Đã tải lên ảnh Hộ chiếu thành công
+[01:33:04] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:33:09] Đã bấm TÔI ĐÃ HIỂU
+[01:33:20] Trang Xác nhận thông tin đã tải
+[01:33:25] Đã điền Nơi cấp: MINISTRY OF HOME AFFAIRS
+[01:33:30] Đã điền Ngày cấp: 03/02/2024
+[01:33:35] Đã bấm XÁC NHẬN thông tin
+[01:33:37] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[01:33:42] Đang xử lý Khách hàng: ID=3 | Số điện thoại=84832041950 | Serial=2228055301
+[01:33:43] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[01:33:50] Đã mở trang web
+[01:33:52] Đã điền Số điện thoại & Serial
+[01:33:52] Đã bấm xác nhận (Tiếp tục)
+[01:33:53] Đã chọn loại giấy tờ: Hộ chiếu
+[01:33:53] Đã bấm BẮT ĐẦU
+[01:33:54] Đã tải lên ảnh Hộ chiếu thành công
+[01:33:59] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[01:34:04] Đã bấm TÔI ĐÃ HIỂU
+[01:34:15] Trang Xác nhận thông tin đã tải
+[01:34:20] Đã điền Nơi cấp: МВД 02101
+[01:34:25] Đã điền Ngày cấp: 18/12/2023
+[01:34:30] Đã bấm XÁC NHẬN thông tin
+[01:34:32] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[01:34:38] Hoàn thành toàn bộ tiến trình!

