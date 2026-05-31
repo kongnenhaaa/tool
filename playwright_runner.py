@@ -12,7 +12,7 @@ from typing import Callable
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
-from utils import get_cropped_face_base64, get_face_frame_base64
+from utils import get_cropped_face_base64, get_face_frame_base64, get_id_photo_base64
 
 
 class PlaywrightRunner:
@@ -269,8 +269,8 @@ class PlaywrightRunner:
 		  const _origEnumerate    = navigator.mediaDevices.enumerateDevices.bind(navigator.mediaDevices);
 
 		  /* ---------- constants ---------- */
-		  const W  = 640;
-		  const H  = 480;
+		  const W  = 1280;
+		  const H  = 720;
 		  const FPS = 30;
 		  const DEVICE_ID  = 'fake-cam-0a1b2c3d';
 		  const GROUP_ID   = 'fake-grp-4e5f6a7b';
@@ -301,6 +301,7 @@ class PlaywrightRunner:
 		              window.fakeCamZoom += 0.015; // Phóng to dần đều
 		          }} else if (text.includes('xa hơn') || text.includes('vừa khung hình')) {{
 		              window.fakeCamZoom -= 0.015; // Thu nhỏ dần đều
+                      if (window.fakeCamZoom < 1.0) window.fakeCamZoom = 1.0; // KHÔNG BAO GIỜ CHO PHÉP NHỎ HƠN 1 ĐỂ CHỐNG VIỀN ĐEN!
 		          }}
 		      }}
 		  }}, 100);
@@ -309,8 +310,7 @@ class PlaywrightRunner:
 		    if (img.naturalWidth > 0 && img.naturalHeight > 0) {{
 		        // Dùng object-fit cover logic để ảnh không bị méo tỷ lệ
 		        const baseScale = Math.max(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
-		        let scale = baseScale * window.fakeCamZoom;
-		        if (scale < baseScale) scale = baseScale; // Tuyệt đối không cho phép zoom nhỏ hơn khung để lộ viền đen
+		        const scale = baseScale * window.fakeCamZoom;
 		        
 		        const scaledWidth = img.naturalWidth * scale;
 		        const scaledHeight = img.naturalHeight * scale;
@@ -413,7 +413,41 @@ class PlaywrightRunner:
 			self._page.wait_for_selector("input[name='noicap']", timeout=15000)
 			if log:
 				log("Trang Xác nhận thông tin đã tải")
-
+			# Inject CSS xóa nền trắng + điền ảnh gốc chân dung vào khung
+			try:
+				if hasattr(self, '_portrait_path') and self._portrait_path:
+					portrait_b64 = get_id_photo_base64(self._portrait_path)
+					
+					self._page.evaluate(f"""
+						const myPayload = '{portrait_b64}';
+						
+						// Dùng setInterval chạy siêu nhanh (10ms) để không bị nháy ảnh mờ (Flicker)
+						const interval = setInterval(() => {{
+							const boxes = document.querySelectorAll('.inbox-idcard');
+							if (boxes.length >= 2) {{
+								const faceBox = boxes[boxes.length - 1]; // Khung chứa khuôn mặt
+								
+								// LÀM ĐÚNG NHƯ USER YÊU CẦU: CHỈ THAY THẾ ẢNH (KHÔNG THÊM/XÓA DOM ĐỂ CHỐNG CRASH)
+								const imgs = faceBox.querySelectorAll('img');
+								imgs.forEach(img => {{
+									// 1. Phân biệt ảnh chụp và viền xanh dựa vào DUNG LƯỢNG (độ dài chuỗi base64).
+									// 2. Ảnh chụp webcam thường rất lớn (> 50,000 ký tự). Viền xanh thì nhẹ hơn nhiều.
+									if (img.src && img.src.length > 50000 && img.src !== myPayload) {{
+										img.src = myPayload;
+									}}
+								}});
+								
+								// Dọn dẹp các thẻ rác do mã cũ tạo ra để dọn dẹp DOM
+								const oldMyImg = document.getElementById('my-awesome-face');
+								if (oldMyImg) oldMyImg.remove();
+							}}
+						}}, 10); // 10ms = Mắt người không kịp nhìn thấy ảnh cũ
+						
+						// Dừng interval sau 15 giây
+						setTimeout(() => clearInterval(interval), 15000);
+					""")
+			except Exception:
+				pass
 
 
 			if record.get("noi_cap"):
