@@ -43,6 +43,11 @@ class WebWorker(threading.Thread):
 				self._log(f"Đang xử lý Khách hàng: ID={record['id']} | Số điện thoại={record['phone']} | Serial={record['serial']}")
 				status, message = self._process_record(self.runner, record)
 
+				# Nếu đã bấm STOP thì dừng, không lưu kết quả STOPPED
+				if status == "STOPPED":
+					self._log("Đã dừng tiến trình thành công.")
+					break
+
 				if status == "SUCCESS":
 					self.success += 1
 				elif status == "DUPLICATE":
@@ -98,6 +103,9 @@ class WebWorker(threading.Thread):
 			status, message = runner.run(record, passport, portrait, log=self._log)
 			return status, message
 		except Exception as exc:
+			# Nếu stop được gọi trong khi đang chạy, không tính là FAILED
+			if not self.is_running:
+				return "STOPPED", "Tiến trình bị dừng bởi người dùng"
 			last_error = str(exc)
 			self._log(f"Lỗi khi xử lý: {last_error}")
 			screenshot = runner.save_screenshot(record["id"])

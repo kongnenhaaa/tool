@@ -9,7 +9,6 @@ from web_app import app
 
 class Api:
     def pick_excel(self):
-        # Mở hộp thoại chọn file Excel
         result = webview.windows[0].create_file_dialog(
             webview.OPEN_DIALOG, 
             allow_multiple=False, 
@@ -18,12 +17,10 @@ class Api:
         return result[0] if result else ""
 
     def pick_folder(self):
-        # Mở hộp thoại chọn thư mục
         result = webview.windows[0].create_file_dialog(webview.FOLDER_DIALOG)
         return result[0] if result else ""
 
     def open_path(self, path: str):
-        # Mở thư mục hoặc file bằng trình mặc định của OS
         if os.path.exists(path):
             os.startfile(path)
 

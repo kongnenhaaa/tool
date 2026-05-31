@@ -3,6 +3,7 @@ from __future__ import annotations
 import ctypes
 import json
 import os
+import time
 from datetime import datetime
 
 import pandas as pd
@@ -141,24 +142,19 @@ class PlaywrightRunner:
 		file_inputs[0].set_input_files(passport_path)
 		if log:
 			log("Đã tải lên ảnh Hộ chiếu thành công")
+		
+		# Chờ đúng 2s theo yêu cầu
 		self._page.wait_for_timeout(2000)
 
 		try:
-			self._page.wait_for_selector("text='CHỤP LẠI'", timeout=30000)
-			self._page.wait_for_timeout(1000)
 			next_btn = self._page.locator(
 				"div.vnpt-border.vnpt-cursor-pointer:has(p:has-text('TIẾP THEO'))"
 			).first
-			next_btn.wait_for(state="visible", timeout=15000)
-			next_btn.scroll_into_view_if_needed()
-			
-			# Delay 2s before clicking TIẾP THEO
-			self._page.wait_for_timeout(2000)
 			next_btn.click(force=True)
 			if log:
 				log("Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)")
 			
-			# Chờ đúng 5s theo yêu cầu
+			# Chờ đúng 5s theo yêu cầu cho bước TÔI ĐÃ HIỂU
 			self._page.wait_for_timeout(5000)
 		except Exception as exc:
 			if log:
@@ -295,27 +291,21 @@ class PlaywrightRunner:
 		  }});
 
 		  function drawFrame() {{
-		    ctx.fillStyle = '#ffffff'; // Tô nền trắng xung quanh
-		    ctx.fillRect(0, 0, canvas.width, canvas.height);
-		    if (img.naturalWidth > 0 && img.naturalHeight > 0) {{
-		        // --- CÔNG THỨC MỚI: Thu nhỏ ảnh ---
-		        // Hệ số thu nhỏ (zoom_factor) ép ảnh lọt giữa nền trắng. 
-		        // 0.45 là tỷ lệ vàng cho hệ thống eKYC VNPT.
-		        const zoom_factor = 0.45; 
-		        
-		        const scale = Math.min(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight) * zoom_factor;
-		        
-		        const scaledWidth = img.naturalWidth * scale;
-		        const scaledHeight = img.naturalHeight * scale;
-		        
-		        // Căn giữa ảnh theo chiều ngang (X) và chiều dọc (Y)
-		        const dx = (canvas.width - scaledWidth) / 2;
-		        const dy = (canvas.height - scaledHeight) / 2;
-		        
-		        ctx.drawImage(img, dx, dy, scaledWidth, scaledHeight);
-		    }}
-		    requestAnimationFrame(drawFrame);
-		  }}
+	    if (img.naturalWidth > 0 && img.naturalHeight > 0) {{
+	        // COVER mode: ảnh lấp đầy 100% canvas, không còn nền trắng/đen
+	        const scaleX = canvas.width  / img.naturalWidth;
+	        const scaleY = canvas.height / img.naturalHeight;
+	        // Lấy tỉ lệ LỚN HƠN để ảnh phủ kín toàn bộ (cover), không co lại
+	        const scale  = Math.max(scaleX, scaleY);
+	        const scaledW = img.naturalWidth  * scale;
+	        const scaledH = img.naturalHeight * scale;
+	        // Căn giữa, phần thừa tự bị crop ngoài canvas
+	        const dx = (canvas.width  - scaledW) / 2;
+	        const dy = (canvas.height - scaledH) / 2;
+	        ctx.drawImage(img, dx, dy, scaledW, scaledH);
+	    }}
+	    requestAnimationFrame(drawFrame);
+	  }}
 
 		  imgReady.then(() => {{ drawFrame(); }});
 
@@ -544,8 +534,47 @@ class PlaywrightRunner:
 			updated = pd.DataFrame([record_result])
 		updated.to_excel(result_path, index=False, engine="openpyxl")
 
+	def _cleanup_old_screenshots(self) -> None:
+		try:
+			folder = os.path.join(os.getcwd(), "screenshots")
+			if not os.path.exists(folder):
+				return
+			
+			# Lấy danh sách tất cả file png
+			files = [os.path.join(folder, f) for f in os.listdir(folder) if f.endswith('.png')]
+			if not files:
+				return
+				
+			now = time.time()
+			# Sắp xếp file theo thời gian tạo, cũ nhất đứng đầu
+			files.sort(key=lambda x: os.path.getmtime(x))
+			
+			# 1. Xóa file quá 3 ngày tuổi
+			max_age_seconds = 3 * 24 * 3600
+			surviving_files = []
+			for f in files:
+				try:
+					if now - os.path.getmtime(f) > max_age_seconds:
+						os.remove(f)
+					else:
+						surviving_files.append(f)
+				except Exception:
+					surviving_files.append(f)
+					
+			# 2. Xóa bớt nếu tổng số ảnh còn lại vượt quá 100
+			if len(surviving_files) > 100:
+				excess = len(surviving_files) - 100
+				for f in surviving_files[:excess]:
+					try:
+						os.remove(f)
+					except Exception:
+						pass
+		except Exception:
+			pass
+
 	def save_screenshot(self, record_id: str) -> str | None:
 		try:
+			self._cleanup_old_screenshots()
 			folder = os.path.join(os.getcwd(), "screenshots")
 			os.makedirs(folder, exist_ok=True)
 			ts = datetime.now().strftime("%Y%m%d_%H%M%S")
