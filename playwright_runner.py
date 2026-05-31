@@ -44,6 +44,7 @@ class PlaywrightRunner:
 		log: Callable[[str], None] | None = None,
 	) -> tuple[str, str]:
 		base64_img = get_face_frame_base64(portrait_path)
+		self._portrait_path = portrait_path  # Lưu lại để dùng ở trang xác nhận
 		try:
 			self._page.close()
 		except Exception:
@@ -137,14 +138,14 @@ class PlaywrightRunner:
 				pass
 			raise RuntimeError("No file input found")
 
-		# Delay 2s before upload
-		self._page.wait_for_timeout(2000)
+		# Delay 1s before upload
+		self._page.wait_for_timeout(1000)
 		file_inputs[0].set_input_files(passport_path)
 		if log:
 			log("Đã tải lên ảnh Hộ chiếu thành công")
 		
-		# Chờ đúng 2s theo yêu cầu
-		self._page.wait_for_timeout(2000)
+		# Chờ 1s rồi bấm TIẾP THEO
+		self._page.wait_for_timeout(1000)
 
 		try:
 			next_btn = self._page.locator(
@@ -154,8 +155,8 @@ class PlaywrightRunner:
 			if log:
 				log("Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)")
 			
-			# Chờ đúng 5s theo yêu cầu cho bước TÔI ĐÃ HIỂU
-			self._page.wait_for_timeout(5000)
+			# Chờ 1s cho bước TÔI ĐÃ HIỂU
+			self._page.wait_for_timeout(1000)
 		except Exception as exc:
 			if log:
 				log(f"Lỗi khi bấm TIẾP THEO: {exc}")
@@ -174,9 +175,8 @@ class PlaywrightRunner:
 			if log:
 				log(f"Lỗi khi bấm TÔI ĐÃ HIỂU: {exc}")
 
-		# Wait for the confirmation page and fill the missing data
-		# Delay 2s before filling confirmation info is handled inside the method itself (or here)
-		self._page.wait_for_timeout(2000)
+		# Chờ 1s trước trang xác nhận
+		self._page.wait_for_timeout(1000)
 		self._fill_confirmation_info(record, log)
 
 		result_text = ""
@@ -400,7 +400,48 @@ class PlaywrightRunner:
 			self._page.wait_for_selector("input[name='noicap']", timeout=15000)
 			if log:
 				log("Trang Xác nhận thông tin đã tải")
-			
+
+			# Inject CSS xóa nền trắng + điền ảnh chân dung vào khung
+			try:
+				# Inject <style> tag để override CSS gốc của VNPT (inline style không dùng !important được)
+				self._page.add_style_tag(content="""
+					.inbox-idcard,
+					.box-idcard,
+					.col-right .inbox-idcard,
+					.col-right .box-idcard {
+						background: transparent !important;
+						background-color: transparent !important;
+						box-shadow: none !important;
+						border: none !important;
+						padding: 0 !important;
+					}
+					.inbox-idcard img,
+					.col-right .inbox-idcard img {
+						width: 100% !important;
+						height: 100% !important;
+						object-fit: cover !important;
+						max-width: none !important;
+						max-height: none !important;
+						border-radius: 4px !important;
+					}
+				""")
+				
+				# Inject ảnh chân dung vào đúng thẻ img rỗng
+				if hasattr(self, '_portrait_path') and self._portrait_path:
+					import base64 as _b64
+					with open(self._portrait_path, 'rb') as f:
+						portrait_b64 = _b64.b64encode(f.read()).decode('utf-8')
+					self._page.evaluate(f"""
+						document.querySelectorAll('.inbox-idcard img').forEach(img => {{
+							const src = img.getAttribute('src') || '';
+							if (src === '' || src === 'data:image/png;base64,' || src.endsWith(',')) {{
+								img.src = 'data:image/jpeg;base64,{portrait_b64}';
+							}}
+						}});
+					""")
+			except Exception:
+				pass
+
 			if record.get("noi_cap"):
 				self._page.fill("input[name='noicap']", record["noi_cap"])
 				if log: log(f"Đã điền Nơi cấp: {record['noi_cap']}")
