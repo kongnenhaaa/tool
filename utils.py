@@ -174,18 +174,19 @@ def get_id_photo_base64(image_path: str) -> str:
 			minSize=(60, 60),
 		)
 
-		# Tỷ lệ chuẩn của khung ảnh thẻ là 3:4 (Portrait)
+		# Tỷ lệ 3:4 (Dọc - Portrait) để lấp đầy hoàn hảo chiều cao của khung VNPT
 		target_aspect = 3.0 / 4.0
 
 		if len(faces) > 0:
-			# Khuôn mặt chiếm khoảng 45% khung hình
-			desired_face_ratio = 0.45
+			# Khuôn mặt chiếm 70% chiều cao để loại bỏ hoàn toàn phần vai/ngực
+			# (Không thể to hơn 75% vì khung dọc hẹp ngang, sẽ bị lẹm 2 bên tai)
+			desired_face_ratio = 0.70
 			faces_sorted = sorted(faces, key=lambda f: f[2] * f[3], reverse=True)
 			x, y, w, h = faces_sorted[0]
 			
 			cx = x + w / 2
-			# Cộng thêm vào cy (dịch tâm cắt xuống dưới) để lấy được phần ngực/vai ở phía dưới
-			cy = y + h / 2 + h * 0.15
+			# Tâm khuôn mặt giữ nguyên ở giữa (không lấy xuống vai)
+			cy = y + h / 2
 			
 			crop_h = h / desired_face_ratio
 			crop_w = crop_h * target_aspect
@@ -217,7 +218,7 @@ def get_id_photo_base64(image_path: str) -> str:
 			elif y2 == img_h: y1 = max(0, img_h - int(crop_h))
 
 		frame = img[y1:y2, x1:x2]
-		# Thay đổi kích thước ảnh thẻ chuẩn 480x640 (Portrait)
+		# Thay đổi kích thước ảnh chuẩn dọc (480x640)
 		frame = cv2.resize(frame, (480, 640))
 
 		ok, buffer = cv2.imencode(".png", frame)

@@ -1385,3 +1385,83 @@ Call log:
 [11:31:55] Đã bấm XÁC NHẬN thông tin
 [11:31:56] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
 [11:31:57] Hoàn thành toàn bộ tiến trình!
+[11:33:30] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[11:33:31] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[11:33:36] Đã mở trang web
+[11:33:38] Đã điền Số điện thoại & Serial
+[11:33:38] Đã bấm xác nhận (Tiếp tục)
+[11:33:39] Đã chọn loại giấy tờ: Hộ chiếu
+[11:33:39] Đã bấm BẮT ĐẦU
+[11:33:40] Đã tải lên ảnh Hộ chiếu thành công
+[11:33:45] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[11:33:47] Đã bấm TÔI ĐÃ HIỂU
+[11:33:53] Trang Xác nhận thông tin đã tải
+[11:33:53] Đã điền Nơi cấp: RANCHI
+[11:33:53] Đã điền Ngày cấp: 06/06/2025
+[11:33:53] Đã bấm XÁC NHẬN thông tin
+[11:33:55] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[11:33:55] Hoàn thành toàn bộ tiến trình!
+[11:34:54] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[11:34:54] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[11:35:00] Đã mở trang web
+[11:35:02] Đã điền Số điện thoại & Serial
+[11:35:02] Đã bấm xác nhận (Tiếp tục)
+[11:35:04] Đã chọn loại giấy tờ: Hộ chiếu
+[11:35:04] Đã bấm BẮT ĐẦU
+[11:35:05] Đã tải lên ảnh Hộ chiếu thành công
+[11:35:09] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[11:35:12] Đã bấm TÔI ĐÃ HIỂU
+[11:35:19] Trang Xác nhận thông tin đã tải
+[11:35:19] Đã điền Nơi cấp: RANCHI
+[11:35:19] Đã điền Ngày cấp: 06/06/2025
+[11:35:19] Đã bấm XÁC NHẬN thông tin
+[11:35:20] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[11:35:21] Hoàn thành toàn bộ tiến trình!
+[11:36:47] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[11:36:48] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[11:36:53] Đã mở trang web
+[11:36:55] Đã điền Số điện thoại & Serial
+[11:36:55] Đã bấm xác nhận (Tiếp tục)
+[11:36:57] Đã chọn loại giấy tờ: Hộ chiếu
+[11:36:57] Đã bấm BẮT ĐẦU
+[11:36:58] Đã tải lên ảnh Hộ chiếu thành công
+[11:37:02] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[11:37:04] Đã bấm TÔI ĐÃ HIỂU
+[11:37:11] Trang Xác nhận thông tin đã tải
+[11:37:11] Đã điền Nơi cấp: RANCHI
+[11:37:11] Đã điền Ngày cấp: 06/06/2025
+[11:37:11] Đã bấm XÁC NHẬN thông tin
+[11:37:13] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[11:37:13] Hoàn thành toàn bộ tiến trình!
+[11:38:43] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[11:38:44] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[11:38:47] Đã mở trang web
+[11:38:49] Đã điền Số điện thoại & Serial
+[11:38:49] Đã bấm xác nhận (Tiếp tục)
+[11:38:50] Đã chọn loại giấy tờ: Hộ chiếu
+[11:38:50] Đã bấm BẮT ĐẦU
+[11:38:51] Đã tải lên ảnh Hộ chiếu thành công
+[11:38:55] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[11:39:00] Đã bấm TÔI ĐÃ HIỂU
+[11:39:07] Trang Xác nhận thông tin đã tải
+[11:39:07] Đã điền Nơi cấp: RANCHI
+[11:39:07] Đã điền Ngày cấp: 06/06/2025
+[11:39:07] Đã bấm XÁC NHẬN thông tin
+[11:39:08] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[11:39:09] Hoàn thành toàn bộ tiến trình!
+[11:44:45] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[11:44:46] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[11:44:54] Đã mở trang web
+[11:44:57] Đã điền Số điện thoại & Serial
+[11:44:57] Đã bấm xác nhận (Tiếp tục)
+[11:44:59] Đã chọn loại giấy tờ: Hộ chiếu
+[11:44:59] Đã bấm BẮT ĐẦU
+[11:45:00] Đã tải lên ảnh Hộ chiếu thành công
+[11:45:04] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[11:45:06] Đã bấm TÔI ĐÃ HIỂU
+[11:45:13] Trang Xác nhận thông tin đã tải
+[11:45:13] Đã điền Nơi cấp: RANCHI
+[11:45:13] Đã điền Ngày cấp: 06/06/2025
+[11:45:13] Đã bấm XÁC NHẬN thông tin
+[11:45:14] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[11:45:15] Hoàn thành toàn bộ tiến trình!
