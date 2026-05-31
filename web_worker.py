@@ -114,12 +114,27 @@ class WebWorker(threading.Thread):
 			return "FAILED", last_error or "Lỗi không xác định"
 
 	def _resolve_photos(self, record_id: str) -> tuple[str | None, str | None]:
-		base = Path(self.photo_folder) / str(record_id)
-		passport = base / f"{record_id}a.jpg"
-		portrait = base / f"{record_id}b.jpg"
-
-		passport_path = str(passport) if passport.exists() else None
-		portrait_path = str(portrait) if portrait.exists() else None
+		base = Path(self.photo_folder)
+		
+		# Hỗ trợ tìm kiếm theo nhiều đuôi file khác nhau
+		extensions = ['.jpg', '.png', '.jpeg']
+		
+		passport_path = None
+		portrait_path = None
+		
+		for ext in extensions:
+			# Tìm file giấy tờ (1a, 2a...)
+			p1 = base / f"{record_id}a{ext}"
+			p2 = base / f"{record_id}A{ext}"
+			if p1.exists(): passport_path = str(p1)
+			elif p2.exists(): passport_path = str(p2)
+			
+			# Tìm file chân dung (1b, 2b...)
+			p3 = base / f"{record_id}b{ext}"
+			p4 = base / f"{record_id}B{ext}"
+			if p3.exists(): portrait_path = str(p3)
+			elif p4.exists(): portrait_path = str(p4)
+			
 		return passport_path, portrait_path
 
 	def _log(self, message: str) -> None:

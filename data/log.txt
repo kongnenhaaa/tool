@@ -1465,3 +1465,35 @@ Call log:
 [11:45:13] Đã bấm XÁC NHẬN thông tin
 [11:45:14] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
 [11:45:15] Hoàn thành toàn bộ tiến trình!
+[11:49:20] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[11:49:20] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[11:49:26] Đã mở trang web
+[11:49:28] Đã điền Số điện thoại & Serial
+[11:49:28] Đã bấm xác nhận (Tiếp tục)
+[11:49:30] Đã chọn loại giấy tờ: Hộ chiếu
+[11:49:30] Đã bấm BẮT ĐẦU
+[11:49:32] Đã tải lên ảnh Hộ chiếu thành công
+[11:49:35] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[11:49:38] Đã bấm TÔI ĐÃ HIỂU
+[11:49:44] Trang Xác nhận thông tin đã tải
+[11:49:44] Đã điền Nơi cấp: RANCHI
+[11:49:44] Đã điền Ngày cấp: 06/06/2025
+[11:49:45] Đã bấm XÁC NHẬN thông tin
+[11:49:46] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[11:49:47] Hoàn thành toàn bộ tiến trình!
+[13:18:48] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[13:18:49] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[13:18:58] Đã mở trang web
+[13:19:00] Đã điền Số điện thoại & Serial
+[13:19:00] Đã bấm xác nhận (Tiếp tục)
+[13:19:02] Đã chọn loại giấy tờ: Hộ chiếu
+[13:19:02] Đã bấm BẮT ĐẦU
+[13:19:03] Đã tải lên ảnh Hộ chiếu thành công
+[13:19:07] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[13:19:12] Đã bấm TÔI ĐÃ HIỂU
+[13:19:18] Trang Xác nhận thông tin đã tải
+[13:19:18] Đã điền Nơi cấp: RANCHI
+[13:19:18] Đã điền Ngày cấp: 06/06/2025
+[13:19:18] Đã bấm XÁC NHẬN thông tin
+[13:19:20] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[13:19:20] Hoàn thành toàn bộ tiến trình!
