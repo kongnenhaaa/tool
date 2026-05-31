@@ -291,21 +291,27 @@ class PlaywrightRunner:
 		  }});
 
 		  function drawFrame() {{
-	    if (img.naturalWidth > 0 && img.naturalHeight > 0) {{
-	        // COVER mode: ảnh lấp đầy 100% canvas, không còn nền trắng/đen
-	        const scaleX = canvas.width  / img.naturalWidth;
-	        const scaleY = canvas.height / img.naturalHeight;
-	        // Lấy tỉ lệ LỚN HƠN để ảnh phủ kín toàn bộ (cover), không co lại
-	        const scale  = Math.max(scaleX, scaleY);
-	        const scaledW = img.naturalWidth  * scale;
-	        const scaledH = img.naturalHeight * scale;
-	        // Căn giữa, phần thừa tự bị crop ngoài canvas
-	        const dx = (canvas.width  - scaledW) / 2;
-	        const dy = (canvas.height - scaledH) / 2;
-	        ctx.drawImage(img, dx, dy, scaledW, scaledH);
-	    }}
-	    requestAnimationFrame(drawFrame);
-	  }}
+		    ctx.fillStyle = '#ffffff'; // Tô nền trắng xung quanh
+		    ctx.fillRect(0, 0, canvas.width, canvas.height);
+		    if (img.naturalWidth > 0 && img.naturalHeight > 0) {{
+		        // --- CÔNG THỨC MỚI: Thu nhỏ ảnh ---
+		        // Hệ số thu nhỏ (zoom_factor) ép ảnh lọt giữa nền trắng. 
+		        // 0.45 là tỷ lệ vàng cho hệ thống eKYC VNPT.
+		        const zoom_factor = 0.45; 
+		        
+		        const scale = Math.min(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight) * zoom_factor;
+		        
+		        const scaledWidth = img.naturalWidth * scale;
+		        const scaledHeight = img.naturalHeight * scale;
+		        
+		        // Căn giữa ảnh theo chiều ngang (X) và chiều dọc (Y)
+		        const dx = (canvas.width - scaledWidth) / 2;
+		        const dy = (canvas.height - scaledHeight) / 2;
+		        
+		        ctx.drawImage(img, dx, dy, scaledWidth, scaledHeight);
+		    }}
+		    requestAnimationFrame(drawFrame);
+		  }}
 
 		  imgReady.then(() => {{ drawFrame(); }});
 
