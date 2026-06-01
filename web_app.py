@@ -25,6 +25,7 @@ message_queue: queue.Queue = queue.Queue()
 class StartRequest(BaseModel):
     excel_path: str
     photo_folder: str
+    resume: bool = False
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
@@ -44,7 +45,7 @@ async def start_process(req: StartRequest):
         except queue.Empty:
             break
 
-    active_worker = WebWorker(req.excel_path, req.photo_folder, message_queue)
+    active_worker = WebWorker(req.excel_path, req.photo_folder, message_queue, req.resume)
     active_worker.start()
     
     return {"status": "success", "message": "Started processing"}

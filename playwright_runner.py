@@ -593,12 +593,10 @@ class PlaywrightRunner:
 
 
 			if record.get("noi_cap"):
-				self._page.wait_for_timeout(2000)
 				self._page.fill("input[name='noicap']", record["noi_cap"])
 				if log: log(f"Đã điền Nơi cấp: {record['noi_cap']}")
 			
 			if record.get("ngay_cap"):
-				self._page.wait_for_timeout(2000)
 				# Tìm ô nhập "Ngày cấp" thông qua placeholder
 				date_input = self._page.locator("input[placeholder='Chọn thời điểm']").first
 				if date_input.count() > 0:

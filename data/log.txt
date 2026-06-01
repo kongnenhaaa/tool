@@ -2329,3 +2329,83 @@ Call log:
   - navigating to "https://digishop.vnpt.vn/tourist/", waiting until "domcontentloaded"
 
 [11:10:18] Hoàn thành toàn bộ tiến trình!
+[11:25:31] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[11:25:32] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[11:25:38] Đã mở trang web
+[11:25:40] Đã điền Số điện thoại & Serial
+[11:25:40] Đã bấm xác nhận (Tiếp tục)
+[11:25:41] Đã chọn loại giấy tờ: Hộ chiếu
+[11:25:41] Đã bấm BẮT ĐẦU
+[11:25:42] Đã tải lên ảnh Hộ chiếu thành công
+[11:25:47] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[11:25:52] Đã bấm TÔI ĐÃ HIỂU
+[11:26:04] Trang Xác nhận thông tin đã tải
+[11:26:07] Đã điền Nơi cấp: RANCHI
+[11:26:09] Đã điền Ngày cấp: 06/06/2025
+[11:26:11] Đã bấm XÁC NHẬN thông tin
+[11:26:12] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[11:26:17] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84812573457 | Serial=2228055418
+[11:26:18] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[11:26:23] Đã mở trang web
+[11:26:25] Đã điền Số điện thoại & Serial
+[11:26:25] Đã bấm xác nhận (Tiếp tục)
+[11:26:26] Đã chọn loại giấy tờ: Hộ chiếu
+[11:26:26] Đã bấm BẮT ĐẦU
+[11:26:27] Đã tải lên ảnh Hộ chiếu thành công
+[11:26:32] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[11:26:37] Đã bấm TÔI ĐÃ HIỂU
+[11:26:48] Trang Xác nhận thông tin đã tải
+[11:26:50] Đã điền Nơi cấp: МВД 02101
+[11:26:52] Đã điền Ngày cấp: 18/12/2023
+[11:26:54] Đã bấm XÁC NHẬN thông tin
+[11:26:55] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[11:27:00] Đang xử lý Khách hàng: ID=3 | Số điện thoại=84832037122 | Serial=2228055088
+[11:27:00] Hoàn thành toàn bộ tiến trình!
+[11:28:19] Đã nạp 3 records từ tiến trình cũ.
+[11:28:20] Hoàn thành toàn bộ tiến trình!
+[11:29:27] Đang xử lý Khách hàng: ID=1 | Số điện thoại=814560106 | Serial=1163972931
+[11:29:28] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[11:29:35] Đã mở trang web
+[11:29:37] Đã điền Số điện thoại & Serial
+[11:29:37] Đã bấm xác nhận (Tiếp tục)
+[11:29:38] Đã chọn loại giấy tờ: Hộ chiếu
+[11:29:38] Đã bấm BẮT ĐẦU
+[11:29:39] Đã tải lên ảnh Hộ chiếu thành công
+[11:29:44] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[11:29:49] Đã bấm TÔI ĐÃ HIỂU
+[11:30:01] Trang Xác nhận thông tin đã tải
+[11:30:03] Đã điền Nơi cấp: RANCHI
+[11:30:05] Đã điền Ngày cấp: 06/06/2025
+[11:30:07] Đã bấm XÁC NHẬN thông tin
+[11:30:08] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[11:30:13] Đang xử lý Khách hàng: ID=2 | Số điện thoại=84812573457 | Serial=2228055418
+[11:30:14] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[11:30:18] Đã mở trang web
+[11:30:20] Đã điền Số điện thoại & Serial
+[11:30:20] Đã bấm xác nhận (Tiếp tục)
+[11:30:21] Đã chọn loại giấy tờ: Hộ chiếu
+[11:30:21] Đã bấm BẮT ĐẦU
+[11:30:22] Đã tải lên ảnh Hộ chiếu thành công
+[11:30:27] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[11:30:32] Đã bấm TÔI ĐÃ HIỂU
+[11:30:43] Trang Xác nhận thông tin đã tải
+[11:30:45] Đã điền Nơi cấp: МВД 02101
+[11:30:47] Đã điền Ngày cấp: 18/12/2023
+[11:30:49] Đã bấm XÁC NHẬN thông tin
+[11:30:50] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[11:30:55] Đang xử lý Khách hàng: ID=3 | Số điện thoại=84832037122 | Serial=2228055088
+[11:30:56] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[11:30:59] Đã mở trang web
+[11:31:01] Đã điền Số điện thoại & Serial
+[11:31:01] Đã bấm xác nhận (Tiếp tục)
+[11:31:02] Đã chọn loại giấy tờ: Hộ chiếu
+[11:31:02] Đã bấm BẮT ĐẦU
+[11:31:03] Đã tải lên ảnh Hộ chiếu thành công
+[11:31:08] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[11:31:13] Đã bấm TÔI ĐÃ HIỂU
+[11:31:23] Trang Xác nhận thông tin đã tải
+[11:31:25] Đã điền Nơi cấp: MINISTRY OF HOME AFFAIRS
+[11:31:27] Đã điền Ngày cấp: 03/02/2024
+[11:31:29] Đã bấm XÁC NHẬN thông tin
+[11:31:30] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[11:31:36] Hoàn thành toàn bộ tiến trình!

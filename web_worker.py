@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import os
 import queue
 import threading
@@ -11,21 +12,59 @@ from excel_reader import read_input_excel
 from playwright_runner import PlaywrightRunner
 
 class WebWorker(threading.Thread):
-	def __init__(self, excel_path: str, photo_folder: str, message_queue: queue.Queue[dict[str, Any]]) -> None:
+	def __init__(self, excel_path: str, photo_folder: str, message_queue: queue.Queue[dict[str, Any]], resume: bool = False) -> None:
 		super().__init__()
 		self.excel_path = excel_path
 		self.photo_folder = photo_folder
 		self.message_queue = message_queue
+		self.resume = resume
 		self.result_path = os.path.join(os.path.dirname(excel_path), "result.xlsx")
 		self.log_path = os.path.join(os.path.dirname(excel_path), "log.txt")
 		self.success = 0
 		self.failed = 0
 		self.duplicate = 0
 		self.is_running = True
+		self.progress_file = os.path.join(os.path.dirname(excel_path), "progress.json")
+		self.completed_ids = set()
+
+	def _load_progress(self):
+		if self.resume and os.path.exists(self.progress_file):
+			try:
+				with open(self.progress_file, "r", encoding="utf-8") as f:
+					data = json.load(f)
+					self.completed_ids = set(data.get("completed_ids", []))
+					self.success = data.get("success", 0)
+					self.failed = data.get("failed", 0)
+					self.duplicate = data.get("duplicate", 0)
+				self._log(f"Đã nạp {len(self.completed_ids)} records từ tiến trình cũ.")
+			except Exception as e:
+				self._log(f"Lỗi khi nạp progress: {e}")
+		else:
+			if os.path.exists(self.progress_file):
+				try:
+					os.remove(self.progress_file)
+				except:
+					pass
+
+	def _save_progress(self, record_id: str):
+		self.completed_ids.add(record_id)
+		try:
+			data = {
+				"completed_ids": list(self.completed_ids),
+				"success": self.success,
+				"failed": self.failed,
+				"duplicate": self.duplicate
+			}
+			with open(self.progress_file, "w", encoding="utf-8") as f:
+				json.dump(data, f, ensure_ascii=False)
+		except Exception as e:
+			pass
 
 	def run(self) -> None:
 		try:
 			self._emit({"type": "status", "message": "Đang khởi động tiến trình..."})
+			self._load_progress()
+			
 			records = read_input_excel(self.excel_path)
 			total = len(records)
 			if total == 0:
@@ -39,9 +78,35 @@ class WebWorker(threading.Thread):
 				if not self.is_running:
 					self._log("Tiến trình đã bị dừng bởi người dùng.")
 					break
-
-				self._log(f"Đang xử lý Khách hàng: ID={record['id']} | Số điện thoại={record['phone']} | Serial={record['serial']}")
 				
+				record_id = record["id"]
+				
+				if record_id in self.completed_ids:
+					progress = int(index / total * 100)
+					self._emit({"type": "progress", "value": progress})
+					self._emit({
+						"type": "counters",
+						"success": self.success,
+						"failed": self.failed,
+						"duplicate": self.duplicate
+					})
+					continue
+
+				self._log(f"Đang xử lý Khách hàng: ID={record_id} | Số điện thoại={record['phone']} | Serial={record['serial']}")
+				
+				# Generate Preview
+				passport, portrait = self._resolve_photos(record_id)
+				if portrait and os.path.exists(portrait):
+					from utils import get_id_photo_base64
+					# Lấy base64 nguyên bản (thay vì tải đường dẫn)
+					orig_b64 = get_id_photo_base64(portrait, apply_filter=False)
+					proc_b64 = get_id_photo_base64(portrait, apply_filter=True)
+					self._emit({
+						"type": "preview",
+						"original": orig_b64,
+						"processed": proc_b64
+					})
+					
 				# Chạy lần 1 với ảnh gốc (không có bộ lọc đổi da)
 				status, message = self._process_record(self.runner, record, apply_filter=False)
 
@@ -65,6 +130,7 @@ class WebWorker(threading.Thread):
 
 				record_result = {**record, "status": status, "message": message}
 				self.runner.append_result(self.result_path, record_result)
+				self._save_progress(record_id)
 
 				self._emit({
 					"type": "counters",
