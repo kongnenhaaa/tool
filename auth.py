@@ -35,3 +35,11 @@ def save_license(key: str) -> None:
     """Lưu key khách hàng nhập vào file."""
     with open(KEY_FILE, "w", encoding="utf-8") as f:
         f.write(key.strip())
+
+def remove_license() -> None:
+    """Xóa file license khi người dùng đăng xuất."""
+    if os.path.exists(KEY_FILE):
+        try:
+            os.remove(KEY_FILE)
+        except:
+            pass

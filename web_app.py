@@ -1,8 +1,10 @@
 import asyncio
 import queue
+import os
 from pathlib import Path
 
-from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect, BackgroundTasks
+import auth
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -27,6 +29,7 @@ class StartRequest(BaseModel):
     photo_folder: str
     resume: bool = False
     threads: int = 1
+    headless: bool = True
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
@@ -46,7 +49,7 @@ async def start_process(req: StartRequest):
         except queue.Empty:
             break
 
-    active_worker = WebWorker(req.excel_path, req.photo_folder, message_queue, req.resume, req.threads)
+    active_worker = WebWorker(req.excel_path, req.photo_folder, message_queue, req.resume, req.threads, req.headless)
     active_worker.start()
     
     return {"status": "success", "message": "Started processing"}
@@ -58,6 +61,18 @@ async def stop_process():
         active_worker.stop()
         return {"status": "success", "message": "Stopping process..."}
     return {"status": "error", "message": "No active process to stop."}
+
+@app.post("/api/logout")
+async def logout(background_tasks: BackgroundTasks):
+    auth.remove_license()
+    
+    def shutdown():
+        import time
+        time.sleep(1)
+        os._exit(0)
+        
+    background_tasks.add_task(shutdown)
+    return {"status": "success", "message": "Đã đăng xuất"}
 
 @app.websocket("/ws/logs")
 async def websocket_endpoint(websocket: WebSocket):

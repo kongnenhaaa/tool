@@ -12,13 +12,14 @@ from excel_reader import read_input_excel
 from playwright_runner import PlaywrightRunner
 
 class WebWorker(threading.Thread):
-	def __init__(self, excel_path: str, photo_folder: str, message_queue: queue.Queue[dict[str, Any]], resume: bool = False, threads: int = 1) -> None:
+	def __init__(self, excel_path: str, photo_folder: str, message_queue: queue.Queue[dict[str, Any]], resume: bool = False, threads: int = 1, headless: bool = True) -> None:
 		super().__init__()
 		self.excel_path = excel_path
 		self.photo_folder = photo_folder
 		self.message_queue = message_queue
 		self.resume = resume
 		self.max_threads = max(1, min(5, threads))
+		self.headless = headless
 		self.result_path = os.path.join(os.path.dirname(excel_path), "result.xlsx")
 		self.log_path = os.path.join(os.path.dirname(excel_path), "log.txt")
 		self.success = 0
@@ -132,8 +133,9 @@ class WebWorker(threading.Thread):
 				pass
 
 	def _worker_loop(self, thread_id: int):
+		runner = None
 		try:
-			runner = PlaywrightRunner()
+			runner = PlaywrightRunner(headless=self.headless)
 			with self.lock:
 				self.runners.append(runner)
 		except Exception as e:

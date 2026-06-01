@@ -16,23 +16,47 @@ from utils import get_cropped_face_base64, get_face_frame_base64, get_id_photo_b
 
 
 class PlaywrightRunner:
-	def __init__(self) -> None:
+	def __init__(self, headless: bool = True) -> None:
 		self._playwright = sync_playwright().start()
 		self._debug = os.getenv("KYC_DEBUG", "0") == "1"
-		# Launch browser with flags for fake camera and disable security
-		self._browser = self._playwright.chromium.launch(
-			headless=False,
-			args=[
+		# Khởi chạy bằng Chrome có sẵn trên máy (Tránh lỗi mất file Chromium khi build .exe)
+		try:
+			args = [
 				"--use-fake-ui-for-media-stream",
 				"--use-fake-device-for-media-stream",
 				"--disable-web-security",
 				"--start-maximized",
-			],
-		)
+				"--window-size=1920,1080"
+			]
+			if headless:
+				args.append("--headless=new")
+				
+			self._browser = self._playwright.chromium.launch(
+				headless=headless,
+				channel="chrome",
+				args=args,
+			)
+		except Exception:
+			try:
+				# Dự phòng dùng Edge nếu máy không cài Chrome (Windows mặc định có Edge)
+				self._browser = self._playwright.chromium.launch(
+					headless=headless,
+					channel="msedge",
+					args=args,
+				)
+			except Exception:
+				# Dự phòng 3: Dùng Cốc Cốc nếu khách hàng xài Cốc Cốc
+				coccoc_path = os.path.expandvars(r"%LOCALAPPDATA%\CocCoc\Browser\Application\browser.exe")
+				self._browser = self._playwright.chromium.launch(
+					headless=headless,
+					executable_path=coccoc_path,
+					args=args,
+				)
 		# Grant camera permission proactively to avoid permission popups
 		self._context = self._browser.new_context(
 			permissions=["camera"],
-			no_viewport=True
+			viewport={"width": 1920, "height": 1080} if headless else None,
+			no_viewport=not headless
 		)
 		self._page = self._context.new_page()
 

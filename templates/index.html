@@ -77,12 +77,18 @@
             <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">KYC AUTOMATION PRO</h1>
             <p class="text-slate-400 text-sm mt-1">Version 2.0 - Powered by Playwright & AI</p>
         </div>
-        <div class="flex items-center gap-2">
-            <span id="status-indicator" class="flex h-3 w-3 relative">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 hidden"></span>
-                <span class="relative inline-flex rounded-full h-3 w-3 bg-slate-500"></span>
-            </span>
-            <span id="status-text" class="text-sm text-slate-400 font-medium">Ready</span>
+        <div class="flex items-center gap-4">
+            <button onclick="logoutKey()" class="text-xs text-rose-500 hover:text-rose-600 font-semibold uppercase tracking-wider flex items-center gap-1 border border-rose-200 bg-rose-50 px-2 py-1 rounded transition-colors" title="Đăng xuất Key Bản quyền">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                Đăng Xuất
+            </button>
+            <div class="flex items-center gap-2">
+                <span id="status-indicator" class="flex h-3 w-3 relative">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 hidden"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-slate-500"></span>
+                </span>
+                <span id="status-text" class="text-sm text-slate-400 font-medium">Ready</span>
+            </div>
         </div>
     </header>
 
@@ -117,14 +123,20 @@
                     </div>
                 </div>
 
-                <div class="mt-4 flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" id="resume-cb" class="w-4 h-4 text-purple-600 bg-slate-100 border-slate-300 rounded focus:ring-purple-500 focus:ring-2">
-                        <label for="resume-cb" class="text-sm font-medium text-slate-700">Tiếp tục chạy (Resume)</label>
+                <div class="mt-4 flex flex-col gap-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="resume-cb" class="w-4 h-4 text-purple-600 bg-slate-100 border-slate-300 rounded focus:ring-purple-500 focus:ring-2">
+                            <label for="resume-cb" class="text-sm font-medium text-slate-700">Tiếp tục chạy (Resume)</label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label for="threads-input" class="text-sm font-medium text-slate-700">Số luồng:</label>
+                            <input type="number" id="threads-input" value="1" min="1" max="5" class="w-16 px-2 py-1 text-sm border border-slate-300 rounded focus:outline-none focus:border-purple-500">
+                        </div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <label for="threads-input" class="text-sm font-medium text-slate-700">Số luồng:</label>
-                        <input type="number" id="threads-input" value="1" min="1" max="5" class="w-16 px-2 py-1 text-sm border border-slate-300 rounded focus:outline-none focus:border-purple-500">
+                        <input type="checkbox" id="headless-cb" checked class="w-4 h-4 text-purple-600 bg-slate-100 border-slate-300 rounded focus:ring-purple-500 focus:ring-2">
+                        <label for="headless-cb" class="text-sm font-medium text-slate-700">Chạy ngầm (Ẩn trình duyệt - Tiết kiệm RAM)</label>
                     </div>
                 </div>
 
@@ -249,6 +261,7 @@
             const excelPath = document.getElementById('excel-path').value.trim();
             const photoFolder = document.getElementById('photo-folder').value.trim();
             const isResume = document.getElementById('resume-cb').checked;
+            const isHeadless = document.getElementById('headless-cb').checked;
             const threads = parseInt(document.getElementById('threads-input').value) || 1;
 
             if (!excelPath || !photoFolder) {
@@ -264,7 +277,7 @@
                 const res = await fetch("/api/start", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ excel_path: excelPath, photo_folder: photoFolder, resume: isResume, threads: threads })
+                    body: JSON.stringify({ excel_path: excelPath, photo_folder: photoFolder, resume: isResume, threads: threads, headless: isHeadless })
                 });
                 const data = await res.json();
                 
@@ -302,7 +315,19 @@
                     }, 3000);
                 }
             } catch (err) {
-                alert("Lỗi kết nối tới Server!");
+                console.error(err);
+                alert("Lỗi khi kết nối đến server để Stop!");
+            }
+        }
+
+        async function logoutKey() {
+            if(confirm("Bạn có chắc chắn muốn Đăng xuất bản quyền thiết bị này?\n(Phần mềm sẽ tự động thoát sau khi đăng xuất)")) {
+                try {
+                    await fetch("/api/logout", { method: "POST" });
+                    alert("Đã xóa Key thành công! Phần mềm sẽ tắt ngay bây giờ.");
+                } catch(e) {
+                    console.error(e);
+                }
             }
         }
 

@@ -1,11 +1,15 @@
 # -*- mode: python ; coding: utf-8 -*-
+from PyInstaller.utils.hooks import collect_data_files
+
+datas = [('templates', 'templates')]
+datas += collect_data_files('opencv-python')
 
 
 a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[('templates', 'templates')],
+    datas=datas,
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

@@ -49,6 +49,46 @@ def get_cropped_face_base64(image_path: str) -> str:
 
 
 import numpy as np
+import sys
+import os
+
+import urllib.request
+import tempfile
+
+def _get_cascade_path() -> str:
+	filename = "haarcascade_frontalface_default.xml"
+	
+	# 1. Thử tìm trong thư mục cv2 gốc
+	standard_path = cv2.data.haarcascades + filename
+	if os.path.exists(standard_path):
+		return standard_path
+		
+	# 2. Thử tìm trong thư mục giải nén của PyInstaller
+	if hasattr(sys, '_MEIPASS'):
+		for root, dirs, files in os.walk(sys._MEIPASS):
+			if filename in files:
+				return os.path.join(root, filename)
+				
+	# 3. Nếu vẫn không thấy (do lỗi build exe), tự động tải về thư mục Temp
+	temp_dir = tempfile.gettempdir()
+	download_path = os.path.join(temp_dir, filename)
+	if not os.path.exists(download_path):
+		try:
+			url = "https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml"
+			urllib.request.urlretrieve(url, download_path)
+		except Exception:
+			pass
+			
+	return download_path
+
+def _read_img_utf8(path: str) -> np.ndarray | None:
+	try:
+		with open(path, "rb") as f:
+			chunk = f.read()
+		chunk_arr = np.frombuffer(chunk, dtype=np.uint8)
+		return cv2.imdecode(chunk_arr, cv2.IMREAD_COLOR)
+	except Exception:
+		return None
 
 def apply_anti_glare(img: np.ndarray) -> np.ndarray:
 	"""
@@ -108,10 +148,7 @@ def get_face_frame_base64(
 		return ""
 
 	try:
-		face_cascade = cv2.CascadeClassifier(
-			cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
-		)
-		img = cv2.imread(image_path)
+		img = _read_img_utf8(image_path)
 		if img is None:
 			return ""
 			
@@ -120,13 +157,17 @@ def get_face_frame_base64(
 			img = apply_anti_glare(img)
 
 		img_h, img_w = img.shape[:2]
-		gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-		faces = face_cascade.detectMultiScale(
-			gray,
-			scaleFactor=1.1,
-			minNeighbors=5,
-			minSize=(60, 60),
-		)
+		faces = []
+		try:
+			cascade_path = _get_cascade_path()
+			face_cascade = cv2.CascadeClassifier(cascade_path)
+			if not face_cascade.empty():
+				gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+				faces = face_cascade.detectMultiScale(
+					gray, scaleFactor=1.1, minNeighbors=5, minSize=(60, 60)
+				)
+		except Exception:
+			pass
 
 		target_aspect = target_width / target_height
 
@@ -208,7 +249,7 @@ def get_id_photo_base64(image_path: str, apply_filter: bool = False) -> str:
 		return ""
 
 	try:
-		img = cv2.imread(image_path)
+		img = _read_img_utf8(image_path)
 		if img is None:
 			return ""
 			
@@ -216,18 +257,18 @@ def get_id_photo_base64(image_path: str, apply_filter: bool = False) -> str:
 		if apply_filter:
 			img = apply_anti_glare(img)
 
-		face_cascade = cv2.CascadeClassifier(
-			cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
-		)
-
 		img_h, img_w = img.shape[:2]
-		gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-		faces = face_cascade.detectMultiScale(
-			gray,
-			scaleFactor=1.1,
-			minNeighbors=5,
-			minSize=(60, 60),
-		)
+		faces = []
+		try:
+			cascade_path = _get_cascade_path()
+			face_cascade = cv2.CascadeClassifier(cascade_path)
+			if not face_cascade.empty():
+				gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+				faces = face_cascade.detectMultiScale(
+					gray, scaleFactor=1.1, minNeighbors=5, minSize=(60, 60)
+				)
+		except Exception:
+			pass
 
 		# Tỷ lệ 3:4 (Dọc - Portrait) để lấp đầy hoàn hảo chiều cao của khung VNPT
 		target_aspect = 3.0 / 4.0
