@@ -12,12 +12,13 @@ from excel_reader import read_input_excel
 from playwright_runner import PlaywrightRunner
 
 class WebWorker(threading.Thread):
-	def __init__(self, excel_path: str, photo_folder: str, message_queue: queue.Queue[dict[str, Any]], resume: bool = False) -> None:
+	def __init__(self, excel_path: str, photo_folder: str, message_queue: queue.Queue[dict[str, Any]], resume: bool = False, threads: int = 1) -> None:
 		super().__init__()
 		self.excel_path = excel_path
 		self.photo_folder = photo_folder
 		self.message_queue = message_queue
 		self.resume = resume
+		self.max_threads = max(1, min(5, threads))
 		self.result_path = os.path.join(os.path.dirname(excel_path), "result.xlsx")
 		self.log_path = os.path.join(os.path.dirname(excel_path), "log.txt")
 		self.success = 0
@@ -26,6 +27,11 @@ class WebWorker(threading.Thread):
 		self.is_running = True
 		self.progress_file = os.path.join(os.path.dirname(excel_path), "progress.json")
 		self.completed_ids = set()
+		self.lock = threading.Lock()
+		self.runners = []
+		self.task_queue = queue.Queue()
+		self.total_records = 0
+		self.processed_count = 0
 
 	def _load_progress(self):
 		if self.resume and os.path.exists(self.progress_file):
@@ -36,6 +42,7 @@ class WebWorker(threading.Thread):
 					self.success = data.get("success", 0)
 					self.failed = data.get("failed", 0)
 					self.duplicate = data.get("duplicate", 0)
+					self.processed_count = len(self.completed_ids)
 				self._log(f"Đã nạp {len(self.completed_ids)} records từ tiến trình cũ.")
 			except Exception as e:
 				self._log(f"Lỗi khi nạp progress: {e}")
@@ -66,87 +73,48 @@ class WebWorker(threading.Thread):
 			self._load_progress()
 			
 			records = read_input_excel(self.excel_path)
-			total = len(records)
-			if total == 0:
+			self.total_records = len(records)
+			if self.total_records == 0:
 				self._log("Lỗi: Không tìm thấy dữ liệu khách hàng trong file Excel.")
 				self._emit({"type": "finished"})
 				return
 
-			self.runner = PlaywrightRunner()
-
-			for index, record in enumerate(records, start=1):
-				if not self.is_running:
-					self._log("Tiến trình đã bị dừng bởi người dùng.")
-					break
-				
-				record_id = record["id"]
-				
-				if record_id in self.completed_ids:
-					progress = int(index / total * 100)
-					self._emit({"type": "progress", "value": progress})
-					self._emit({
-						"type": "counters",
-						"success": self.success,
-						"failed": self.failed,
-						"duplicate": self.duplicate
-					})
+			# Bỏ vào queue
+			for record in records:
+				if record["id"] in self.completed_ids:
 					continue
+				self.task_queue.put(record)
 
-				self._log(f"Đang xử lý Khách hàng: ID={record_id} | Số điện thoại={record['phone']} | Serial={record['serial']}")
-				
-				# Generate Preview
-				passport, portrait = self._resolve_photos(record_id)
-				if portrait and os.path.exists(portrait):
-					from utils import get_id_photo_base64
-					# Lấy base64 nguyên bản (thay vì tải đường dẫn)
-					orig_b64 = get_id_photo_base64(portrait, apply_filter=False)
-					proc_b64 = get_id_photo_base64(portrait, apply_filter=True)
-					self._emit({
-						"type": "preview",
-						"original": orig_b64,
-						"processed": proc_b64
-					})
-					
-				# Chạy lần 1 với ảnh gốc (không có bộ lọc đổi da)
-				status, message = self._process_record(self.runner, record, apply_filter=False)
-
-				# Nếu lần 1 bị rớt do lỗi Liveness (không đạt), thử lại lần 2 với bộ lọc "đổi da"
-				if status == "FAILED" and "không đạt" in message.lower() and self.is_running:
-					self._log("Lỗi eKYC! Kích hoạt chế độ THỬ LẠI với bộ lọc thay đổi da (Anti-Glare & CLAHE)...")
-					# Chạy lần 2 (có bộ lọc)
-					status, message = self._process_record(self.runner, record, apply_filter=True)
-
-				# Nếu đã bấm STOP thì dừng, không lưu kết quả STOPPED
-				if status == "STOPPED":
-					self._log("Đã dừng tiến trình thành công.")
-					break
-
-				if status == "SUCCESS":
-					self.success += 1
-				elif status == "DUPLICATE":
-					self.duplicate += 1
-				else:
-					self.failed += 1
-
-				record_result = {**record, "status": status, "message": message}
-				self.runner.append_result(self.result_path, record_result)
-				self._save_progress(record_id)
-
+			# Emit initial progress for skipped records
+			if self.total_records > 0 and self.processed_count > 0:
+				progress = int(self.processed_count / self.total_records * 100)
+				self._emit({"type": "progress", "value": progress, "processed": self.processed_count, "total": self.total_records})
 				self._emit({
 					"type": "counters",
 					"success": self.success,
 					"failed": self.failed,
 					"duplicate": self.duplicate
 				})
-				
-				progress = int(index / total * 100)
-				self._emit({"type": "progress", "value": progress})
 
-			if hasattr(self, 'runner') and self.runner:
-				try:
-					self.runner.close()
-				except Exception:
-					pass
+			actual_threads = min(self.max_threads, self.task_queue.qsize())
+			if actual_threads == 0:
+				self._log("Tất cả ID đã hoàn thành!")
+				self._emit({"type": "finished", "result_path": self.result_path, "log_path": self.log_path})
+				return
+
+			self._log(f"Bắt đầu xử lý bằng {actual_threads} luồng (threads)...")
+			
+			threads_list = []
+			for i in range(actual_threads):
+				t = threading.Thread(target=self._worker_loop, args=(i+1,))
+				t.daemon = True
+				t.start()
+				threads_list.append(t)
+
+			# Đợi tất cả hoàn thành
+			for t in threads_list:
+				t.join()
+
 			self._log("Hoàn thành toàn bộ tiến trình!")
 			self._emit({"type": "finished", "result_path": self.result_path, "log_path": self.log_path})
 		except Exception as exc:
@@ -157,34 +125,109 @@ class WebWorker(threading.Thread):
 
 	def stop(self):
 		self.is_running = False
-		if hasattr(self, 'runner') and self.runner:
+		for runner in self.runners:
 			try:
-				# Aggressively close the runner to interrupt any blocking Playwright calls
-				self.runner.close()
+				runner.close()
 			except Exception:
 				pass
+
+	def _worker_loop(self, thread_id: int):
+		try:
+			runner = PlaywrightRunner()
+			with self.lock:
+				self.runners.append(runner)
+		except Exception as e:
+			self._log(f"[Luồng {thread_id}] Lỗi khởi tạo trình duyệt: {e}")
+			return
+
+		while self.is_running:
+			try:
+				record = self.task_queue.get_nowait()
+			except queue.Empty:
+				break
+
+			record_id = record["id"]
+			self._log(f"[Luồng {thread_id}] Bắt đầu xử lý ID={record_id} | SĐT={record['phone']}")
+			
+			# Generate Preview
+			passport, portrait = self._resolve_photos(record_id)
+			if portrait and os.path.exists(portrait):
+				try:
+					from utils import get_id_photo_base64
+					orig_b64 = get_id_photo_base64(portrait, apply_filter=False)
+					proc_b64 = get_id_photo_base64(portrait, apply_filter=True)
+					self._emit({"type": "preview", "thread_id": thread_id, "original": orig_b64, "processed": proc_b64})
+				except:
+					pass
+				
+			# Chạy lần 1 (không có bộ lọc đổi da)
+			status, message = self._process_record(runner, record, apply_filter=False, thread_id=thread_id)
+
+			# Thử lại nếu lỗi Liveness
+			if status == "FAILED" and "không đạt" in message.lower() and self.is_running:
+				self._log(f"[Luồng {thread_id}] ID={record_id}: Lỗi eKYC! Kích hoạt chế độ THỬ LẠI với bộ lọc thay đổi da...")
+				status, message = self._process_record(runner, record, apply_filter=True, thread_id=thread_id)
+
+			if status == "STOPPED":
+				self.task_queue.task_done()
+				break
+
+			# Cập nhật kết quả đồng bộ
+			with self.lock:
+				if status == "SUCCESS":
+					self.success += 1
+				elif status == "DUPLICATE":
+					self.duplicate += 1
+				else:
+					self.failed += 1
+
+				record_result = {**record, "status": status, "message": message}
+				runner.append_result(self.result_path, record_result)
+				self._save_progress(record_id)
+				self.processed_count += 1
+
+				self._emit({
+					"type": "counters",
+					"success": self.success,
+					"failed": self.failed,
+					"duplicate": self.duplicate
+				})
+				
+				progress = int(self.processed_count / self.total_records * 100)
+				self._emit({"type": "progress", "value": progress, "processed": self.processed_count, "total": self.total_records})
+
+			self.task_queue.task_done()
+
+		# Dọn dẹp runner
+		try:
+			runner.close()
+		except:
+			pass
 
 	def _emit(self, data: dict[str, Any]) -> None:
 		self.message_queue.put(data)
 
-	def _process_record(self, runner: PlaywrightRunner, record: dict, apply_filter: bool = False) -> tuple[str, str]:
+	def _process_record(self, runner: PlaywrightRunner, record: dict, apply_filter: bool = False, thread_id: int = 1) -> tuple[str, str]:
 		passport, portrait = self._resolve_photos(record["id"])
 		if not passport or not portrait:
 			missing = "Ảnh Hộ chiếu" if not passport else "Ảnh chân dung"
 			return "FAILED", f"Thiếu {missing}"
 
+		# Bọc log function để prefix với Thread ID
+		def t_log(msg: str):
+			self._log(f"[Luồng {thread_id}] {msg}")
+
 		try:
-			status, message = runner.run(record, passport, portrait, log=self._log, apply_filter=apply_filter)
+			status, message = runner.run(record, passport, portrait, log=t_log, apply_filter=apply_filter)
 			return status, message
 		except Exception as exc:
-			# Nếu stop được gọi trong khi đang chạy, không tính là FAILED
 			if not self.is_running:
 				return "STOPPED", "Tiến trình bị dừng bởi người dùng"
 			last_error = str(exc)
-			self._log(f"Lỗi khi xử lý: {last_error}")
+			self._log(f"[Luồng {thread_id}] Lỗi xử lý ID={record['id']}: {last_error}")
 			screenshot = runner.save_screenshot(record["id"])
 			if screenshot:
-				self._log(f"Đã lưu ảnh chụp màn hình lỗi: {screenshot}")
+				self._log(f"[Luồng {thread_id}] Đã lưu ảnh lỗi: {screenshot}")
 			return "FAILED", last_error or "Lỗi không xác định"
 
 	def _resolve_photos(self, record_id: str) -> tuple[str | None, str | None]:

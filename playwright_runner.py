@@ -109,7 +109,7 @@ class PlaywrightRunner:
 			log("Đã bấm xác nhận (Tiếp tục)")
 
 		try:
-			self._page.wait_for_selector("text=Hộ chiếu", timeout=5000)
+			self._page.wait_for_selector("text=Hộ chiếu", timeout=15000)
 			self._page.click("text=Hộ chiếu")
 			if log:
 				log("Đã chọn loại giấy tờ: Hộ chiếu")
