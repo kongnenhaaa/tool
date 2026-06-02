@@ -460,6 +460,9 @@
                 else if (data.type === "finished") {
                     if (data.error) {
                         appendLog(`[ERROR] Lỗi hệ thống: ${data.error}`);
+                        if (data.error.includes("HẾT LƯỢT")) {
+                            alert("CẢNH BÁO TỪ HỆ THỐNG:\n\n" + data.error);
+                        }
                     }
                     if (data.result_path) {
                         resultPath = data.result_path;

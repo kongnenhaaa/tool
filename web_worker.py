@@ -8,8 +8,11 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from pydantic import BaseModel
+
 from excel_reader import read_input_excel
 from playwright_runner import PlaywrightRunner
+import auth
 
 class WebWorker(threading.Thread):
 	def __init__(self, excel_path: str, photo_folder: str, message_queue: queue.Queue[dict[str, Any]], resume: bool = False, threads: int = 1, headless: bool = True) -> None:
@@ -116,8 +119,11 @@ class WebWorker(threading.Thread):
 			for t in threads_list:
 				t.join()
 
-			self._log("Hoàn thành toàn bộ tiến trình!")
-			self._emit({"type": "finished", "result_path": self.result_path, "log_path": self.log_path})
+			if getattr(self, 'limit_reached', False):
+				self._emit({"type": "finished", "error": "BẠN ĐÃ SỬ DỤNG HẾT LƯỢT ĐĂNG KÝ! Tự động dừng phần mềm."})
+			else:
+				self._log("Hoàn thành toàn bộ tiến trình!")
+				self._emit({"type": "finished", "result_path": self.result_path, "log_path": self.log_path})
 		except Exception as exc:
 			self._log(f"Lỗi nghiêm trọng: {exc}")
 			self._emit({"type": "finished", "error": str(exc)})
@@ -148,7 +154,21 @@ class WebWorker(threading.Thread):
 			except queue.Empty:
 				break
 
-			record_id = record["id"]
+			# 1. KIỂM TRA LƯỢT DÙNG TRƯỚC KHI CHẠY (Bảo vệ luồng)
+			with self.lock:
+				is_valid, max_uses = auth.get_license_info()
+				used = auth.get_usage()
+				if used >= max_uses:
+					self._log(f"[Luồng {thread_id}] Đã hết số lượt dùng của Key ({used}/{max_uses})! Tiến trình tự động dừng.")
+					self.is_running = False
+					self.limit_reached = True
+					self.task_queue.task_done()
+					break
+				
+				# Cộng ngay 1 lượt ngay khi cấp phép cho luồng này chạy hồ sơ!
+				auth.add_usage(1)
+
+			record_id = str(record["id"]).strip()
 			self._log(f"[Luồng {thread_id}] Bắt đầu xử lý ID={record_id} | SĐT={record['phone']}")
 			
 			# Generate Preview

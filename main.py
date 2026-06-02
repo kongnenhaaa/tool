@@ -45,21 +45,37 @@ def prompt_for_license():
     key = simpledialog.askstring("Kích hoạt Bản Quyền", msg, parent=root)
     
     if key:
-        if key.strip() == auth.generate_valid_key(hwid):
-            auth.save_license(key)
+        # Tạm thời lưu để check_license (get_license_info) hoạt động
+        auth.save_license(key)
+        is_valid, _ = auth.get_license_info()
+        
+        if is_valid:
             messagebox.showinfo("Thành công", "Kích hoạt bản quyền thành công! Vui lòng mở lại phần mềm.")
             return True
         else:
-            messagebox.showerror("Lỗi", "Key kích hoạt không hợp lệ hoặc không dành cho máy này!")
+            auth.remove_license()
+            messagebox.showerror("Lỗi", "Key kích hoạt không hợp lệ, không dành cho máy này, hoặc đã bị hỏng!")
             return False
     return False
 
 if __name__ == '__main__':
     # Kiểm tra bản quyền trước khi chạy ứng dụng
-    if not auth.check_license():
+    is_valid, max_uses = auth.get_license_info()
+    
+    if not is_valid:
         if not prompt_for_license():
             sys.exit(0)
-        else:
+        sys.exit(0)
+    else:
+        # Nếu Key đúng, kiểm tra xem khách đã xài hết lượt chưa?
+        used = auth.get_usage()
+        if used >= max_uses:
+            root = tk.Tk()
+            root.withdraw()
+            messagebox.showerror("Hết lượt", f"Bạn đã sử dụng hết {used}/{max_uses} lượt của Key này.\n\nVui lòng mua Key mới từ Admin để tiếp tục!")
+            # Cho phép khách nhập key mới nếu họ vừa mua thêm
+            if not prompt_for_license():
+                sys.exit(0)
             sys.exit(0)
 
     # Khởi chạy FastAPI trong một luồng riêng
