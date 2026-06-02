@@ -15,7 +15,7 @@ copy obf_dist\auth.py auth.py
 echo.
 echo 3. Dang bien dich source code...
 echo Vui long cho trong it phut (Co the mat 2-5 phut tuy cau hinh may)
-python -m PyInstaller --noconsole --onefile --add-data "templates;templates" --collect-data opencv-python main.py
+python -m PyInstaller --noconsole --onefile --name "Tool_KYC" --add-data "templates;templates" --collect-data opencv-python main.py
 
 echo.
 echo 4. Khoi phuc ma nguon goc...
@@ -26,6 +26,6 @@ rmdir /s /q obf_dist
 echo.
 echo ========================================================
 echo HOAN THANH! 
-echo File chay cho khach hang: "dist\main.exe"
+echo File chay cho khach hang: "dist\Tool_KYC.exe"
 echo ========================================================
 pause
