@@ -182,3 +182,97 @@
 [13:35:02] [Luồng 3] Đợi 7s không thấy thông báo lỗi -> Tài khoản đã thành công!
 [13:35:02] [Luồng 3] Lỗi xử lý ID=3: Page.wait_for_timeout: Target page, context or browser has been closed
 [13:35:03] Hoàn thành toàn bộ tiến trình!
+[13:52:40] Bắt đầu xử lý bằng 3 luồng (threads)...
+[13:52:43] [Luồng 3] Bắt đầu xử lý ID=1 | SĐT=814560106
+[13:52:43] [Luồng 1] Bắt đầu xử lý ID=2 | SĐT=84812573457
+[13:52:43] [Luồng 2] Bắt đầu xử lý ID=3 | SĐT=84832037122
+[13:52:45] [Luồng 1] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[13:52:45] [Luồng 2] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[13:52:45] [Luồng 3] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[13:52:50] [Luồng 1] Đã mở trang web
+[13:52:51] [Luồng 2] Đã mở trang web
+[13:52:51] [Luồng 3] Đã mở trang web
+[13:52:52] [Luồng 1] Đã điền Số điện thoại & Serial
+[13:52:53] [Luồng 1] Đã bấm xác nhận (Tiếp tục)
+[13:52:53] [Luồng 2] Đã điền Số điện thoại & Serial
+[13:52:53] [Luồng 2] Đã bấm xác nhận (Tiếp tục)
+[13:52:53] [Luồng 3] Đã điền Số điện thoại & Serial
+[13:52:54] [Luồng 3] Đã bấm xác nhận (Tiếp tục)
+[13:52:57] [Luồng 1] Đã chọn loại giấy tờ: Hộ chiếu
+[13:52:57] [Luồng 3] Đã chọn loại giấy tờ: Hộ chiếu
+[13:52:57] [Luồng 1] Đã bấm BẮT ĐẦU
+[13:52:57] [Luồng 3] Đã bấm BẮT ĐẦU
+[13:52:57] [Luồng 2] Đã chọn loại giấy tờ: Hộ chiếu
+[13:52:57] [Luồng 2] Đã bấm BẮT ĐẦU
+[13:52:58] [Luồng 1] Đã tải lên ảnh Hộ chiếu thành công
+[13:52:58] [Luồng 3] Đã tải lên ảnh Hộ chiếu thành công
+[13:52:58] [Luồng 2] Đã tải lên ảnh Hộ chiếu thành công
+[13:53:03] [Luồng 1] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[13:53:03] [Luồng 3] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[13:53:03] [Luồng 2] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[13:53:08] [Luồng 1] Đã bấm TÔI ĐÃ HIỂU
+[13:53:08] [Luồng 3] Đã bấm TÔI ĐÃ HIỂU
+[13:53:09] [Luồng 2] Đã bấm TÔI ĐÃ HIỂU
+[13:53:19] [Luồng 2] Trang Xác nhận thông tin đã tải
+[13:53:19] [Luồng 2] Đã điền Nơi cấp: MINISTRY OF HOME AFFAIRS
+[13:53:19] [Luồng 2] Đã điền Ngày cấp: 03/02/2024
+[13:53:20] [Luồng 1] Trang Xác nhận thông tin đã tải
+[13:53:20] [Luồng 3] Trang Xác nhận thông tin đã tải
+[13:53:20] [Luồng 1] Đã điền Nơi cấp: МВД 02101
+[13:53:20] [Luồng 3] Đã điền Nơi cấp: RANCHI
+[13:53:20] [Luồng 1] Đã điền Ngày cấp: 18/12/2023
+[13:53:20] [Luồng 3] Đã điền Ngày cấp: 06/06/2025
+[13:53:21] [Luồng 2] Đã bấm XÁC NHẬN thông tin
+[13:53:22] [Luồng 2] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[13:53:22] [Luồng 1] Đã bấm XÁC NHẬN thông tin
+[13:53:22] [Luồng 3] Đã bấm XÁC NHẬN thông tin
+[13:53:23] [Luồng 1] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[13:53:23] [Luồng 3] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[13:53:28] Hoàn thành toàn bộ tiến trình!
+[13:53:39] Bắt đầu xử lý bằng 3 luồng (threads)...
+[13:53:40] [Luồng 1] Bắt đầu xử lý ID=1 | SĐT=814560106
+[13:53:40] [Luồng 3] Bắt đầu xử lý ID=2 | SĐT=84812573457
+[13:53:40] [Luồng 2] Bắt đầu xử lý ID=3 | SĐT=84832037122
+[13:53:41] [Luồng 2] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[13:53:41] [Luồng 3] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[13:53:41] [Luồng 1] Đã khởi tạo Camera ảo giả lập ảnh chân dung
+[13:53:47] [Luồng 3] Đã mở trang web
+[13:53:47] [Luồng 2] Đã mở trang web
+[13:53:49] [Luồng 3] Đã điền Số điện thoại & Serial
+[13:53:49] [Luồng 3] Đã bấm xác nhận (Tiếp tục)
+[13:53:49] [Luồng 2] Đã điền Số điện thoại & Serial
+[13:53:49] [Luồng 2] Đã bấm xác nhận (Tiếp tục)
+[13:53:50] [Luồng 1] Đã mở trang web
+[13:53:50] [Luồng 3] Đã chọn loại giấy tờ: Hộ chiếu
+[13:53:50] [Luồng 3] Đã bấm BẮT ĐẦU
+[13:53:51] [Luồng 3] Đã tải lên ảnh Hộ chiếu thành công
+[13:53:52] [Luồng 1] Đã điền Số điện thoại & Serial
+[13:53:52] [Luồng 1] Đã bấm xác nhận (Tiếp tục)
+[13:53:54] [Luồng 2] Đã chọn loại giấy tờ: Hộ chiếu
+[13:53:54] [Luồng 2] Đã bấm BẮT ĐẦU
+[13:53:55] [Luồng 2] Đã tải lên ảnh Hộ chiếu thành công
+[13:53:57] [Luồng 3] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[13:53:57] [Luồng 1] Đã chọn loại giấy tờ: Hộ chiếu
+[13:53:57] [Luồng 1] Đã bấm BẮT ĐẦU
+[13:53:58] [Luồng 1] Đã tải lên ảnh Hộ chiếu thành công
+[13:54:00] [Luồng 2] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[13:54:02] [Luồng 3] Đã bấm TÔI ĐÃ HIỂU
+[13:54:03] [Luồng 1] Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)
+[13:54:05] [Luồng 2] Đã bấm TÔI ĐÃ HIỂU
+[13:54:08] [Luồng 1] Đã bấm TÔI ĐÃ HIỂU
+[13:54:17] [Luồng 3] Trang Xác nhận thông tin đã tải
+[13:54:17] [Luồng 3] Đã điền Nơi cấp: МВД 02101
+[13:54:18] [Luồng 3] Đã điền Ngày cấp: 18/12/2023
+[13:54:18] [Luồng 2] Trang Xác nhận thông tin đã tải
+[13:54:18] [Luồng 2] Đã điền Nơi cấp: MINISTRY OF HOME AFFAIRS
+[13:54:18] [Luồng 2] Đã điền Ngày cấp: 03/02/2024
+[13:54:20] [Luồng 3] Đã bấm XÁC NHẬN thông tin
+[13:54:20] [Luồng 1] Trang Xác nhận thông tin đã tải
+[13:54:20] [Luồng 2] Đã bấm XÁC NHẬN thông tin
+[13:54:20] [Luồng 1] Đã điền Nơi cấp: RANCHI
+[13:54:20] [Luồng 1] Đã điền Ngày cấp: 06/06/2025
+[13:54:20] [Luồng 3] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[13:54:21] [Luồng 2] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[13:54:22] [Luồng 1] Đã bấm XÁC NHẬN thông tin
+[13:54:23] [Luồng 1] Đọc thông báo từ hệ thống: Thuê bao đã được cập nhật thành công trước đó, hoặc đã vượt quá số lần cập nhật cho phép !
+[13:54:28] Hoàn thành toàn bộ tiến trình!
