@@ -7,8 +7,9 @@ import os
 SECRET_SALT = "VNPT_DIGISHOP_TOOL_EKYC_2026_@PHAT_SECRET"
 KEY_FILE = "license.key"
 
-# File đếm lượt dùng được mã hóa và đặt tên giả để che mắt khách hàng
-USAGE_FILE = "system_cache.bin" 
+# Lưu sâu vào ổ C:\Users\Tên_Máy\AppData\Roaming để khách khó tìm và xóa
+appdata_path = os.getenv('APPDATA') or os.path.expanduser("~")
+USAGE_FILE = os.path.join(appdata_path, "Microsoft_SysVol_Config.bin")
 
 def get_hwid() -> str:
     """Lấy địa chỉ MAC của máy tính làm Hardware ID, băm ra 16 ký tự."""
@@ -45,7 +46,8 @@ def get_license_info():
 def get_usage() -> int:
     """Đọc số lượt khách hàng đã sử dụng."""
     if not os.path.exists(USAGE_FILE):
-        return 0 # Chưa dùng lượt nào
+        # NẾU MẤT FILE -> KHÁCH CỐ TÌNH XÓA -> KHÓA TOOL (Báo đã xài 999999 lượt)
+        return 999999
         
     with open(USAGE_FILE, "r", encoding="utf-8") as f:
         data = f.read().strip()
