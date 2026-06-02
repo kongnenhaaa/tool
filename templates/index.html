@@ -281,6 +281,8 @@
         // Gọi ngay khi web load
         document.addEventListener("DOMContentLoaded", fetchLicenseInfo);
 
+        let forceRun = false;
+
         // Bắt đầu quá trình
         async function startProcess() {
             const excelPath = document.getElementById('excel-path').value.trim();
@@ -299,10 +301,13 @@
             resetUI();
             
             try {
+                const reqBody = { excel_path: excelPath, photo_folder: photoFolder, resume: isResume, threads: threads, headless: isHeadless };
+                if (forceRun) reqBody.force = true;
+                
                 const res = await fetch("/api/start", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ excel_path: excelPath, photo_folder: photoFolder, resume: isResume, threads: threads, headless: isHeadless })
+                    body: JSON.stringify(reqBody)
                 });
                 const data = await res.json();
                 
@@ -312,6 +317,16 @@
                     return;
                 }
                 
+                if (data.status === "confirm") {
+                    setRunningState(false);
+                    showConfirmModal(data.message, async () => {
+                        forceRun = true;
+                        await startProcess(); // Gọi lại với force = true
+                    });
+                    return;
+                }
+                
+                forceRun = false; // Reset sau khi start thành công
                 connectWebSocket();
             } catch (err) {
                 alert("Lỗi kết nối tới Server!");
@@ -320,12 +335,16 @@
         }
 
         async function stopProcess() {
+            const btnStop = document.getElementById('btn-stop');
+            btnStop.disabled = true; // Disable ngay lập tức để tránh double click
+
             try {
                 const res = await fetch("/api/stop", { method: "POST" });
                 const data = await res.json();
                 
                 if (data.status === "error") {
                     alert(data.message);
+                    btnStop.disabled = false; // Bật lại nếu lỗi
                 } else {
                     // Hiển thị trạng thái đang dừng
                     const btnStop = document.getElementById('btn-stop');
@@ -576,6 +595,60 @@
 
         initParticles();
         animateParticles();
+    </script>
+    
+    <!-- Confirm Modal -->
+    <div id="custom-confirm-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" id="modal-backdrop"></div>
+        
+        <!-- Modal Content -->
+        <div class="bg-white rounded-2xl shadow-2xl w-[90%] max-w-md relative z-10 overflow-hidden transform transition-all border border-slate-200" id="modal-content">
+            <!-- Header -->
+            <div class="bg-amber-50 px-6 py-4 flex items-center gap-3 border-b border-amber-100">
+                <div class="bg-amber-100 p-2 rounded-full text-amber-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <h3 class="text-lg font-bold text-amber-800">Thông báo từ hệ thống</h3>
+            </div>
+            
+            <!-- Body -->
+            <div class="px-6 py-5">
+                <p id="modal-message" class="text-slate-600 whitespace-pre-line leading-relaxed text-sm"></p>
+            </div>
+            
+            <!-- Footer -->
+            <div class="bg-slate-50 px-6 py-4 flex justify-end gap-3 border-t border-slate-100">
+                <button onclick="closeConfirmModal()" class="px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 bg-white border border-slate-300 hover:bg-slate-50 transition-colors shadow-sm">
+                    Hủy bỏ
+                </button>
+                <button id="modal-confirm-btn" class="px-4 py-2 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 transition-colors shadow-md hover:shadow-lg">
+                    Vẫn chạy
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let onConfirmCallback = null;
+        
+        function showConfirmModal(message, onConfirm) {
+            document.getElementById('modal-message').innerText = message;
+            onConfirmCallback = onConfirm;
+            const modal = document.getElementById('custom-confirm-modal');
+            modal.classList.remove('hidden');
+        }
+        
+        function closeConfirmModal() {
+            const modal = document.getElementById('custom-confirm-modal');
+            modal.classList.add('hidden');
+            onConfirmCallback = null;
+        }
+        
+        document.getElementById('modal-confirm-btn').addEventListener('click', () => {
+            if (onConfirmCallback) onConfirmCallback();
+            closeConfirmModal();
+        });
     </script>
 </body>
 </html>

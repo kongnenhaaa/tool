@@ -30,6 +30,7 @@ class StartRequest(BaseModel):
     resume: bool = False
     threads: int = 1
     headless: bool = True
+    force: bool = False
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
@@ -49,6 +50,34 @@ async def start_process(req: StartRequest):
     
     if active_worker and active_worker.is_running:
         return {"status": "error", "message": "A process is already running."}
+        
+    # Pre-flight check cho số lượt còn lại
+    if not req.force:
+        is_valid, max_uses = auth.get_license_info()
+        if not is_valid:
+            return {"status": "error", "message": "Bản quyền không hợp lệ!"}
+            
+        used = auth.get_usage()
+        remaining = max_uses - used
+        if remaining <= 0:
+            return {"status": "error", "message": "Bạn đã hết lượt sử dụng! Vui lòng nạp thêm Key mới."}
+            
+        try:
+            from excel_reader import read_input_excel
+            records = read_input_excel(req.excel_path)
+            total = len(records)
+            
+            if req.resume:
+                # Nếu chạy tiếp, trừ đi số dòng đã có trong log (đơn giản hóa thì bỏ qua check chi tiết)
+                pass
+            else:
+                if total > remaining:
+                    return {
+                        "status": "confirm", 
+                        "message": f"CẢNH BÁO: Danh sách của bạn có {total} hồ sơ, nhưng bạn chỉ còn {remaining} lượt.\n\nThiếu {total - remaining} lượt để chạy toàn bộ danh sách.\nBạn có muốn bắt đầu chạy {remaining} hồ sơ đầu tiên không?"
+                    }
+        except Exception as e:
+            pass # Lỗi đọc file thì để worker tự báo lỗi sau
     
     # Clear the queue
     while not message_queue.empty():
