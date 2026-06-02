@@ -35,6 +35,14 @@ class StartRequest(BaseModel):
 async def index(request: Request):
     return templates.TemplateResponse(request=request, name="index.html", context={"request": request})
 
+@app.get("/api/license")
+async def get_license():
+    is_valid, max_uses = auth.get_license_info()
+    if is_valid:
+        used = auth.get_usage()
+        return {"status": "ok", "used": used, "max_uses": max_uses, "remaining": max_uses - used}
+    return {"status": "error", "message": "Invalid license"}
+
 @app.post("/api/start")
 async def start_process(req: StartRequest):
     global active_worker, message_queue

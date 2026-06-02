@@ -45,17 +45,21 @@ def prompt_for_license():
     key = simpledialog.askstring("Kích hoạt Bản Quyền", msg, parent=root)
     
     if key:
-        # Tạm thời lưu để check_license (get_license_info) hoạt động
-        auth.save_license(key)
-        is_valid, _ = auth.get_license_info()
-        
-        if is_valid:
-            messagebox.showinfo("Thành công", "Kích hoạt bản quyền thành công! Vui lòng mở lại phần mềm.")
+        action = auth.save_license(key)
+        if action == "NEW":
+            is_valid, _ = auth.get_license_info()
+            if is_valid:
+                messagebox.showinfo("Thành công", "Kích hoạt Key mới thành công! Số lượt dùng của bạn đã được nạp đầy. Vui lòng mở lại phần mềm.")
+                return True
+        elif action == "RESTORE":
+            messagebox.showwarning("Phục hồi Bản Quyền", "Phát hiện bạn nhập lại Key cũ.\n\nHệ thống đã khôi phục bản quyền, tuy nhiên SỐ LƯỢT ĐÃ DÙNG TRƯỚC ĐÓ VẪN ĐƯỢC GIỮ NGUYÊN (Không reset)!\nVui lòng mở lại phần mềm.")
             return True
-        else:
-            auth.remove_license()
-            messagebox.showerror("Lỗi", "Key kích hoạt không hợp lệ, không dành cho máy này, hoặc đã bị hỏng!")
-            return False
+        
+        # Lỗi hoặc INVALID
+        auth.remove_license()
+        messagebox.showerror("Lỗi", "Key kích hoạt không hợp lệ, không dành cho máy này, hoặc đã bị hỏng!")
+        return False
+        
     return False
 
 if __name__ == '__main__':
