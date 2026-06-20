@@ -4,6 +4,7 @@ import pandas as pd
 from pathlib import Path
 
 from playwright_runner import PlaywrightRunner
+from utils import format_phone_number
 
 
 def load_input_data(input_path: str) -> pd.DataFrame:
@@ -62,7 +63,7 @@ def main():
     runner = PlaywrightRunner()
     try:
         for idx, row in df.iterrows():
-            record = {"phone": str(row["phone"]), "serial": str(row["serial"]))}
+            record = {"phone": format_phone_number(row["phone"]), "serial": str(row["serial"])}
             # Determine file paths
             if "passport_path" in df.columns and pd.notna(row["passport_path"]):
                 passport_path = str(row["passport_path"])

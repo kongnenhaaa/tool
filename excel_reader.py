@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pandas as pd
+from utils import format_phone_number
 
 
 def read_input_excel(path: str) -> list[dict]:
@@ -18,7 +19,7 @@ def read_input_excel(path: str) -> list[dict]:
 	records: list[dict] = []
 	for _, row in df.iterrows():
 		record_id = str(row["id"]).strip()
-		phone = str(row["phone"]).strip()
+		phone = format_phone_number(row["phone"])
 		serial = str(row["serial"]).strip()
 		if not record_id or not phone or not serial:
 			continue

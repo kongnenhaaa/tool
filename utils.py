@@ -326,3 +326,32 @@ def get_id_photo_base64(image_path: str, apply_filter: bool = False) -> str:
 	except Exception as exc:
 		print(f"Loi khi xu ly id photo {image_path}: {exc}")
 		return ""
+
+
+def format_phone_number(phone: str | int | float | None) -> str:
+	if phone is None:
+		return ""
+	# Convert to string and basic clean
+	phone_str = str(phone).strip()
+	if phone_str.endswith(".0"):
+		phone_str = phone_str[:-2]
+	
+	# Keep only digits and '+'
+	cleaned = "".join(c for c in phone_str if c.isdigit() or c == "+")
+	
+	# Normalize +84 or 84 prefix
+	if cleaned.startswith("+840"):
+		cleaned = cleaned[3:]
+	elif cleaned.startswith("+84"):
+		cleaned = "0" + cleaned[3:]
+	elif cleaned.startswith("840") and len(cleaned) >= 11:
+		cleaned = cleaned[2:]
+	elif cleaned.startswith("84") and len(cleaned) >= 10:
+		cleaned = "0" + cleaned[2:]
+	elif not cleaned.startswith("0") and len(cleaned) == 9:
+		cleaned = "0" + cleaned
+		
+	# Keep only digits for final number
+	final_phone = "".join(c for c in cleaned if c.isdigit())
+	return final_phone
+

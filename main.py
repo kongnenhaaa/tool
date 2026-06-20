@@ -14,14 +14,14 @@ import auth
 class Api:
     def pick_excel(self):
         result = webview.windows[0].create_file_dialog(
-            webview.OPEN_DIALOG, 
+            webview.FileDialog.OPEN, 
             allow_multiple=False, 
             file_types=('Excel Files (*.xlsx)', 'All Files (*.*)')
         )
         return result[0] if result else ""
 
     def pick_folder(self):
-        result = webview.windows[0].create_file_dialog(webview.FOLDER_DIALOG)
+        result = webview.windows[0].create_file_dialog(webview.FileDialog.FOLDER)
         return result[0] if result else ""
 
     def open_path(self, path: str):

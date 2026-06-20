@@ -19,6 +19,7 @@ class PlaywrightRunner:
 	def __init__(self, headless: bool = True) -> None:
 		self._playwright = sync_playwright().start()
 		self._debug = os.getenv("KYC_DEBUG", "0") == "1"
+		self.action_delay = float(os.getenv("KYC_ACTION_DELAY", "2.5"))
 		# Khởi chạy bằng Chrome có sẵn trên máy (Tránh lỗi mất file Chromium khi build .exe)
 		try:
 			args = [
@@ -60,6 +61,10 @@ class PlaywrightRunner:
 		)
 		self._page = self._context.new_page()
 
+	def _delay_after_action(self) -> None:
+		if self.action_delay > 0:
+			self._page.wait_for_timeout(int(self.action_delay * 1000))
+
 	def run(
 		self,
 		record: dict,
@@ -88,7 +93,8 @@ class PlaywrightRunner:
 			if log:
 				log("CẢNH BÁO: Không thể tạo ảnh chân dung để quét khuôn mặt")
 
-		self._page.goto("https://digishop.vnpt.vn/tourist/", timeout=45000, wait_until="domcontentloaded")
+		self._page.goto("https://dl-m2m.vnpt.vn/", timeout=45000, wait_until="domcontentloaded")
+		self._delay_after_action()
 		if log:
 			log("Đã mở trang web")
 
@@ -119,22 +125,59 @@ class PlaywrightRunner:
 		# Delay 2s before starting to fill
 		self._page.wait_for_timeout(2000)
 
+		# Chuẩn hóa serial: nếu là sim serial dài (19-20 số), tự động lấy từ số thứ 10 đến 19
+		serial_val = "".join(c for c in str(record.get("serial", "")).strip() if c.isdigit())
+		if len(serial_val) >= 19:
+			extracted_serial = serial_val[9:19]
+			if log:
+				log(f"Phát hiện Serial dài ({len(serial_val)} số), tự động cắt lấy 10 số từ vị trí 10 đến 19: {extracted_serial}")
+			serial_val = extracted_serial
+		else:
+			serial_val = record.get("serial", "")
+
 		self._fill_first_available(phone_selectors, record["phone"], "phone")
-		self._fill_first_available(serial_selectors, record["serial"], "serial")
+		self._fill_first_available(serial_selectors, serial_val, "serial")
 		if log:
 			log("Đã điền Số điện thoại & Serial")
 
 		confirm_button = self._page.locator("#serial_validate_button")
 		self._scroll_to_confirm(confirm_button, log)
 
-		# Thực hiện ngay tức thì (bỏ wait 5s + 2s)
-		confirm_button.click()
+		# Chờ nút Xác nhận được enabled và click
+		self._page.wait_for_timeout(2000)
+		try:
+			confirm_button.wait_for(state="visible", timeout=5000)
+			confirm_button.click(timeout=5000)
+		except Exception:
+			if log:
+				log("CẢNH BÁO: Nút Xác nhận vẫn bị disabled hoặc không sẵn sàng click, cố gắng click cưỡng bức...")
+			confirm_button.click(force=True)
+		self._delay_after_action()
 		if log:
 			log("Đã bấm xác nhận (Tiếp tục)")
 
 		try:
+			passport_clicked = False
+			passport_selectors = [
+				"div.vnpt-cursor-pointer:has-text('Hộ chiếu')",
+				"p:has-text('Hộ chiếu')",
+				"text=Hộ chiếu",
+				"div:has-text('Hộ chiếu')"
+			]
 			self._page.wait_for_selector("text=Hộ chiếu", timeout=15000)
-			self._page.click("text=Hộ chiếu")
+			self._page.wait_for_timeout(2000)
+			for selector in passport_selectors:
+				try:
+					btn = self._page.locator(selector).first
+					if btn.count() > 0 and btn.is_visible():
+						btn.click(force=True)
+						passport_clicked = True
+						break
+				except Exception:
+					continue
+			if not passport_clicked:
+				self._page.click("text=Hộ chiếu")
+			self._delay_after_action()
 			if log:
 				log("Đã chọn loại giấy tờ: Hộ chiếu")
 			self._click_start_button(log)
@@ -142,31 +185,66 @@ class PlaywrightRunner:
 			if log:
 				log(f"Lỗi khi chọn loại giấy tờ: {exc}")
 
-		try:
-			self._page.wait_for_selector("text='TẢI ẢNH LÊN'", timeout=15000)
-		except Exception:
-			pass
+		# Thực hiện tải ảnh Hộ chiếu lên
+		uploaded = False
+		upload_btn_selectors = [
+			"span.vnpt-underline:has-text('Tải ảnh lên')",
+			"div.vnpt-cursor-pointer:has-text('Tải ảnh lên')",
+			"span:has-text('Tải ảnh lên')",
+			"text='Tải ảnh lên'",
+			"button:has-text('TẢI ẢNH LÊN')",
+			"span:has-text('TẢI ẢNH LÊN')",
+			"text='TẢI ẢNH LÊN'",
+			"div:has-text('TẢI ẢNH LÊN')",
+			".ant-btn:has-text('TẢI ẢNH LÊN')"
+		]
 
-		try:
-			self._page.wait_for_selector("input[type='file']", timeout=30000)
-		except Exception:
-			pass
+		# 1. Thử click trực tiếp nút TẢI ẢNH LÊN bằng expect_file_chooser
+		for selector in upload_btn_selectors:
+			try:
+				btn = self._page.locator(selector).first
+				if btn.count() > 0 and btn.is_visible():
+					if log:
+						log(f"Đang click nút tải ảnh bằng selector: {selector}")
+					with self._page.expect_file_chooser(timeout=10000) as fc_info:
+						btn.click(force=True)
+					file_chooser = fc_info.value
+					file_chooser.set_files(passport_path)
+					self._delay_after_action()
+					uploaded = True
+					if log:
+						log("Đã tải lên ảnh Hộ chiếu qua FileChooser thành công")
+					break
+			except Exception as e:
+				continue
 
-		file_inputs = self._page.query_selector_all("input[type='file']")
+		# 2. Dự phòng: Nếu không dùng được FileChooser, thử phương thức truyền thống tìm input[type='file'] và set trực tiếp
+		if not uploaded:
+			if log:
+				log("Không dùng được FileChooser, thử tìm trực tiếp input[type='file']...")
+			try:
+				self._page.wait_for_selector("input[type='file']", timeout=15000)
+				file_inputs = self._page.query_selector_all("input[type='file']")
+				if len(file_inputs) >= 1:
+					file_inputs[0].set_input_files(passport_path)
+					self._delay_after_action()
+					uploaded = True
+					if log:
+						log("Đã tải lên ảnh Hộ chiếu qua input[type='file'] thành công")
+			except Exception as exc:
+				if log:
+					log(f"Lỗi khi tải ảnh bằng input[type='file']: {exc}")
 
-		if len(file_inputs) < 1:
+		# 3. Nếu cả 2 đều thất bại, lưu HTML debug và báo lỗi
+		if not uploaded:
 			try:
 				with open("debug.html", "w", encoding="utf-8") as handle:
 					handle.write(self._page.content())
 				if log:
-					log("Saved debug HTML: debug.html")
+					log("Đã lưu HTML debug: debug.html")
 			except Exception:
 				pass
-			raise RuntimeError("No file input found")
-
-		# Delay 1s before upload
-		self._page.wait_for_timeout(1000)
-		file_inputs[0].set_input_files(passport_path)
+			raise RuntimeError("Không thể tải lên ảnh Hộ chiếu bằng bất kỳ phương thức nào")
 		if log:
 			log("Đã tải lên ảnh Hộ chiếu thành công")
 		
@@ -174,10 +252,29 @@ class PlaywrightRunner:
 		self._page.wait_for_timeout(5000)
 
 		try:
-			next_btn = self._page.locator(
-				"div.vnpt-border.vnpt-cursor-pointer:has(p:has-text('TIẾP THEO'))"
-			).first
-			next_btn.click(force=True)
+			next_btn_selectors = [
+				"button:has-text('TIẾP THEO')",
+				"span:has-text('TIẾP THEO')",
+				"div.vnpt-border.vnpt-cursor-pointer:has(p:has-text('TIẾP THEO'))",
+				"text='TIẾP THEO'",
+				".ant-btn:has-text('TIẾP THEO')"
+			]
+			
+			next_clicked = False
+			for selector in next_btn_selectors:
+				try:
+					btn = self._page.locator(selector).first
+					if btn.count() > 0 and btn.is_visible():
+						btn.click(force=True)
+						next_clicked = True
+						break
+				except Exception:
+					continue
+			
+			if not next_clicked:
+				self._page.click("text='TIẾP THEO'", force=True)
+				
+			self._delay_after_action()
 			if log:
 				log("Đã bấm TIẾP THEO (sau khi load ảnh hộ chiếu)")
 			
@@ -195,6 +292,7 @@ class PlaywrightRunner:
 			understood_btn.scroll_into_view_if_needed()
 			
 			understood_btn.click(force=True)
+			self._delay_after_action()
 			if log:
 				log("Đã bấm TÔI ĐÃ HIỂU")
 		except Exception as exc:
@@ -267,17 +365,23 @@ class PlaywrightRunner:
 	# ------------------------------------------------------------------ #
 	def _click_start_button(self, log: Callable[[str], None] | None) -> None:
 		selectors = [
-			"div.vnpt-bg-primary:has-text('BẮT ĐẦU')",
 			"div.vnpt-bg-primary:has-text('Bắt đầu')",
-			"div:has-text('BẮT ĐẦU')",
+			"div.vnpt-bg-primary:has-text('BẮT ĐẦU')",
+			"div.vnpt-cursor-pointer:has-text('Bắt đầu')",
+			"div.vnpt-cursor-pointer:has-text('BẮT ĐẦU')",
 			"div:has-text('Bắt đầu')",
+			"div:has-text('BẮT ĐẦU')",
+			"text='Bắt đầu'",
+			"text='BẮT ĐẦU'"
 		]
 		for attempt, selector in enumerate(selectors, start=1):
 			try:
 				start_btn = self._page.locator(selector).first
 				start_btn.wait_for(state="visible", timeout=15000)
 				start_btn.scroll_into_view_if_needed()
+				self._page.wait_for_timeout(2000)
 				start_btn.click(force=True)
+				self._delay_after_action()
 				if log:
 					log("Đã bấm BẮT ĐẦU")
 				try:
@@ -618,6 +722,7 @@ class PlaywrightRunner:
 
 			if record.get("noi_cap"):
 				self._page.fill("input[name='noicap']", record["noi_cap"])
+				self._delay_after_action()
 				if log: log(f"Đã điền Nơi cấp: {record['noi_cap']}")
 			
 			if record.get("ngay_cap"):
@@ -625,14 +730,18 @@ class PlaywrightRunner:
 				date_input = self._page.locator("input[placeholder='Chọn thời điểm']").first
 				if date_input.count() > 0:
 					date_input.fill(record["ngay_cap"])
+					self._delay_after_action()
 					date_input.press("Enter")
+					self._delay_after_action()
 					if log: log(f"Đã điền Ngày cấp: {record['ngay_cap']}")
 				else:
 					# Thử tìm qua name
 					try:
 						date_by_name = self._page.locator("input[name='ngaycap']").first
 						date_by_name.fill(record["ngay_cap"])
+						self._delay_after_action()
 						date_by_name.press("Enter")
+						self._delay_after_action()
 						if log: log(f"Đã điền Ngày cấp (by name): {record['ngay_cap']}")
 					except Exception:
 						pass
@@ -646,6 +755,7 @@ class PlaywrightRunner:
 			if confirm_btn.count() > 0:
 				self._page.wait_for_timeout(2000)
 				confirm_btn.last.click()
+				self._delay_after_action()
 				if log: log("Đã bấm XÁC NHẬN thông tin")
 		except Exception:
 			pass
@@ -704,7 +814,14 @@ class PlaywrightRunner:
 		for selector in selectors:
 			try:
 				self._page.wait_for_selector(selector, timeout=45000)
-				self._page.fill(selector, value)
+				locator = self._page.locator(selector)
+				locator.focus()
+				locator.click()
+				locator.fill(value)
+				locator.dispatch_event("input")
+				locator.dispatch_event("change")
+				locator.blur()
+				self._delay_after_action()
 				return
 			except Exception as exc:
 				last_error = str(exc)
