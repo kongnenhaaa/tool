@@ -39,10 +39,11 @@ async def index(request: Request):
 @app.get("/api/license")
 async def get_license():
     is_valid, max_uses = auth.get_license_info()
+    hwid = auth.get_hwid()
     if is_valid:
         used = auth.get_usage()
-        return {"status": "ok", "used": used, "max_uses": max_uses, "remaining": max_uses - used}
-    return {"status": "error", "message": "Invalid license"}
+        return {"status": "ok", "used": used, "max_uses": max_uses, "remaining": max_uses - used, "hwid": hwid}
+    return {"status": "error", "message": "Invalid license", "hwid": hwid}
 
 @app.post("/api/start")
 async def start_process(req: StartRequest):
@@ -110,6 +111,19 @@ async def logout(background_tasks: BackgroundTasks):
         
     background_tasks.add_task(shutdown)
     return {"status": "success", "message": "Đã đăng xuất"}
+
+class TopupRequest(BaseModel):
+    key: str
+
+@app.post("/api/topup")
+async def topup_api(req: TopupRequest):
+    res = auth.topup_license(req.key)
+    if res == "SUCCESS":
+        return {"status": "success", "message": "Nạp thêm lượt thành công!"}
+    elif res == "USED":
+        return {"status": "error", "message": "Key này đã được sử dụng trước đó!"}
+    else:
+        return {"status": "error", "message": "Key không hợp lệ!"}
 
 @app.websocket("/ws/logs")
 async def websocket_endpoint(websocket: WebSocket):

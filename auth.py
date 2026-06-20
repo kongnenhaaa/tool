@@ -50,13 +50,53 @@ def get_license_info():
         return False, 0
         
     with open(KEY_FILE, "r", encoding="utf-8") as f:
-        key = f.read().strip()
+        content = f.read().strip()
         
+    total_limit = 0
+    valid_count = 0
+    for key in content.splitlines():
+        key = key.strip()
+        if not key: continue
+        if validate_key(key):
+            valid_count += 1
+            limit_str = key.split("-")[0]
+            total_limit += int(limit_str)
+            
+    if valid_count > 0:
+        return True, total_limit
+    return False, 0
+
+def topup_license(key: str) -> str:
+    key = key.strip()
     if not validate_key(key):
-        return False, 0
+        return "INVALID"
         
-    limit_str = key.split("-")[0]
-    return True, int(limit_str)
+    key_hash = hashlib.sha256(key.encode('utf-8')).hexdigest()
+    
+    try:
+        reg_key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, REG_PATH, 0, winreg.KEY_READ)
+        history, _ = winreg.QueryValueEx(reg_key, REG_KEY_AUTH)
+        winreg.CloseKey(reg_key)
+    except FileNotFoundError:
+        history = ""
+        
+    history_list = history.split(",") if history else []
+    
+    if key_hash in history_list:
+        return "USED"
+        
+    history_list.append(key_hash)
+    new_history = ",".join(history_list)
+    
+    winreg.CreateKey(winreg.HKEY_CURRENT_USER, REG_PATH)
+    reg_key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, REG_PATH, 0, winreg.KEY_WRITE)
+    winreg.SetValueEx(reg_key, REG_KEY_AUTH, 0, winreg.REG_SZ, new_history)
+    winreg.CloseKey(reg_key)
+    
+    with open(KEY_FILE, "a", encoding="utf-8") as f:
+        f.write("\n" + key)
+        
+    return "SUCCESS"
 
 def get_usage() -> int:
     """Đọc số lượt khách hàng đã sử dụng từ sâu trong Windows Registry."""

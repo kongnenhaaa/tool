@@ -19,7 +19,7 @@ class PlaywrightRunner:
 	def __init__(self, headless: bool = True) -> None:
 		self._playwright = sync_playwright().start()
 		self._debug = os.getenv("KYC_DEBUG", "0") == "1"
-		self.action_delay = float(os.getenv("KYC_ACTION_DELAY", "2.5"))
+		self.action_delay = float(os.getenv("KYC_ACTION_DELAY", "2"))
 		# Khởi chạy bằng Chrome có sẵn trên máy (Tránh lỗi mất file Chromium khi build .exe)
 		try:
 			args = [
@@ -323,8 +323,8 @@ class PlaywrightRunner:
 
 		try:
 			notification = self._page.locator(".ant-notification-notice").first
-			# Đợi 7 giây theo yêu cầu, nếu không có thì nhảy xuống except
-			notification.wait_for(state="visible", timeout=7000)
+			# Đợi 15 giây theo yêu cầu, nếu không có thì nhảy xuống except
+			notification.wait_for(state="visible", timeout=15000)
 			result_text = notification.inner_text()
 			if log:
 				log_text = result_text.replace('\n', ' - ')
@@ -333,9 +333,9 @@ class PlaywrightRunner:
 			# Phân loại kết quả từ thông báo
 			status, message = self._classify_result(result_text)
 		except Exception:
-			# Quá 7 giây mà không có thông báo nào hiện lên -> Mặc định là thành công
+			# Quá 15 giây mà không có thông báo nào hiện lên -> Mặc định là thành công
 			if log:
-				log("Đợi 7s không thấy thông báo lỗi -> Tài khoản đã thành công!")
+				log("Đợi 15s không thấy thông báo lỗi -> Tài khoản đã thành công!")
 			status, message = "SUCCESS", "Cập nhật thành công (Không có thông báo)"
 		
 		# Chờ 5s cuối cùng để xem kết quả trước khi đóng/chuyển web
